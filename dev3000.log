@@ -1628,3 +1628,4 @@ Import traces:
     ./app/product/[id]/page.jsx [Server Component] 
  GET /product/0e9643c4-f7f0-451d-9640-52ba83bef619 200 in 6.0s (next.js: 747ms, application-code: 5.2s)
  GET /api/product?id=0e9643c4-f7f0-451d-9640-52ba83bef619 200 in 1814ms (next.js: 777ms, application-code: 1037ms)
+ GET / 200 in 1774ms (next.js: 50ms, application-code: 1724ms)
