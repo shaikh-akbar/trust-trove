@@ -36,6 +36,7 @@ export default function CatalogExperienceClient({
   spotlight,
   emptyTitle,
   emptyText,
+  heroBackgroundImage,
 }) {
   const filterOptions = useMemo(() => buildFilterOptions(products), [products]);
   const [query, setQuery] = useState(initialQuery);
@@ -113,7 +114,20 @@ export default function CatalogExperienceClient({
   return (
     <div className="bg-[var(--surface-soft)] pb-16">
       <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_34%)]" />
+        {heroBackgroundImage ? (
+          <img
+            src={heroBackgroundImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : null}
+        <div
+          className={`absolute inset-0 ${
+            heroBackgroundImage
+              ? "bg-[linear-gradient(90deg,rgba(20,29,96,0.9)_0%,rgba(20,29,96,0.78)_42%,rgba(20,29,96,0.68)_100%)]"
+              : "bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_34%)]"
+          }`}
+        />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.08))]" />
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-slate-200">{eyebrow}</p>

@@ -1,5 +1,5 @@
 import { CategoriesExperience } from "../components/store/StorefrontPages";
-import { getProducts } from "../../lib/product";
+import { getCategoriesPageData } from "../../lib/product";
 import { buildMetadata } from "../../lib/seo";
 
 export const metadata = buildMetadata({
@@ -10,7 +10,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function CategoriesPage() {
-  const products = await getProducts();
+  const categories = await getCategoriesPageData();
 
-  return <CategoriesExperience products={products} />;
+  return <CategoriesExperience categories={categories} />;
 }

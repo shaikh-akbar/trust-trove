@@ -214,7 +214,9 @@ import {
   CreditCard,
   Gift,
   Heart,
+  MapPin,
   Minus,
+  Navigation,
   Plus,
   ShieldCheck,
   ShoppingBag,
@@ -223,6 +225,7 @@ import {
   Truck,
 } from "lucide-react";
 import { useCart } from "./CartProvider";
+import { useLocation } from "../location/LocationProvider";
 import { useWishlist } from "../wishlist/WishlistProvider";
 
 function formatPrice(value) {
@@ -292,6 +295,8 @@ export default function CartPageClient() {
     isHydrated,
     isSyncing,
     isLoggedIn,
+    getItemAction,
+    isItemPending,
   } = useCart();
 
   const {
@@ -299,6 +304,7 @@ export default function CartPageClient() {
     isWishlisted,
     isPending: isWishlistPending,
   } = useWishlist();
+  const { location, openModal } = useLocation();
 
   const totalSavings = items.reduce((sum, item) => sum + getItemSavings(item), 0);
 
@@ -452,12 +458,76 @@ export default function CartPageClient() {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px]">
           <div className="space-y-5">
+            <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_25px_90px_-75px_rgba(15,23,42,0.75)]">
+              <div className="flex flex-col gap-4 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex items-start gap-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-[#161f66] text-white shadow-[0_18px_45px_-28px_rgba(22,31,102,0.75)]">
+                    <MapPin size={20} />
+                  </span>
+
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">
+                      Delivery Location
+                    </p>
+                    <h2 className="mt-2 font-display text-xl font-semibold tracking-[-0.02em] text-slate-950">
+                      {location?.postalCode
+                        ? `Pincode ${location.postalCode}`
+                        : "Choose your pincode"}
+                    </h2>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                      {location?.message ||
+                        "Check your delivery pincode before checkout to confirm serviceability and COD access."}
+                    </p>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <span
+                        className={`rounded-full px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.14em] ${
+                          location?.deliveryAvailable
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-amber-50 text-amber-700"
+                        }`}
+                      >
+                        {location?.deliveryAvailable
+                          ? "Delivery Available"
+                          : "Check Deliverability"}
+                      </span>
+
+                      <span
+                        className={`rounded-full px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.14em] ${
+                          location?.codAvailable
+                            ? "bg-sky-50 text-sky-700"
+                            : "bg-slate-100 text-slate-600"
+                        }`}
+                      >
+                        {location?.codAvailable
+                          ? "COD Available"
+                          : "COD May Be Unavailable"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => openModal()}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#161f66] px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-white shadow-[0_18px_50px_-28px_rgba(22,31,102,0.8)] transition hover:-translate-y-0.5 hover:bg-[#10184f]"
+                >
+                  <Navigation size={16} />
+                  {location?.postalCode ? "Change Location" : "Choose Location"}
+                </button>
+              </div>
+            </section>
+
             {items.map((item) => {
               const discountPercent = getDiscountPercent(item);
               const lineTotal =
                 Number(item.price_selling || 0) * Number(item.quantity || 1);
               const itemSaving = getItemSavings(item);
               const productTitle = item.title || "Product";
+              const itemAction = getItemAction(item.cartId);
+              const itemBusy = isItemPending(item.cartId);
+              const quantityBusy = itemAction === "update";
+              const removingItem = itemAction === "remove";
 
               return (
                 <article
@@ -558,12 +628,17 @@ export default function CartPageClient() {
                               updateQuantity(item.cartId, item.quantity - 1)
                             }
                             label={`Decrease quantity for ${productTitle}`}
+                            disabled={itemBusy}
                           >
                             <Minus size={14} />
                           </QuantityButton>
 
-                          <span className="min-w-10 text-center text-sm font-black text-slate-950">
-                            {item.quantity}
+                          <span
+                            className={`min-w-10 text-center text-sm font-black ${
+                              quantityBusy ? "text-slate-400" : "text-slate-950"
+                            }`}
+                          >
+                            {quantityBusy ? "..." : item.quantity}
                           </span>
 
                           <QuantityButton
@@ -571,6 +646,7 @@ export default function CartPageClient() {
                               updateQuantity(item.cartId, item.quantity + 1)
                             }
                             label={`Increase quantity for ${productTitle}`}
+                            disabled={itemBusy}
                           >
                             <Plus size={14} />
                           </QuantityButton>
@@ -603,13 +679,24 @@ export default function CartPageClient() {
                           <button
                             type="button"
                             onClick={() => removeItem(item.cartId)}
-                            className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-red-600 transition hover:border-red-200 hover:bg-red-100"
+                            disabled={itemBusy}
+                            className={`inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-red-600 transition ${
+                              itemBusy
+                                ? "cursor-wait opacity-70"
+                                : "hover:border-red-200 hover:bg-red-100"
+                            }`}
                           >
                             <Trash2 size={14} />
-                            Remove
+                            {removingItem ? "Removing..." : "Remove"}
                           </button>
                         </div>
                       </div>
+
+                      {quantityBusy ? (
+                        <p className="text-xs font-semibold text-slate-400">
+                          Updating quantity...
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 </article>
@@ -662,7 +749,9 @@ export default function CartPageClient() {
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-slate-500">Shipping</span>
                     <span className="text-right font-semibold text-slate-700">
-                      Calculated at checkout
+                      {location?.postalCode
+                        ? `Based on ${location.postalCode}`
+                        : "Calculated at checkout"}
                     </span>
                   </div>
                 </div>
@@ -681,7 +770,7 @@ export default function CartPageClient() {
 
                   <p className="mt-2 text-xs leading-5 text-slate-500">
                     Final shipping, taxes, and any applicable charges will be
-                    calculated during checkout.
+                    calculated during checkout{location?.postalCode ? ` for ${location.postalCode}` : ""}.
                   </p>
                 </div>
 

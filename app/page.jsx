@@ -1,6 +1,5 @@
 import HomeExperience from "./components/home/HomeExperience";
-import { getProducts } from "../lib/product";
-import { getApprovedCustomerReviews } from "../lib/product-social-server";
+import { getHomePageData } from "../lib/product";
 import { buildMetadata, getSiteUrl } from "../lib/seo";
 
 export const metadata = buildMetadata({
@@ -11,8 +10,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Home() {
-  const products = await getProducts();
-  const customerReviews = await getApprovedCustomerReviews();
+  const { categories, featuredTabs, customerReviews } = await getHomePageData();
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -28,7 +26,11 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
       />
-      <HomeExperience products={products} customerReviews={customerReviews} />
+      <HomeExperience
+        categories={categories}
+        featuredTabs={featuredTabs}
+        customerReviews={customerReviews}
+      />
     </>
   );
 }

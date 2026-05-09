@@ -697,7 +697,6 @@ import {
   Plus,
   ShieldCheck,
   ShoppingBag,
-  Sparkles,
   Truck,
 } from "lucide-react";
 import { useCart } from "./CartProvider";
@@ -871,6 +870,15 @@ function OrderSummaryPanel({
             </span>
           </div>
 
+          {summary?.shippingRuleLabel ? (
+            <div className="flex items-center justify-between text-slate-500">
+              <span>Shipping slab</span>
+              <span className="font-bold text-slate-900">
+                {summary.shippingRuleLabel}
+              </span>
+            </div>
+          ) : null}
+
           <div className="flex items-center justify-between text-slate-600">
             <span>Vendor shipping</span>
             <span className="font-bold text-slate-900">
@@ -923,7 +931,8 @@ function OrderSummaryPanel({
             <MapPin size={16} className="mt-1 shrink-0 text-[#161f66]" />
             <p>
               {selectedAddressId
-                ? "Selected address is ready for delivery."
+                ? summary?.deliveryMessage ||
+                  "Selected address is ready for delivery."
                 : "Select a saved address or add a new one before payment."}
             </p>
           </div>
@@ -964,6 +973,13 @@ function OrderSummaryPanel({
         {codUnavailable ? (
           <p className="mt-2 text-center text-xs font-semibold text-[#161f66]">
             Cash on Delivery is unavailable for one or more products in this cart.
+          </p>
+        ) : null}
+
+        {summary?.deliveryAvailable === false ? (
+          <p className="mt-2 text-center text-xs font-semibold text-[#161f66]">
+            {summary?.deliveryMessage ||
+              "Delivery is unavailable for the selected pincode."}
           </p>
         ) : null}
       </div>
@@ -1044,6 +1060,8 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
   const cartSignature = items
     .map((item) => `${item.cartId}:${item.quantity}`)
     .join("|");
+  const selectedAddress =
+    addresses.find((address) => address.id === selectedAddressId) || null;
 
   const loadInitialSummary = useEffectEvent(() => {
     void refreshSummary(couponCode, paymentType);
@@ -1065,6 +1083,7 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
         body: JSON.stringify({
           couponCode: nextCouponCode,
           paymentType: nextPaymentType,
+          postalCode: selectedAddress?.postalCode || "",
         }),
       });
 
@@ -1097,7 +1116,7 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
     }
 
     loadInitialSummary();
-  }, [cartSignature, isHydrated, items.length, paymentType]);
+  }, [cartSignature, isHydrated, items.length, paymentType, selectedAddressId]);
 
   function updateAddressField(key, value) {
     setAddressForm((current) => ({
@@ -1302,6 +1321,7 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
     Boolean(summary) &&
     !loadingSummary &&
     !paying &&
+    summary?.deliveryAvailable !== false &&
     !(paymentType === "cod" && summary?.codAvailable === false);
 
   return (
@@ -1656,6 +1676,8 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
               {PAYMENT_METHODS.map((method) => {
                 const isUnavailable =
                   method.id === "cod" && summary?.codAvailable === false;
+                const isDeliveryUnavailable =
+                  method.id === "online" && summary?.deliveryAvailable === false;
 
                 return (
                   <label
@@ -1664,7 +1686,11 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
                       paymentType === method.id
                         ? "border-[#161f66] bg-[#161f66] text-white shadow-[0_20px_60px_-38px_rgba(22,31,102,0.75)]"
                         : "border-slate-200 bg-slate-50 text-slate-800 hover:border-[#161f66]/30 hover:bg-white"
-                    } ${isUnavailable ? "cursor-not-allowed opacity-60" : ""}`}
+                    } ${
+                      isUnavailable || isDeliveryUnavailable
+                        ? "cursor-not-allowed opacity-60"
+                        : ""
+                    }`}
                   >
                     <div className="flex items-start gap-3">
                       <input
@@ -1672,7 +1698,7 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
                         name="paymentType"
                         checked={paymentType === method.id}
                         onChange={() => setPaymentType(method.id)}
-                        disabled={isUnavailable}
+                        disabled={isUnavailable || isDeliveryUnavailable}
                         className="mt-1 h-4 w-4"
                       />
 
@@ -1688,9 +1714,12 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
                               : "text-slate-500"
                           }`}
                         >
-                          {isUnavailable
-                            ? "Unavailable because one or more cart items do not support COD."
-                            : method.description}
+                          {isDeliveryUnavailable
+                            ? summary?.deliveryMessage ||
+                              "Delivery is unavailable for the selected pincode."
+                            : isUnavailable
+                              ? "Unavailable because the selected pincode or one or more cart items do not support COD."
+                              : method.description}
                         </p>
                       </div>
                     </div>

@@ -17,7 +17,7 @@ export default function ShippingPolicyPage() {
         description="This page explains how TrustTrove processes, ships, and delivers orders across India, including shipping timelines, serviceability, and tracking expectations."
       />
 
-      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20 py-5">
         <PolicySection title="Processing and dispatch timelines">
           <PolicyBulletList
             items={[

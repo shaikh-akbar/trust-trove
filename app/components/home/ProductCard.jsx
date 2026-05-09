@@ -3,13 +3,14 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
 import Link from 'next/link';
-import { buildCartItem, useCart } from '../cart/CartProvider';
+import { buildCartItem, getCartItemKey, useCart } from '../cart/CartProvider';
 
 export default function ProductCard({ product, compact = false }) {
-  const { addItem } = useCart();
+  const { addItem, isItemPending } = useCart();
   const [added, setAdded] = useState(false);
   const title = product?.name || product?.title || 'Untitled Product';
   const imageUrl = product?.image_url || product?.main_image || product?.product_images?.[0]?.src || '';
+  const categoryLabel = product?.category || product?.product_type || 'Curated edit';
   const sellingPrice = Number(product?.price_selling || product?.variants?.[0]?.price_selling || 0);
   const comparePrice = Number(
     product?.price_compare ||
@@ -18,17 +19,20 @@ export default function ProductCard({ product, compact = false }) {
   );
   const description = product?.short_description || product?.description || 'Freshly added to the latest drops collection.';
 
-  function handleAddToCart() {
-    void addItem(buildCartItem(product, product?.variants?.[0], 1));
+  const cartItemKey = getCartItemKey(product, product?.variants?.[0]);
+  const cartBusy = isItemPending(cartItemKey);
+
+  async function handleAddToCart() {
+    await addItem(buildCartItem(product, product?.variants?.[0], 1));
     setAdded(true);
     window.setTimeout(() => setAdded(false), 1400);
   }
 
   const cardClassName = compact
-    ? "group flex h-full flex-col overflow-hidden rounded-[1.15rem] border border-[var(--line)] bg-white shadow-[0_18px_48px_-36px_rgba(8,15,43,0.32)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_64px_-36px_rgba(8,15,43,0.4)]"
-    : "group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-white shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_34px_120px_-56px_rgba(8,15,43,0.56)]";
-  const imageClassName = compact ? "relative aspect-[4/3.7] overflow-hidden bg-[var(--surface-soft)]" : "relative aspect-[4/4.7] overflow-hidden bg-[var(--surface-soft)]";
-  const bodyClassName = compact ? "flex flex-1 flex-col p-3" : "flex flex-1 flex-col p-5";
+    ? "group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f9f3ea_100%)] shadow-[0_18px_48px_-36px_rgba(8,15,43,0.26)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_64px_-36px_rgba(8,15,43,0.36)]"
+    : "group flex h-full flex-col overflow-hidden rounded-[1.95rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f8f2e8_100%)] shadow-[0_30px_90px_-58px_rgba(8,15,43,0.38)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_34px_120px_-56px_rgba(8,15,43,0.48)]";
+  const imageClassName = compact ? "relative aspect-[4/4.1] overflow-hidden bg-[var(--surface-soft)]" : "relative aspect-[4/4.9] overflow-hidden bg-[var(--surface-soft)]";
+  const bodyClassName = compact ? "flex flex-1 flex-col p-3.5" : "flex flex-1 flex-col p-5";
   const titleClassName = compact
     ? "font-display line-clamp-2 min-h-[2.5rem] text-base leading-tight text-[var(--brand-navy)] transition-colors group-hover:text-slate-700 sm:text-lg"
     : "font-display line-clamp-2 min-h-[3.5rem] text-2xl leading-tight text-[var(--brand-navy)] transition-colors group-hover:text-slate-700";
@@ -36,13 +40,13 @@ export default function ProductCard({ product, compact = false }) {
     ? "mt-1.5 line-clamp-2 min-h-[2.25rem] text-[11px] leading-4.5 text-slate-500"
     : "mt-3 line-clamp-2 min-h-[3.25rem] text-sm leading-6 text-slate-500";
   const topMetaClassName = compact
-    ? "mt-2.5 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.16em] text-slate-400"
+    ? "mt-3 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.16em] text-slate-400"
     : "mt-5 flex items-center justify-between text-[11px] font-black uppercase tracking-[0.22em] text-slate-400";
   const priceWrapClassName = compact ? "mt-auto flex items-end justify-between pt-2.5" : "mt-auto flex items-end justify-between pt-5";
   const priceClassName = compact ? "text-base font-black tracking-tight text-[var(--brand-navy)] sm:text-lg" : "text-2xl font-black tracking-tight text-[var(--brand-navy)]";
   const cartButtonClassName = compact
-    ? "rounded-xl bg-[var(--brand-navy)] p-2.5 text-white transition-all hover:scale-105 hover:bg-[#353a66] active:scale-95"
-    : "rounded-2xl bg-[var(--brand-navy)] p-3 text-white transition-all hover:scale-105 hover:bg-slate-800 active:scale-95";
+    ? "rounded-full bg-[var(--brand-navy)] p-2.5 text-white transition-all hover:scale-105 hover:bg-[#353a66] active:scale-95"
+    : "rounded-full bg-[var(--brand-navy)] p-3 text-white transition-all hover:scale-105 hover:bg-slate-800 active:scale-95";
 
   return (
     <article className={cardClassName}>
@@ -60,6 +64,10 @@ export default function ProductCard({ product, compact = false }) {
         )}
 
         <div className={`absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(16,25,58,0.72))] ${compact ? "h-20" : "h-28"}`} />
+
+        <div className={`absolute left-3 top-3 inline-flex rounded-full border border-white/20 bg-white/88 text-[var(--brand-navy)] shadow-[0_12px_24px_-16px_rgba(20,29,96,0.28)] backdrop-blur ${compact ? "px-2.5 py-1 text-[8px] tracking-[0.16em]" : "px-3 py-1.5 text-[10px] tracking-[0.2em]"} font-black uppercase`}>
+          {categoryLabel}
+        </div>
 
         <Link
           href={`/product/${product.id}`}
@@ -88,7 +96,7 @@ export default function ProductCard({ product, compact = false }) {
         </p>
 
         <div className={topMetaClassName}>
-          <span>Curated pick</span>
+          <span>{comparePrice > sellingPrice ? "Limited pricing" : "Curated pick"}</span>
           <Link
             href={`/product/${product.id}`}
             aria-label={`View details for ${title}`}
@@ -115,11 +123,14 @@ export default function ProductCard({ product, compact = false }) {
 
           <button
             type="button"
-            onClick={handleAddToCart}
-            className={cartButtonClassName}
+            onClick={() => void handleAddToCart()}
+            disabled={cartBusy}
+            className={`${cartButtonClassName} ${cartBusy ? "cursor-wait opacity-70 hover:scale-100" : ""}`}
             aria-label={`Add ${title} to cart`}
           >
-            {added ? (
+            {cartBusy ? (
+              <span className="text-[10px] font-black uppercase tracking-[0.16em]">Adding</span>
+            ) : added ? (
               <span className="text-[10px] font-black uppercase tracking-[0.16em]">Added</span>
             ) : (
               <ShoppingCart size={18} />

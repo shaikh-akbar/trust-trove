@@ -1,0 +1,75 @@
+
+> trusttrove@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3002
+- Network:       http://192.168.0.246:3002
+- Environments: .env.local
+✓ Ready in 9.3s
+Creating turbopack project { dir: 'D:\\akbar-backup\\trusttrove\\trusttrove', testMode: true }
+
+ GET / 200 in 7.1s (next.js: 3.0s, application-code: 4.1s)
+ GET /categories 200 in 2.7s (next.js: 70ms, application-code: 2.6s)
+ GET /shop 200 in 3.1s (next.js: 48ms, application-code: 3.0s)
+ GET /api/cron/catalog-cache?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR 200 in 59s (next.js: 1013ms, application-code: 58s)
+ GET / 200 in 5.3s (next.js: 7ms, application-code: 5.3s)
+ GET /categories 200 in 2.9s (next.js: 4ms, application-code: 2.9s)
+ GET /shop 200 in 3.0s (next.js: 3ms, application-code: 3.0s)
+✓ Compiled in 627ms
+✓ Compiled in 770ms
+✓ Compiled in 213ms
+ GET / 200 in 6.0s (next.js: 152ms, application-code: 5.8s)
+ GET /categories 200 in 3.3s (next.js: 253ms, application-code: 3.1s)
+ GET /shop 200 in 2.8s (next.js: 147ms, application-code: 2.6s)
+ GET / 200 in 3.8s (next.js: 8ms, application-code: 3.8s)
+Error fetching category summaries: {
+  code: '57014',
+  details: null,
+  hint: null,
+  message: 'canceling statement due to statement timeout'
+}
+ POST /api/location/pincode 200 in 218ms (next.js: 160ms, application-code: 57ms)
+ GET /categories 200 in 1399ms (next.js: 21ms, application-code: 1378ms)
+ GET /api/cron/catalog-cache?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR 200 in 70s (next.js: 111ms, application-code: 70s)
+ GET /shop 200 in 747ms (next.js: 9ms, application-code: 738ms)
+ GET / 200 in 370ms (next.js: 14ms, application-code: 356ms)
+ GET /categories 200 in 1029ms (next.js: 19ms, application-code: 1010ms)
+ GET / 200 in 881ms (next.js: 16ms, application-code: 865ms)
+Error fetching category summaries: {
+  code: '57014',
+  details: null,
+  hint: null,
+  message: 'canceling statement due to statement timeout'
+}
+Error fetching category summaries: {
+  code: '57014',
+  details: null,
+  hint: null,
+  message: 'canceling statement due to statement timeout'
+}
+ GET /api/cron/catalog-cache?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR 200 in 70s (next.js: 3ms, application-code: 70s)
+✓ Compiled in 137ms
+ GET / 200 in 404ms (next.js: 138ms, application-code: 266ms)
+✓ Compiled in 150ms
+ GET / 200 in 461ms (next.js: 148ms, application-code: 313ms)
+✓ Compiled in 125ms
+ GET / 200 in 466ms (next.js: 161ms, application-code: 305ms)
+[browser] The final argument passed to useEffect changed size between renders. The order and size of this array must remain constant.
+
+Previous: [, [object Object], function() {
+            if ((executionContext & RenderContext) !== NoContext) throw Error("A function wrapped in useEffectEvent can't be called during rendering.");
+            return ref.impl.apply(void 0, arguments);
+        }]
+Incoming: [, [object Object]] 
+    at ShopSection (app/components/home/ShopSection.jsx:186:12)
+    at Set.forEach (<anonymous>)
+  184 |   });
+  185 |
+> 186 |   useEffect(() => {
+      |            ^
+  187 |     void ensureActiveTabProducts();
+  188 |   }, [activeTab, tabState]);
+  189 | (app/components/home/ShopSection.jsx:186:12)
+ GET / 200 in 6.9s (next.js: 6ms, application-code: 6.9s)
+[?25h

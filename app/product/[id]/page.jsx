@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState, use } from 'react';
-import { getProductById, getProducts } from '../../../lib/product';
 import {
   ArrowLeft,
   ChevronDown,
@@ -18,7 +17,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import ProductCard from '../../components/home/ProductCard';
-import { buildCartItem, useCart } from '../../components/cart/CartProvider';
+import { buildCartItem, getCartItemKey, useCart } from '../../components/cart/CartProvider';
 import { useWishlist } from '../../components/wishlist/WishlistProvider';
 
 function formatPrice(value) {
@@ -42,34 +41,52 @@ export default function ProductPage({ params }) {
   const [showFullSummary, setShowFullSummary] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [wishlistFeedback, setWishlistFeedback] = useState('');
-  const { addItem } = useCart();
+  const [isMissingProduct, setIsMissingProduct] = useState(false);
+  const { addItem, getItemAction, isItemPending } = useCart();
   const { isLoggedIn, isPending: isWishlistPending, isWishlisted, toggleWishlist } = useWishlist();
 
   useEffect(() => {
     let active = true;
 
     async function loadProductPage() {
-      const [productData, allProducts] = await Promise.all([getProductById(productId), getProducts()]);
+      const response = await fetch(`/api/product?id=${encodeURIComponent(productId)}`);
+      const payload = await response.json();
 
-      if (!active || !productData) {
+      if (!response.ok) {
+        if (!active) {
+          return;
+        }
+
+        setProduct(null);
+        setRelatedProducts([]);
+        setIsMissingProduct(response.status === 404);
         return;
       }
 
+      if (!active) {
+        return;
+      }
+
+      const productData = payload?.product || null;
+      const relatedItems = Array.isArray(payload?.relatedProducts) ? payload.relatedProducts : [];
+
+      if (!productData) {
+        setProduct(null);
+        setRelatedProducts([]);
+        setIsMissingProduct(true);
+        return;
+      }
+
+      setIsMissingProduct(false);
       setProduct(productData);
       setMainImage(productData.main_image || productData.image_url || '');
       setSelectedVariantIndex(0);
       setShowFullSummary(false);
-
-      const sameCategoryProducts = allProducts.filter(
-        (item) => item.id !== productData.id && item.category?.toLowerCase() === productData.category?.toLowerCase()
-      );
-      const fallbackProducts = allProducts.filter((item) => item.id !== productData.id);
-
-      setRelatedProducts((sameCategoryProducts.length > 0 ? sameCategoryProducts : fallbackProducts).slice(0, 4));
+      setRelatedProducts(relatedItems.slice(0, 4));
     }
 
     if (productId) {
-      loadProductPage();
+      void loadProductPage();
     }
 
     return () => {
@@ -84,7 +101,7 @@ export default function ProductPage({ params }) {
     plainDescription ||
     'Curated product details, trusted quality, and a clean presentation pulled directly from your catalog data.';
   const productUrl =
-    typeof window !== 'undefined' ? window.location.href : `https://trusttrove.in/product/${product?.id || ''}`;
+    typeof window !== 'undefined' ? window.location.href : `https://trusttrove.in/product/${product?.slug || product?.id || ''}`;
   const shareText = product ? `Check out ${product.title} on TrustTrove` : 'Check this out on TrustTrove';
   const mailHref = `mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(`${shareText}\n\n${productUrl}`)}`;
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${productUrl}`)}`;
@@ -100,12 +117,12 @@ export default function ProductPage({ params }) {
     window.setTimeout(() => setCopied(false), 1600);
   }
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (!product || !currentVariant) {
       return;
     }
 
-    void addItem(buildCartItem(product, currentVariant, 1));
+    await addItem(buildCartItem(product, currentVariant, 1));
     setAddedToCart(true);
     window.setTimeout(() => setAddedToCart(false), 1400);
   }
@@ -116,7 +133,7 @@ export default function ProductPage({ params }) {
     }
 
     if (!isLoggedIn) {
-      router.push(`/signin?redirectTo=${encodeURIComponent(`/product/${product.id}`)}`);
+      router.push(`/signin?redirectTo=${encodeURIComponent(`/product/${product.slug || product.id}`)}`);
       return;
     }
 
@@ -129,6 +146,28 @@ export default function ProductPage({ params }) {
       setWishlistFeedback(error?.message || 'Unable to update wishlist');
       window.setTimeout(() => setWishlistFeedback(''), 2000);
     }
+  }
+
+  if (isMissingProduct) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+        <div className="max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Product Not Found</p>
+          <h1 className="mt-3 text-2xl font-semibold text-slate-950">This product link is no longer available.</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            The product may have been removed or its link may have changed. You can continue browsing from the full catalog.
+          </p>
+          <div className="mt-6 flex justify-center">
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 rounded-xl bg-[var(--brand-navy)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+            >
+              <ArrowLeft size={16} /> Back to Shop
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!product) {
@@ -148,6 +187,10 @@ export default function ProductPage({ params }) {
       : 0;
   const productWishlisted = isWishlisted(product.id);
   const wishlistBusy = isWishlistPending(product.id);
+  const cartItemKey = getCartItemKey(product, currentVariant);
+  const cartAction = getItemAction(cartItemKey);
+  const cartBusy = isItemPending(cartItemKey);
+  const addToCartLabel = cartAction === 'add' ? 'Adding...' : addedToCart ? 'Added to Cart' : 'Add to Bag';
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -329,10 +372,13 @@ export default function ProductPage({ params }) {
               <div className="mt-6 space-y-3">
                 <button
                   type="button"
-                  onClick={handleAddToCart}
-                  className="hidden h-14 w-full items-center justify-center gap-3 rounded-xl bg-[var(--brand-navy)] text-base font-semibold text-white transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-navy)] md:flex"
+                  onClick={() => void handleAddToCart()}
+                  disabled={cartBusy}
+                  className={`hidden h-14 w-full items-center justify-center gap-3 rounded-xl bg-[var(--brand-navy)] text-base font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-navy)] md:flex ${
+                    cartBusy ? 'cursor-wait opacity-70' : 'hover:bg-slate-800'
+                  }`}
                 >
-                  <ShoppingBag size={20} /> {addedToCart ? 'Added to Cart' : 'Add to Bag'}
+                  <ShoppingBag size={20} /> {addToCartLabel}
                 </button>
 
                 <button
@@ -435,11 +481,14 @@ export default function ProductPage({ params }) {
         <div className="mx-auto flex max-w-7xl gap-3">
           <button
             type="button"
-            onClick={handleAddToCart}
-            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-4 text-sm font-semibold text-white transition hover:bg-slate-800"
+            onClick={() => void handleAddToCart()}
+            disabled={cartBusy}
+            className={`flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-4 text-sm font-semibold text-white transition ${
+              cartBusy ? 'cursor-wait opacity-70' : 'hover:bg-slate-800'
+            }`}
           >
             <ShoppingBag size={18} />
-            {addedToCart ? 'Added to Cart' : 'Add to Bag'}
+            {addToCartLabel}
           </button>
           <button
             type="button"

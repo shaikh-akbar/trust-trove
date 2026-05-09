@@ -56,21 +56,21 @@ export default function HeroCarousel({ slides = [] }) {
   }
 
   return (
-    <section className="border-b border-[var(--line)] bg-[linear-gradient(180deg,#f6f8ff_0%,#ffffff_45%,#fffaf0_100%)]">
-      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
-        <div className="overflow-hidden rounded-[2.2rem] border border-slate-200/80 bg-white shadow-[0_30px_90px_-60px_rgba(15,23,42,0.32)]">
+    <section className="border-b border-[var(--line)] bg-[linear-gradient(180deg,#f8f2e8_0%,#fffdfa_52%,#f7f0e6_100%)]">
+      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
+        <div className="overflow-hidden rounded-[2.5rem] border border-[var(--line)] bg-[rgba(255,253,250,0.92)] shadow-[0_34px_110px_-72px_rgba(20,29,96,0.38)] backdrop-blur">
           <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative overflow-hidden bg-[#161f66] text-white">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.2)_0%,transparent_32%),radial-gradient(circle_at_bottom_right,rgba(220,184,106,0.3)_0%,transparent_30%)]" />
+            <div className="relative overflow-hidden bg-[#141d60] text-white">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18)_0%,transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.02),rgba(20,29,96,0.28))]" />
               <div className="relative flex h-full flex-col justify-between p-5 sm:p-6 lg:p-7">
-                <div className="inline-flex w-fit rounded-full border border-white/12 bg-white/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-slate-100 backdrop-blur">
+                <div className="inline-flex w-fit rounded-full border border-white/12 bg-white/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.26em] text-slate-100 backdrop-blur">
                   {activeSlide.eyebrow}
                 </div>
 
                 <div className="mt-5 flex-1">
                   <Link
                     href={activeSlide.href}
-                    className="group relative block min-h-[24rem] overflow-hidden rounded-[2rem] border border-white/12 bg-white/10 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.5)] sm:min-h-[28rem]"
+                    className="group relative block min-h-[24rem] overflow-hidden rounded-[2.2rem] border border-white/12 bg-white/10 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.5)] sm:min-h-[28rem]"
                   >
                     {LEFT_BANNER_IMAGES.map((item, index) => (
                       <img
@@ -84,12 +84,12 @@ export default function HeroCarousel({ slides = [] }) {
                         }`}
                       />
                     ))}
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,13,45,0.12)_0%,rgba(8,13,45,0.78)_100%)]" />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,13,45,0.06)_0%,rgba(8,13,45,0.68)_100%)]" />
                     <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                      <p className="text-[10px] font-black uppercase tracking-[0.24em] text-white/72">
                         {LEFT_BANNER_IMAGES[activeIndex % LEFT_BANNER_IMAGES.length].label}
                       </p>
-                      <h2 className="mt-3 max-w-md font-display text-3xl font-semibold leading-[0.95] tracking-[-0.04em] text-white sm:text-4xl">
+                      <h2 className="mt-3 max-w-md font-display text-4xl font-semibold text-white sm:text-[2.9rem]">
                         {activeSlide.headline}
                       </h2>
                       <p className="mt-3 max-w-lg text-sm leading-6 text-slate-100/90 sm:text-base">
@@ -102,7 +102,7 @@ export default function HeroCarousel({ slides = [] }) {
                 <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <Link
                     href={activeSlide.href}
-                    className="inline-flex items-center justify-center rounded-full bg-[var(--brand-gold)] px-6 py-3 text-sm font-black uppercase tracking-[0.16em] text-slate-950 transition hover:bg-[#e5c886]"
+                    className="inline-flex items-center justify-center rounded-full bg-[var(--brand-gold)] px-6 py-3 text-sm font-black uppercase tracking-[0.16em] text-slate-950 transition hover:bg-[#dec08d]"
                   >
                     Explore Deal <ArrowRight size={16} className="ml-2" />
                   </Link>
@@ -131,11 +131,11 @@ export default function HeroCarousel({ slides = [] }) {
               </div>
             </div>
 
-            <div className="bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] p-4 sm:p-5 lg:p-6">
+            <div className="bg-[linear-gradient(180deg,#fffdfa_0%,#f7f0e6_100%)] p-4 sm:p-5 lg:p-6">
               <div className="grid gap-4">
                 <Link
                   href={activeSlide.href}
-                  className="group overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_24px_70px_-50px_rgba(15,23,42,0.25)]"
+                  className="group overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_24px_70px_-50px_rgba(20,29,96,0.25)]"
                 >
                   <div className="relative bg-slate-100">
                     {activeSlide.image ? (
@@ -150,12 +150,12 @@ export default function HeroCarousel({ slides = [] }) {
                       </div>
                     )}
                     <div className="absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.7))] p-5 text-white">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-200">
-                        {activeSlide.category}
-                      </p>
-                      <h3 className="mt-2 font-display text-2xl font-semibold leading-tight tracking-[-0.03em] text-white">
-                        {activeSlide.title}
-                      </h3>
+                        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-200">
+                          {activeSlide.category}
+                        </p>
+                        <h3 className="mt-2 font-display text-3xl font-semibold text-white">
+                          {activeSlide.title}
+                        </h3>
                     </div>
                   </div>
                 </Link>
@@ -163,16 +163,16 @@ export default function HeroCarousel({ slides = [] }) {
                 {slides.length > 1 ? (
                   <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
                     {slides.map((slide, index) => (
-                      <button
-                        key={slide.id}
-                        type="button"
-                        onClick={() => setActiveIndex(index)}
-                        className={`group rounded-[1.35rem] border p-3 text-left transition ${
-                          index === activeIndex
-                            ? "border-[#161f66] bg-[#161f66] text-white shadow-[0_20px_50px_-32px_rgba(22,31,102,0.6)]"
-                            : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50"
-                        }`}
-                      >
+                        <button
+                          key={slide.id}
+                          type="button"
+                          onClick={() => setActiveIndex(index)}
+                          className={`group rounded-[1.35rem] border p-3 text-left transition ${
+                            index === activeIndex
+                            ? "border-[#141d60] bg-[#141d60] text-white shadow-[0_20px_50px_-32px_rgba(20,29,96,0.6)]"
+                            : "border-[var(--line)] bg-white text-slate-900 hover:border-[#141d60]/30 hover:bg-[#fbf6ee]"
+                          }`}
+                        >
                         <p
                           className={`text-[10px] font-black uppercase tracking-[0.18em] ${
                             index === activeIndex ? "text-slate-200" : "text-slate-400"

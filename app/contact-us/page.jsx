@@ -18,11 +18,11 @@ export default function ContactUsPage() {
         description="For order assistance, shipping questions, collaboration requests, or general support, this is the fastest place to start."
       />
 
-      <div className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto max-w-6xl px-4 py-5 pb-16 sm:px-6 lg:px-8 lg:pb-20">
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {[
-            { icon: Mail, title: "Email support", value: "support@trusttrove.in", detail: "Best for order help and general questions." },
-            { icon: Phone, title: "Phone line", value: "+91 98765 43210", detail: "Use for urgent support during business hours." },
+            { icon: Mail, title: "Email support", value: "supporttrustrove@gmail.com", detail: "Best for order help and general questions." },
+            { icon: Phone, title: "Phone line", value: "+91 9082670335", detail: "Use for urgent support during business hours." },
             { icon: MapPin, title: "Service region", value: "India", detail: "We currently serve customers across India." },
           ].map(({ icon: Icon, title, value, detail }) => (
             <div key={title} className="rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_24px_72px_-54px_rgba(8,15,43,0.36)]">

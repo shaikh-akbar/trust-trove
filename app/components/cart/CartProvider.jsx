@@ -15,6 +15,11 @@ function buildCartId(productId, variantSku) {
   return `${productId}:${variantSku || "default"}`;
 }
 
+export function getCartItemKey(product, variant) {
+  const safeVariant = variant || product?.variants?.[0] || {};
+  return buildCartId(product?.id, safeVariant?.sku);
+}
+
 function persistCart(items) {
   if (typeof window === "undefined") {
     return;
@@ -50,7 +55,7 @@ function defer(callback) {
 
 export function buildCartItem(product, variant, quantity = 1) {
   const safeVariant = variant || product?.variants?.[0] || {};
-  const cartId = buildCartId(product?.id, safeVariant?.sku);
+  const cartId = getCartItemKey(product, safeVariant);
 
   return {
     cartItemId: null,
@@ -102,7 +107,39 @@ export function CartProvider({ children, initialUser = null, initialCart = null 
   const isLoggedIn = Boolean(initialUser?.id);
   const [items, setItems] = useState(() => (isLoggedIn ? initialCart?.items || [] : []));
   const [isHydrated, setIsHydrated] = useState(false);
+  const [itemActionState, setItemActionState] = useState({});
   const hasMergedGuestCart = useRef(false);
+
+  function setItemAction(cartId, action) {
+    setItemActionState((current) => {
+      if (!cartId) {
+        return current;
+      }
+
+      if (!action) {
+        if (!(cartId in current)) {
+          return current;
+        }
+
+        const next = { ...current };
+        delete next[cartId];
+        return next;
+      }
+
+      return {
+        ...current,
+        [cartId]: action,
+      };
+    });
+  }
+
+  function getItemAction(cartId) {
+    return itemActionState[cartId] || null;
+  }
+
+  function isItemPending(cartId) {
+    return Boolean(cartId && itemActionState[cartId]);
+  }
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -158,106 +195,124 @@ export function CartProvider({ children, initialUser = null, initialCart = null 
       ...nextItem,
       quantity: Math.max(1, normalizeNumber(quantity, 1)),
     };
+    const cartId = item.cartId || item.cartIdKey;
 
-    if (!isLoggedIn) {
-      setItems((current) => {
-        const existing = current.find((entry) => entry.cartId === item.cartId);
+    setItemAction(cartId, "add");
 
-        if (!existing) {
-          const next = [...current, item];
+    try {
+      if (!isLoggedIn) {
+        setItems((current) => {
+          const existing = current.find((entry) => entry.cartId === item.cartId);
+
+          if (!existing) {
+            const next = [...current, item];
+            persistCart(next);
+            return next;
+          }
+
+          const next = current.map((entry) =>
+            entry.cartId === item.cartId
+              ? {
+                  ...entry,
+                  quantity: entry.quantity + item.quantity,
+                }
+              : entry
+          );
           persistCart(next);
           return next;
-        }
+        });
+        return;
+      }
 
-        const next = current.map((entry) =>
-          entry.cartId === item.cartId
-            ? {
-                ...entry,
-                quantity: entry.quantity + item.quantity,
-              }
-            : entry
-        );
-        persistCart(next);
-        return next;
+      const snapshot = await requestCart("/api/cart", {
+        method: "POST",
+        body: JSON.stringify({
+          productId: item.productId,
+          variantId: item.variantId,
+          quantity: item.quantity,
+        }),
       });
-      return;
+
+      setItems(snapshot.items || []);
+    } finally {
+      setItemAction(cartId, null);
     }
-
-    const snapshot = await requestCart("/api/cart", {
-      method: "POST",
-      body: JSON.stringify({
-        productId: item.productId,
-        variantId: item.variantId,
-        quantity: item.quantity,
-      }),
-    });
-
-    setItems(snapshot.items || []);
   }
 
   async function updateQuantity(cartId, quantity) {
     const nextQuantity = normalizeNumber(quantity, 1);
+    setItemAction(cartId, "update");
 
-    if (!isLoggedIn) {
-      setItems((current) => {
-        if (nextQuantity <= 0) {
-          const next = current.filter((item) => item.cartId !== cartId);
+    try {
+      if (!isLoggedIn) {
+        setItems((current) => {
+          if (nextQuantity <= 0) {
+            const next = current.filter((item) => item.cartId !== cartId);
+            persistCart(next);
+            return next;
+          }
+
+          const next = current.map((item) =>
+            item.cartId === cartId
+              ? {
+                  ...item,
+                  quantity: nextQuantity,
+                }
+              : item
+          );
           persistCart(next);
           return next;
-        }
+        });
+        return;
+      }
 
-        const next = current.map((item) =>
-          item.cartId === cartId
-            ? {
-                ...item,
-                quantity: nextQuantity,
-              }
-            : item
-        );
-        persistCart(next);
-        return next;
+      const target = items.find((item) => item.cartId === cartId || item.cartIdKey === cartId);
+
+      if (!target?.cartItemId) {
+        return;
+      }
+
+      const snapshot = await requestCart("/api/cart", {
+        method: "PATCH",
+        body: JSON.stringify({
+          cartItemId: target.cartItemId,
+          quantity: nextQuantity,
+        }),
       });
-      return;
+
+      setItems(snapshot.items || []);
+    } finally {
+      setItemAction(cartId, null);
     }
-
-    const target = items.find((item) => item.cartId === cartId || item.cartIdKey === cartId);
-
-    if (!target?.cartItemId) {
-      return;
-    }
-
-    const snapshot = await requestCart("/api/cart", {
-      method: "PATCH",
-      body: JSON.stringify({
-        cartItemId: target.cartItemId,
-        quantity: nextQuantity,
-      }),
-    });
-
-    setItems(snapshot.items || []);
   }
 
   async function removeItem(cartId) {
-    if (!isLoggedIn) {
-      setItems((current) => {
-        const next = current.filter((item) => item.cartId !== cartId);
-        persistCart(next);
-        return next;
+    setItemAction(cartId, "remove");
+
+    try {
+      if (!isLoggedIn) {
+        setItems((current) => {
+          const next = current.filter((item) => item.cartId !== cartId);
+          persistCart(next);
+          return next;
+        });
+        return;
+      }
+
+      const target = items.find((item) => item.cartId === cartId || item.cartIdKey === cartId);
+
+      if (!target?.cartItemId) {
+        return;
+      }
+
+      const snapshot = await requestCart(`/api/cart?cartItemId=${encodeURIComponent(target.cartItemId)}`, {
+        method: "DELETE",
       });
-      return;
+
+      setItems(snapshot.items || []);
+    } finally {
+      setItemAction(cartId, null);
     }
-
-    const target = items.find((item) => item.cartId === cartId || item.cartIdKey === cartId);
-
-    if (!target?.cartItemId) {
-      return;
-    }
-
-    const snapshot = await requestCart(`/api/cart?cartItemId=${encodeURIComponent(target.cartItemId)}`, {
-      method: "DELETE",
-    });
-
-    setItems(snapshot.items || []);
   }
 
   async function clearCart() {
@@ -282,6 +337,8 @@ export function CartProvider({ children, initialUser = null, initialCart = null 
     isSyncing: false,
     totalItems: snapshot.totalItems,
     subtotal: snapshot.subtotal,
+    getItemAction,
+    isItemPending,
     addItem,
     updateQuantity,
     removeItem,

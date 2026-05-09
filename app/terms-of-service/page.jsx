@@ -18,7 +18,7 @@ export default function TermsOfServicePage() {
         description="By visiting the TrustTrove website, browsing products, or placing an order, you agree to these service terms, along with the related policy pages published on this website."
       />
 
-      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20 py-5">
         <PolicySection title="Use of the website">
           <PolicyBulletList
             items={[

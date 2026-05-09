@@ -24,7 +24,7 @@ export default function HomeProductGrid({ products }) {
           <button
             type="button"
             onClick={() => setVisibleCount((current) => current + LOAD_MORE_COUNT)}
-            className="inline-flex rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] transition hover:border-slate-500 hover:bg-slate-50"
+            className="inline-flex rounded-full border border-[var(--line)] bg-white px-7 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] shadow-[0_18px_44px_-34px_rgba(20,29,96,0.18)] transition hover:border-[var(--brand-navy)]/28 hover:bg-[var(--surface-soft)]"
           >
             Load More
           </button>

@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import MobileBottomNav from "./components/layout/MobileBottomNav";
@@ -8,6 +9,18 @@ import { getCartSnapshotForUser } from "../lib/cart-server";
 import { getNavbarSearchItems } from "../lib/product";
 import { getWishlistProductIdsForUser } from "../lib/product-social-server";
 import { buildMetadata, buildOrganizationSchema, buildWebsiteSchema } from "../lib/seo";
+
+const displayFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"],
+});
+
+const bodyFont = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata = buildMetadata({
   description:
@@ -30,8 +43,8 @@ export default async function RootLayout({ children }) {
   const websiteSchema = buildWebsiteSchema();
 
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col font-sans">
+    <html lang="en" data-scroll-behavior="smooth" className="h-full antialiased">
+      <body className={`${displayFont.variable} ${bodyFont.variable} min-h-full flex flex-col font-sans`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

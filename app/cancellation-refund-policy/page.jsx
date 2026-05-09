@@ -18,7 +18,7 @@ export default function CancellationRefundPolicyPage() {
         description="Please review these rules carefully before placing an order with TrustTrove. Once an order is confirmed, the fulfillment flow starts immediately, which limits cancellation and modification options."
       />
 
-      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20 py-5">
         <PolicySection title="Cancellation rules">
           <PolicyBulletList
             items={[
@@ -44,10 +44,12 @@ export default function CancellationRefundPolicyPage() {
           <PolicyBulletList
             items={[
               "Once a product has been delivered, returns are not accepted under normal circumstances.",
-              "If a product arrives damaged or defective, a clear unedited unboxing video is mandatory for any claim.",
-              "The unboxing video must show the packaging, the product condition, and the visible damage or defect.",
-              "Damage, defect, or missing-item claims must be reported within 48 hours of delivery.",
-              "Claims raised after 48 hours of delivery cannot be accepted.",
+              "Any dispute related to an order must be raised within 48 hours after receipt of the shipment.",
+              "A parcel opening video is mandatory for damaged goods, missing goods, or any complaint related to the goods received.",
+              "One single continuous and unedited video is required for claim review.",
+              "The video must clearly show the sealed package being opened, the product condition, and the visible damage, defect, or missing item.",
+              "Close images of damaged products are mandatory to process the claim.",
+              "Damage, defect, or missing-item claims reported after 48 hours of delivery cannot be accepted.",
               "If a return is approved, the customer must send the item back through a reliable courier with tracking.",
             ]}
           />
@@ -69,7 +71,7 @@ export default function CancellationRefundPolicyPage() {
             items={[
               "Products that have been used, opened, or damaged by the customer are not eligible.",
               "Products marked as non-returnable in the product description are not eligible.",
-              "Electronic products are not eligible for return or refund unless otherwise approved under a verified damage claim.",
+              "Electric products are not covered under the refund, return, or exchange policy.",
             ]}
           />
         </PolicySection>

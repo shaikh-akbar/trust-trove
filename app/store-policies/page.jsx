@@ -11,14 +11,14 @@ export const metadata = buildMetadata({
 
 export default function StorePoliciesPage() {
   return (
-    <div className="bg-[var(--surface-soft)]">
+    <div className="bg-[var(--surface-soft)] ">
       <PolicyHero
         eyebrow="TrustTrove FAQ"
         title="Store policies and customer guidance."
         description="These quick answers explain how shopping, account access, order tracking, security, payments, and support work across TrustTrove."
       />
 
-      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20 py-5">
         <PolicySection title="Accounts and orders">
           <PolicyBulletList
             items={[

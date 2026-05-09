@@ -1,5 +1,6 @@
 import { ShopExperience } from "../components/store/StorefrontPages";
-import { getProducts } from "../../lib/product";
+import Link from "next/link";
+import { getCategorySummaries, getProductsPage } from "../../lib/product";
 import { buildMetadata } from "../../lib/seo";
 
 export const metadata = buildMetadata({
@@ -11,8 +12,47 @@ export const metadata = buildMetadata({
 
 export default async function ShopPage({ searchParams }) {
   const params = await searchParams;
-  const products = await getProducts();
+  const page = Math.max(1, Number(params?.page || 1));
+  const [{ products, totalPages }, categories] = await Promise.all([
+    getProductsPage({ page, pageSize: 60 }),
+    getCategorySummaries(),
+  ]);
   const initialQuery = typeof params?.q === "string" ? params.q : "";
 
-  return <ShopExperience products={products} initialQuery={initialQuery} />;
+  return (
+    <>
+      <ShopExperience products={products} categories={categories} initialQuery={initialQuery} />
+      {totalPages > 1 ? (
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-14 pt-4 sm:px-6 lg:px-8">
+          {page > 1 ? (
+            <Link
+              href={`/shop?page=${page - 1}`}
+              className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+            >
+              Previous
+            </Link>
+          ) : (
+            <span className="pointer-events-none rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-5 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-slate-400">
+              Previous
+            </span>
+          )}
+          <p className="text-sm font-semibold text-slate-500">
+            Page {page} of {totalPages}
+          </p>
+          {page < totalPages ? (
+            <Link
+              href={`/shop?page=${page + 1}`}
+              className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+            >
+              Next
+            </Link>
+          ) : (
+            <span className="pointer-events-none rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-5 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-slate-400">
+              Next
+            </span>
+          )}
+        </div>
+      ) : null}
+    </>
+  );
 }

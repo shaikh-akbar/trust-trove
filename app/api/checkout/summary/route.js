@@ -11,7 +11,12 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const summary = await getCheckoutSummary(user.id, body?.couponCode || "", body?.paymentType || "online");
+    const summary = await getCheckoutSummary(
+      user.id,
+      body?.couponCode || "",
+      body?.paymentType || "online",
+      body?.postalCode || ""
+    );
     return NextResponse.json(summary);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });

@@ -1,113 +1,204 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useEffectEvent, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, SlidersHorizontal, X } from 'lucide-react';
 import ProductCard from './ProductCard';
+import { getCategorySummaryEntry } from '../../../lib/storefront';
 
-const PAGE_SIZE = 8;
-
-const CATEGORY_PRESETS = [
-  {
-    id: 'fashion',
-    label: 'Fashion',
-    patterns: [/fashion/i, /clothing/i, /apparel/i, /footwear/i, /shoe/i, /watch/i, /bag/i, /jewelry/i],
-  },
-  {
-    id: 'home-kitchen',
-    label: 'Home & Kitchen',
-    patterns: [/home/i, /kitchen/i, /bath/i, /garden/i, /storage/i, /decor/i, /furniture/i],
-  },
-  {
-    id: 'electronics',
-    label: 'Electronics',
-    patterns: [/electronic/i, /gadget/i, /mobile/i, /computer/i, /audio/i, /camera/i, /smart/i, /charger/i],
-  },
-  {
-    id: 'health',
-    label: 'Health',
-    patterns: [/health/i, /wellness/i, /fitness/i, /sport/i, /medical/i],
-  },
-  {
-    id: 'bpc',
-    label: 'BPC',
-    patterns: [/beauty/i, /cosmetic/i, /skin/i, /hair/i, /fragrance/i, /personal care/i],
-  },
-  {
-    id: 'uncategorized',
-    label: 'Uncategorized',
-    patterns: [],
-  },
-];
-
-function getProductTab(product) {
-  const source = [product?.category, product?.product_type, product?.title, product?.name]
-    .filter(Boolean)
-    .join(' ');
-
-  const matchedPreset = CATEGORY_PRESETS.find(
-    (preset) => preset.id !== 'uncategorized' && preset.patterns.some((pattern) => pattern.test(source))
-  );
-
-  return matchedPreset || CATEGORY_PRESETS[CATEGORY_PRESETS.length - 1];
-}
+const PAGE_SIZE = 10;
 
 function buildTabs(products) {
   const grouped = new Map();
 
   products.forEach((product) => {
-    const tab = getProductTab(product);
-    const current = grouped.get(tab.id);
+    const category = getCategorySummaryEntry(product);
+    const current = grouped.get(category.slug);
 
     if (current) {
       current.products.push(product);
+      current.count += 1;
       return;
     }
 
-    grouped.set(tab.id, {
-      ...tab,
+    grouped.set(category.slug, {
+      id: category.slug,
+      label: category.title,
+      categoryTitle: category.title,
+      count: 1,
       products: [product],
     });
   });
 
-  return CATEGORY_PRESETS.map((preset) => grouped.get(preset.id)).filter(Boolean);
+  return Array.from(grouped.values()).sort((left, right) => {
+    if (right.count !== left.count) {
+      return right.count - left.count;
+    }
+
+    return left.label.localeCompare(right.label);
+  });
 }
 
-export default function ShopSection({ products }) {
-  const tabs = useMemo(() => buildTabs(products), [products]);
+function dedupeProducts(products) {
+  return Array.from(
+    new Map(
+      (products || []).map((product) => [
+        product?.id ||
+          product?.slug ||
+          product?.handle ||
+          `${product?.title || 'untitled'}-${product?.main_image || product?.image_url || 'no-image'}`,
+        product,
+      ])
+    ).values()
+  );
+}
+
+function formatProgressCount(visibleCount, totalCount) {
+  if (!totalCount) {
+    return '0 products';
+  }
+
+  return `${visibleCount} of ${totalCount} products`;
+}
+
+export default function ShopSection({ products = [], tabs: providedTabs = null }) {
+  const tabs = useMemo(() => {
+    if (Array.isArray(providedTabs) && providedTabs.length > 0) {
+      return providedTabs;
+    }
+
+    return buildTabs(products);
+  }, [products, providedTabs]);
   const [selectedTab, setSelectedTab] = useState(tabs[0]?.id || '');
-  const [visibleCountByTab, setVisibleCountByTab] = useState(() =>
-    Object.fromEntries(tabs.map((tab) => [tab.id, PAGE_SIZE]))
+  const [isMobileTabMenuOpen, setIsMobileTabMenuOpen] = useState(false);
+  const [tabState, setTabState] = useState(() =>
+    Object.fromEntries(
+      tabs.map((tab) => [
+        tab.id,
+        {
+          products: tab.products || [],
+          page: Number(tab.initialPage || (tab.products?.length ? 1 : 0)),
+          isLoading: false,
+        },
+      ])
+    )
   );
 
   const activeTab = tabs.find((tab) => tab.id === selectedTab) || tabs[0];
-  const activeVisibleCount = activeTab ? visibleCountByTab[activeTab.id] || PAGE_SIZE : PAGE_SIZE;
-  const visibleProducts = activeTab ? activeTab.products.slice(0, activeVisibleCount) : [];
-  const hasMoreProducts = activeTab ? activeTab.products.length > activeVisibleCount : false;
+  const activeTabState = activeTab ? tabState[activeTab.id] : null;
+  const visibleProducts = activeTabState?.products || activeTab?.products || [];
+  const isLoadingMore = Boolean(activeTabState?.isLoading);
+  const hasMoreProducts = activeTab ? visibleProducts.length < activeTab.count : false;
 
   function handleTabChange(tabId) {
     setSelectedTab(tabId);
-    setVisibleCountByTab((current) => {
-      if (current[tabId]) {
-        return current;
-      }
+    setIsMobileTabMenuOpen(false);
 
-      return {
-        ...current,
-        [tabId]: PAGE_SIZE,
-      };
-    });
+    const nextTab = tabs.find((tab) => tab.id === tabId);
+    const nextState = nextTab ? tabState[nextTab.id] : null;
+
+    if (nextTab && !nextState?.isLoading && (!nextState || nextState.page === 0)) {
+      void loadTabPage(nextTab, 1);
+    }
   }
 
-  function handleLoadMore() {
+  async function loadTabPage(tab, targetPage) {
+    if (!tab) {
+      return;
+    }
+
+    const currentState = tabState[tab.id] || {
+      products: tab.products || [],
+      page: Number(tab.initialPage || (tab.products?.length ? 1 : 0)),
+      isLoading: false,
+    };
+
+    if (currentState.isLoading) {
+      return;
+    }
+
+    setTabState((current) => ({
+      ...current,
+      [tab.id]: {
+        ...currentState,
+        isLoading: true,
+      },
+    }));
+
+    try {
+      const response = await fetch(
+        `/api/products?category=${encodeURIComponent(tab.categoryTitle || tab.label)}&page=${targetPage}&pageSize=${PAGE_SIZE}`
+      );
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload?.error || 'Failed to load more products.');
+      }
+
+      setTabState((current) => {
+        const latest = current[tab.id] || currentState;
+        const shouldReplace = targetPage <= 1;
+        const mergedProducts = shouldReplace
+          ? dedupeProducts(payload.products || [])
+          : dedupeProducts([...latest.products, ...(payload.products || [])]);
+
+        return {
+          ...current,
+          [tab.id]: {
+            products: mergedProducts,
+            page: targetPage,
+            isLoading: false,
+          },
+        };
+      });
+    } catch (error) {
+      console.error('Featured tab load more failed:', error);
+      setTabState((current) => ({
+        ...current,
+        [tab.id]: {
+          ...(current[tab.id] || currentState),
+          isLoading: false,
+        },
+      }));
+    }
+  }
+
+  const ensureActiveTabProducts = useEffectEvent(async () => {
     if (!activeTab) {
       return;
     }
 
-    setVisibleCountByTab((current) => ({
-      ...current,
-      [activeTab.id]: (current[activeTab.id] || PAGE_SIZE) + PAGE_SIZE,
-    }));
+    const currentState = tabState[activeTab.id] || {
+      products: activeTab.products || [],
+      page: Number(activeTab.initialPage || (activeTab.products?.length ? 1 : 0)),
+      isLoading: false,
+    };
+
+    if (currentState.isLoading) {
+      return;
+    }
+
+    if ((currentState.products?.length || 0) === 0 && activeTab.count > 0) {
+      await loadTabPage(activeTab, 1);
+    }
+  });
+
+  useEffect(() => {
+    void ensureActiveTabProducts();
+  }, [activeTab, tabState]);
+
+  async function handleLoadMore() {
+    if (!activeTab) {
+      return;
+    }
+
+    const currentState = tabState[activeTab.id] || {
+      products: activeTab.products || [],
+      page: Number(activeTab.initialPage || (activeTab.products?.length ? 1 : 0)),
+      isLoading: false,
+    };
+    const nextPage = Math.max(1, (currentState.page || 0) + 1);
+    await loadTabPage(activeTab, nextPage);
   }
 
   if (!tabs.length) {
@@ -119,38 +210,55 @@ export default function ShopSection({ products }) {
   }
 
   return (
-    <section
-      id="shop-section"
-      className="relative mx-auto max-w-7xl overflow-hidden px-4 py-10 sm:px-6 sm:py-12 lg:px-8"
-    >
-      <div className="absolute inset-x-4 top-6 h-56 rounded-[2rem] bg-[radial-gradient(circle_at_top_left,#fde68a_0%,rgba(255,255,255,0)_45%),radial-gradient(circle_at_top_right,#bfdbfe_0%,rgba(255,255,255,0)_42%)] opacity-80 sm:inset-x-6 lg:inset-x-8" />
-
-      <div className="relative rounded-[2rem] border border-slate-200/80 bg-white/90 p-5 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.35)] backdrop-blur sm:p-7">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-amber-700">
-              <Sparkles size={12} />
-              Curated Picks
-            </span>
-            <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
-              Browse by Category
-            </h2>
-            <p className="mt-3 max-w-xl text-xs leading-5 text-slate-500 sm:text-base sm:leading-6">
-              Swipe through the most-loved departments and jump into the products that fit your mood fastest.
-            </p>
-          </div>
-
-          <Link
-            href="/shop"
-            className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-950 px-4 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-white transition hover:bg-slate-800 sm:px-5 sm:text-sm sm:tracking-[0.2em]"
-          >
-            View All Products
-            <ArrowRight size={16} className="ml-2" />
-          </Link>
+    <section id="shop-section" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className="rounded-[2rem] border border-slate-200 bg-white px-4 py-6 shadow-[0_28px_70px_-50px_rgba(15,23,42,0.28)] sm:px-6 sm:py-8">
+        <div className="text-center">
+          {/* <p className="text-[11px] font-black uppercase tracking-[0.26em] text-[var(--brand-navy)]/55">Featured Products</p> */}
+          <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.03em] text-[var(--brand-navy)] sm:text-3xl">
+            Featured Products
+          </h2>
         </div>
 
-        <div className="mb-6">
-          <div className="grid grid-cols-2 gap-2.5 sm:flex sm:min-w-max sm:gap-3 sm:overflow-x-auto sm:pb-1 sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&::-webkit-scrollbar]:hidden">
+        <div className="mb-5">
+          <div className="mt-5 flex items-center justify-center sm:hidden">
+            <button
+              type="button"
+              onClick={() => setIsMobileTabMenuOpen((current) => !current)}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-[var(--brand-navy)] shadow-[0_14px_34px_-26px_rgba(15,23,42,0.24)]"
+            >
+              {isMobileTabMenuOpen ? <X size={15} /> : <SlidersHorizontal size={15} />}
+              {activeTab?.label || 'Filter Products'}
+            </button>
+          </div>
+
+          {isMobileTabMenuOpen ? (
+            <div className="mt-4 grid gap-2 rounded-[1.35rem] border border-slate-200 bg-slate-50 p-3 sm:hidden">
+              {tabs.map((tab) => {
+                const isActive = tab.id === activeTab?.id;
+
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`flex items-center justify-between rounded-[1rem] border px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.16em] transition ${
+                      isActive
+                        ? 'border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white'
+                        : 'border-slate-200 bg-white text-slate-700'
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                    <span className={`text-[10px] ${isActive ? 'text-slate-200' : 'text-slate-400'}`}>
+                      {tab.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+
+          <div className="mt-5 hidden overflow-x-auto pb-2 sm:block sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&::-webkit-scrollbar]:hidden">
+            <div className="flex min-w-max items-center gap-4">
             {tabs.map((tab) => {
               const isActive = tab.id === activeTab?.id;
 
@@ -159,67 +267,59 @@ export default function ShopSection({ products }) {
                   key={tab.id}
                   type="button"
                   onClick={() => handleTabChange(tab.id)}
-                  className={`flex min-h-[104px] flex-col items-start justify-between rounded-[1.25rem] border px-3 py-3 text-left transition sm:min-h-0 sm:min-w-[170px] sm:rounded-[1.5rem] sm:px-4 sm:py-4 ${
+                  className={`shrink-0 whitespace-nowrap rounded-full border px-5 py-3 text-xs font-black uppercase tracking-[0.18em] transition ${
                     isActive
-                      ? 'border-slate-900 bg-slate-950 text-white shadow-[0_18px_40px_-24px_rgba(15,23,42,0.75)]'
-                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-white'
+                      ? 'border-[var(--brand-navy)] bg-white text-[var(--brand-navy)] shadow-[0_10px_24px_-18px_rgba(20,29,96,0.3)]'
+                      : 'border-transparent bg-transparent text-slate-500 hover:text-[var(--brand-navy)]'
                   }`}
                 >
-                  <span className={`text-[9px] font-black uppercase tracking-[0.2em] sm:text-[10px] sm:tracking-[0.24em] ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>
-                    Collection
-                  </span>
-                  <span className="mt-2 line-clamp-2 text-[11px] font-black uppercase tracking-[0.1em] sm:text-base sm:tracking-[0.12em]">
-                    {tab.label}
-                  </span>
-                  <span className={`mt-3 text-[10px] font-semibold sm:text-xs ${isActive ? 'text-slate-300' : 'text-slate-500'}`}>
-                    {tab.products.length} products
-                  </span>
+                  <span>{tab.label}</span>
+                  {!isActive ? <span className="ml-3 text-slate-400">›</span> : null}
                 </button>
               );
             })}
+            </div>
           </div>
         </div>
 
         {activeTab ? (
           <>
-            <div className="mb-6 grid gap-4 rounded-[1.5rem] border border-slate-200 bg-[linear-gradient(135deg,#fff7ed_0%,#ffffff_45%,#eff6ff_100%)] p-4 sm:grid-cols-[1fr_auto] sm:items-end sm:rounded-[1.75rem] sm:p-6">
+            <div className="mb-5 flex items-center justify-between gap-4 rounded-[1.5rem] bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#eff6ff_100%)] px-4 py-4 sm:px-6">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 sm:text-[11px] sm:tracking-[0.24em]">
-                  Active category
-                </p>
-                <h3 className="mt-2 font-display text-xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-2xl">
-                  {activeTab.label}
-                </h3>
-                <p className="mt-2 max-w-xl text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
-                  {activeTab.products.length} products waiting in this lane. Clean picks, quicker browsing, and better mobile flow.
-                </p>
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Now showing</p>
+                <h3 className="mt-1 font-display text-lg font-semibold text-[var(--brand-navy)] sm:text-xl">{activeTab.label}</h3>
               </div>
-              <Link
-                href="/categories"
-                className="inline-flex items-center text-[10px] font-black uppercase tracking-[0.16em] text-slate-700 transition hover:text-slate-950 sm:text-xs sm:tracking-[0.18em]"
-              >
-                More collections
-                <ArrowRight size={15} className="ml-2" />
-              </Link>
+              <p className="text-xs font-semibold text-slate-500 sm:text-sm">
+                {formatProgressCount(visibleProducts.length, activeTab.count)}
+              </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-5">
               {visibleProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} compact />
               ))}
             </div>
 
-            {hasMoreProducts ? (
-              <div className="mt-8 flex justify-center sm:mt-10">
+            <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10">
+              {hasMoreProducts ? (
                 <button
                   type="button"
-                  onClick={handleLoadMore}
-                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-900 px-6 py-3 text-sm font-black uppercase tracking-[0.18em] text-slate-900 transition hover:bg-slate-900 hover:text-white sm:w-auto sm:px-8"
+                  onClick={() => void handleLoadMore()}
+                  disabled={isLoadingMore}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 px-6 py-3 text-sm font-black uppercase tracking-[0.18em] text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-wait disabled:opacity-70 sm:px-8"
                 >
-                  Load More Products
+                  {isLoadingMore ? 'Loading More...' : 'Load More Products'}
                 </button>
-              </div>
-            ) : null}
+              ) : null}
+
+              <Link
+                href="/shop"
+                className="inline-flex items-center text-[11px] font-black uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+              >
+                View all products
+                <ArrowRight size={15} className="ml-2" />
+              </Link>
+            </div>
           </>
         ) : null}
       </div>
