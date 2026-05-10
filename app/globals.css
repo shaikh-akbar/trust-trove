@@ -84,3 +84,10 @@ textarea {
   animation: tt-marquee 18s linear infinite;
   will-change: transform;
 }
+
+.tt-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

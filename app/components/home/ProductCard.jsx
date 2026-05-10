@@ -31,18 +31,18 @@ export default function ProductCard({ product, compact = false }) {
   const cardClassName = compact
     ? "group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f9f3ea_100%)] shadow-[0_18px_48px_-36px_rgba(8,15,43,0.26)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_64px_-36px_rgba(8,15,43,0.36)]"
     : "group flex h-full flex-col overflow-hidden rounded-[1.95rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f8f2e8_100%)] shadow-[0_30px_90px_-58px_rgba(8,15,43,0.38)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_34px_120px_-56px_rgba(8,15,43,0.48)]";
-  const imageClassName = compact ? "relative aspect-[4/4.1] overflow-hidden bg-[var(--surface-soft)]" : "relative aspect-[4/4.9] overflow-hidden bg-[var(--surface-soft)]";
-  const bodyClassName = compact ? "flex flex-1 flex-col p-3.5" : "flex flex-1 flex-col p-5";
+  const imageClassName = compact ? "relative aspect-[4/3.5] overflow-hidden bg-[var(--surface-soft)]" : "relative aspect-[4/4.9] overflow-hidden bg-[var(--surface-soft)]";
+  const bodyClassName = compact ? "flex flex-1 flex-col p-3 sm:p-3.5" : "flex flex-1 flex-col p-5";
   const titleClassName = compact
-    ? "font-display line-clamp-2 min-h-[2.5rem] text-base leading-tight text-[var(--brand-navy)] transition-colors group-hover:text-slate-700 sm:text-lg"
+    ? "tt-clamp-2 font-display min-h-[2.35rem] break-words text-[14px] leading-[1.16] text-[var(--brand-navy)] transition-colors group-hover:text-slate-700 sm:min-h-[2.55rem] sm:text-[15px]"
     : "font-display line-clamp-2 min-h-[3.5rem] text-2xl leading-tight text-[var(--brand-navy)] transition-colors group-hover:text-slate-700";
   const descriptionClassName = compact
-    ? "mt-1.5 line-clamp-2 min-h-[2.25rem] text-[11px] leading-4.5 text-slate-500"
+    ? "tt-clamp-2 mt-1.5 min-h-[2rem] text-[11px] leading-[1.36] text-slate-500"
     : "mt-3 line-clamp-2 min-h-[3.25rem] text-sm leading-6 text-slate-500";
   const topMetaClassName = compact
-    ? "mt-3 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.16em] text-slate-400"
+    ? "mt-2.5 flex items-center justify-between gap-3 text-[9px] font-black uppercase tracking-[0.16em] text-slate-400"
     : "mt-5 flex items-center justify-between text-[11px] font-black uppercase tracking-[0.22em] text-slate-400";
-  const priceWrapClassName = compact ? "mt-auto flex items-end justify-between pt-2.5" : "mt-auto flex items-end justify-between pt-5";
+  const priceWrapClassName = compact ? "mt-auto flex items-end justify-between gap-3 pt-2.5" : "mt-auto flex items-end justify-between pt-5";
   const priceClassName = compact ? "text-base font-black tracking-tight text-[var(--brand-navy)] sm:text-lg" : "text-2xl font-black tracking-tight text-[var(--brand-navy)]";
   const cartButtonClassName = compact
     ? "rounded-full bg-[var(--brand-navy)] p-2.5 text-white transition-all hover:scale-105 hover:bg-[#353a66] active:scale-95"

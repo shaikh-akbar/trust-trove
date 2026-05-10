@@ -2,10 +2,18 @@ import Link from "next/link";
 import { ArrowRight, Gem, Layers3, Sparkles, TrendingUp } from "lucide-react";
 import CatalogExperienceClient from "./CatalogExperienceClient";
 import ProductCard from "../home/ProductCard";
-import { buildCategorySummary, formatCategoryLabel, slugifyCategory } from "../../../lib/storefront";
+import {
+  buildCategorySummary,
+  formatBrandLabel,
+  formatCategoryLabel,
+  slugifyBrand,
+  slugifyCategory,
+} from "../../../lib/storefront";
 
 const SHOP_BANNER_IMAGE =
   "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1600&q=80";
+const BRANDS_BANNER_IMAGE =
+  "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1600&q=80";
 const CATEGORIES_BANNER_IMAGE =
   "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1600&q=80";
 const NEW_ARRIVALS_BANNER_IMAGE =
@@ -52,6 +60,24 @@ function getCategoryBannerImage(title) {
   }
 
   return "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80";
+}
+
+function getBrandBannerImage(title) {
+  const normalized = String(title || "").toLowerCase();
+
+  if (normalized.includes("vikas") || normalized.includes("kitchen") || normalized.includes("steel")) {
+    return "https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=80";
+  }
+
+  if (normalized.includes("beauty") || normalized.includes("care")) {
+    return "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=1200&q=80";
+  }
+
+  if (normalized.includes("fashion") || normalized.includes("wear")) {
+    return "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80";
+  }
+
+  return "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80";
 }
 
 function EditorialStrip({ items }) {
@@ -155,8 +181,198 @@ export function ShopExperience({ products, categories = [], initialQuery = "" })
   );
 }
 
+export function BrandsExperience({ brands = [] }) {
+  const featuredBrands = brands.filter((brand) => Array.isArray(brand.products) && brand.products.length > 0);
+  const leadingBrands = [...brands].sort((left, right) => Number(right.count || 0) - Number(left.count || 0)).slice(0, 6);
+
+  return (
+    <div className="bg-[var(--surface-soft)] pb-16">
+      <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
+        <img src={BRANDS_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.9)_0%,rgba(20,29,96,0.8)_42%,rgba(20,29,96,0.64)_100%)]" />
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">Brands</p>
+          <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.98] tracking-[-0.03em] sm:text-5xl">
+            Browse every brand, then open a focused product page for that label.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-slate-200">
+            Searchable brand discovery on the first step, followed by dedicated paginated brand pages for cleaner browsing.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="rounded-[2rem] border border-[var(--line)] bg-white p-5 shadow-[0_24px_70px_-52px_rgba(8,15,43,0.28)] sm:p-6">
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
+            <div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                    Brand index
+                  </p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                    Browse all brands
+                  </h2>
+                </div>
+                <p className="max-w-xl text-sm leading-7 text-slate-500">
+                  Open any brand directly, then scroll below to preview a fast edit of the most product-rich labels.
+                </p>
+              </div>
+
+              {leadingBrands.length > 0 ? (
+                <div className="mt-5 flex flex-wrap gap-2.5">
+                  {leadingBrands.map((brand, index) => (
+                    <Link
+                      key={brand.slug}
+                      href={`/brands/${brand.slug}`}
+                      className={`inline-flex items-center rounded-full border px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.18em] transition ${
+                        index === 0
+                          ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white"
+                          : "border-[var(--line)] bg-[var(--surface-soft)] text-[var(--brand-navy)] hover:border-[var(--brand-navy)]/30 hover:bg-white"
+                      }`}
+                    >
+                      {brand.title}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
+            <details className="group rounded-[1.6rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f7f1e7_100%)] p-4 shadow-[0_20px_50px_-42px_rgba(8,15,43,0.28)]">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                    Quick jump
+                  </p>
+                  <p className="mt-1 font-display text-xl font-semibold text-[var(--brand-navy)]">
+                    Open brand list
+                  </p>
+                </div>
+                <span className="inline-flex rounded-full bg-white px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] shadow-[0_12px_28px_-22px_rgba(8,15,43,0.35)] transition group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+
+              <div className="mt-4 grid max-h-72 gap-2 overflow-y-auto pr-1">
+                {brands.map((brand) => (
+                  <Link
+                    key={brand.slug}
+                    href={`/brands/${brand.slug}`}
+                    className="flex items-center justify-between rounded-[1rem] border border-[var(--line)] bg-white px-3 py-2.5 text-sm text-[var(--brand-navy)] transition hover:border-[var(--brand-navy)]/25 hover:bg-[var(--surface-soft)]"
+                  >
+                    <span className="truncate pr-3 font-medium">{brand.title}</span>
+                    <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-400">
+                      {brand.count}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </details>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {brands.map((brand) => (
+              <Link
+                key={brand.slug}
+                href={`/brands/${brand.slug}`}
+                className="group flex min-h-[6.75rem] items-center justify-between rounded-[1.35rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f8f2e8_100%)] px-4 py-3.5 transition hover:-translate-y-0.5 hover:border-[var(--brand-navy)]/24 hover:bg-white"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] border border-[var(--brand-navy)]/10 bg-white shadow-[0_10px_24px_-20px_rgba(8,15,43,0.35)]">
+                    {brand.image ? (
+                      <img src={brand.image} alt={brand.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="px-1 text-center text-[9px] font-black uppercase tracking-[0.12em] text-[var(--brand-navy)]">
+                        {brand.title.slice(0, 2)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="line-clamp-2 text-balance font-display text-lg font-semibold leading-[1.08] text-[var(--brand-navy)]">
+                      {brand.title}
+                    </p>
+                    <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      {brand.count} products
+                    </p>
+                  </div>
+                </div>
+                <span className="ml-3 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--brand-navy)]/10 bg-white text-[var(--brand-navy)] shadow-[0_10px_24px_-20px_rgba(8,15,43,0.35)] transition group-hover:translate-x-1">
+                  <ArrowRight size={16} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {featuredBrands.length > 0 ? (
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-slate-400">Preview lane</p>
+              <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                Popular brands with a quick product preview
+              </h2>
+            </div>
+            <p className="max-w-xl text-sm leading-7 text-slate-500">
+              Faster initial load, with the full product depth available after opening each brand page.
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {featuredBrands.map((brand) => (
+              <div
+                key={brand.slug}
+                className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_24px_70px_-52px_rgba(8,15,43,0.24)]"
+              >
+                <div className="border-b border-[var(--line)] bg-[linear-gradient(135deg,#141d60_0%,#2b377f_100%)] px-5 py-5 text-white sm:px-6">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/68">
+                        Shop By Brand
+                      </p>
+                      <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
+                        {brand.title}
+                      </h2>
+                      <p className="mt-2 text-sm text-slate-200">
+                        {brand.count} products available in this brand
+                      </p>
+                    </div>
+                    <Link
+                      href={`/brands/${brand.slug}`}
+                      className="inline-flex items-center rounded-full bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--brand-navy)]"
+                    >
+                      Open Brand
+                      <ArrowRight size={14} className="ml-2" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="p-4 sm:p-5">
+                  {brand.products.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                      {brand.products.map((product) => (
+                        <ProductCard key={product.id} product={product} compact />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="rounded-[1.5rem] border border-dashed border-[var(--line)] bg-[var(--surface-soft)] px-5 py-10 text-center">
+                      <p className="font-medium text-slate-500">No products available in this brand right now.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
 export function CategoriesExperience({ categories = [] }) {
   const featuredCategories = categories.filter((category) => Array.isArray(category.products) && category.products.length > 0);
+  const leadingCategories = [...categories].sort((left, right) => Number(right.count || 0) - Number(left.count || 0)).slice(0, 6);
 
   return (
     <div className="bg-[var(--surface-soft)] pb-16">
@@ -176,34 +392,91 @@ export function CategoriesExperience({ categories = [] }) {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="rounded-[2rem] border border-[var(--line)] bg-white p-5 shadow-[0_24px_70px_-52px_rgba(8,15,43,0.28)] sm:p-6">
-          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
-                Category index
-              </p>
-              <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
-                Browse all categories
-              </h2>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                    Category index
+                  </p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                    Browse all categories
+                  </h2>
+                </div>
+                <p className="max-w-xl text-sm leading-7 text-slate-500">
+                  Open any category directly, then scroll below to preview a faster edit of the most product-rich categories.
+                </p>
+              </div>
+
+              {leadingCategories.length > 0 ? (
+                <div className="mt-5 flex flex-wrap gap-2.5">
+                  {leadingCategories.map((category, index) => (
+                    <Link
+                      key={category.slug}
+                      href={`/categories/${category.slug}`}
+                      className={`inline-flex items-center rounded-full border px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.18em] transition ${
+                        index === 0
+                          ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white"
+                          : "border-[var(--line)] bg-[var(--surface-soft)] text-[var(--brand-navy)] hover:border-[var(--brand-navy)]/30 hover:bg-white"
+                      }`}
+                    >
+                      {category.title}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
             </div>
-            <p className="max-w-xl text-sm leading-7 text-slate-500">
-              Open any category directly, then scroll below to preview a faster edit of the most product-rich categories.
-            </p>
+
+            <details className="group rounded-[1.6rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f7f1e7_100%)] p-4 shadow-[0_20px_50px_-42px_rgba(8,15,43,0.28)]">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                    Quick jump
+                  </p>
+                  <p className="mt-1 font-display text-xl font-semibold text-[var(--brand-navy)]">
+                    Open from dropdown
+                  </p>
+                </div>
+                <span className="inline-flex rounded-full bg-white px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] shadow-[0_12px_28px_-22px_rgba(8,15,43,0.35)] transition group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+
+              <div className="mt-4 grid max-h-72 gap-2 overflow-y-auto pr-1">
+                {categories.map((category) => (
+                  <Link
+                    key={category.slug}
+                    href={`/categories/${category.slug}`}
+                    className="flex items-center justify-between rounded-[1rem] border border-[var(--line)] bg-white px-3 py-2.5 text-sm text-[var(--brand-navy)] transition hover:border-[var(--brand-navy)]/25 hover:bg-[var(--surface-soft)]"
+                  >
+                    <span className="truncate pr-3 font-medium">{category.title}</span>
+                    <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-400">
+                      {category.count}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </details>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {categories.map((category) => (
               <Link
                 key={category.slug}
                 href={`/categories/${category.slug}`}
-                className="group flex items-center justify-between rounded-[1.3rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 transition hover:border-[var(--brand-navy)]/24 hover:bg-white"
+                className="group flex min-h-[6.75rem] items-center justify-between rounded-[1.35rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f8f2e8_100%)] px-4 py-3.5 transition hover:-translate-y-0.5 hover:border-[var(--brand-navy)]/24 hover:bg-white"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-display text-lg font-semibold text-[var(--brand-navy)]">{category.title}</p>
-                  <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                  <p className="line-clamp-2 text-balance font-display text-lg font-semibold leading-[1.08] text-[var(--brand-navy)]">
+                    {category.title}
+                  </p>
+                  <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
                     {category.count} products
                   </p>
                 </div>
-                <ArrowRight size={16} className="ml-3 shrink-0 text-[var(--brand-navy)] transition group-hover:translate-x-1" />
+                <span className="ml-3 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--brand-navy)]/10 bg-white text-[var(--brand-navy)] shadow-[0_10px_24px_-20px_rgba(8,15,43,0.35)] transition group-hover:translate-x-1">
+                  <ArrowRight size={16} />
+                </span>
               </Link>
             ))}
           </div>
@@ -580,4 +853,42 @@ export function CategoryDetailExperience({ products, category, initialQuery = ""
   );
 }
 
-export { buildCategorySummary, slugifyCategory };
+export function BrandDetailExperience({ products, brand, initialQuery = "" }) {
+  const title = formatBrandLabel(brand?.title);
+
+  return (
+    <>
+      <CatalogExperienceClient
+        products={products}
+        initialQuery={initialQuery}
+        eyebrow={title}
+        title={`${title} products in a dedicated brand page.`}
+        description="This brand route now behaves like a focused label page, so visitors can browse one brand story with less noise and clearer product scanning."
+        heroBackgroundImage={getBrandBannerImage(title)}
+        spotlight={{
+          title: `${brand?.count || products.length} products in focus`,
+          text: "Brand-led browsing gives visitors a cleaner way to stay inside one label while keeping pagination and filtering intact.",
+          points: ["Brand discovery", "Paginated route", "Cleaner browsing"],
+        }}
+        emptyTitle={`No ${title.toLowerCase()} products matched`}
+        emptyText="Try adjusting the active filters or browse the full brands index to move into another label."
+      />
+      <section className="border-t border-[var(--line)] bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-10 sm:px-6 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-slate-400">Related route</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">Keep exploring adjacent brands</h2>
+          </div>
+          <Link
+            href="/brands"
+            className="inline-flex rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+          >
+            Back to all brands
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export { buildCategorySummary, slugifyBrand, slugifyCategory };

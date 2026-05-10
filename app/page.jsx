@@ -10,7 +10,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Home() {
-  const { categories, featuredTabs, customerReviews } = await getHomePageData();
+  const { brands, categories, featuredTabs, customerReviews } = await getHomePageData();
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -27,6 +27,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
       />
       <HomeExperience
+        brands={brands}
         categories={categories}
         featuredTabs={featuredTabs}
         customerReviews={customerReviews}
