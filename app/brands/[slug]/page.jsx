@@ -4,6 +4,8 @@ import { BrandDetailExperience } from "../../components/store/StorefrontPages";
 import { getBrandSummaries, getProductsPage } from "../../../lib/product";
 import { buildMetadata } from "../../../lib/seo";
 
+const CATALOG_PAGE_SIZE = 24;
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const brand = (await getBrandSummaries()).find((item) => item.slug === slug);
@@ -37,7 +39,7 @@ export default async function BrandDetailPage({ params, searchParams }) {
 
   const { products, totalPages } = await getProductsPage({
     page,
-    pageSize: 60,
+    pageSize: CATALOG_PAGE_SIZE,
     brandTitle: brand.title,
   });
 

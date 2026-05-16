@@ -706,63 +706,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
           </section>
         ) : null}
 
-        {editorialLane.length > 0 ? (
-          <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-            <div className="rounded-[2rem] border border-[#141d60]/10 bg-white p-6 shadow-[0_30px_90px_-58px_rgba(20,29,96,0.35)] sm:p-7">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-[#141d60]/40">Arrival lane</p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-[#141d60] sm:text-3xl">
-                    A tighter edit of what just arrived
-                  </h2>
-                </div>
-                <p className="max-w-xl text-sm leading-7 text-slate-500">
-                  These picks create a faster second scroll before the full catalog grid takes over.
-                </p>
-              </div>
-
-              <div className="mt-6 grid gap-4 lg:grid-cols-3">
-                {editorialLane.map((product) => (
-                  <Link
-                    key={product.id}
-                    href={`/product/${product.id}`}
-                    className="group overflow-hidden rounded-[1.7rem] border border-[#141d60]/10 bg-[linear-gradient(180deg,#ffffff_0%,#f5f7ff_100%)]"
-                  >
-                    <div className="aspect-[1.2/1] overflow-hidden bg-[#141d60]/[0.04]">
-                      {product.image ? (
-                        <img
-                          src={product.image}
-                          alt={product.name || product.title}
-                          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-[#141d60]/45">
-                          <Sparkles size={26} />
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-5">
-                      <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#141d60]/45">
-                        Recent pick
-                      </p>
-                      <h3 className="mt-3 line-clamp-2 font-display text-xl font-semibold leading-tight text-[#141d60]">
-                        {product.name || product.title}
-                      </h3>
-                      <div className="mt-4 flex items-center justify-between gap-3">
-                        <span className="text-sm font-black tracking-tight text-slate-950">
-                          {formatPrice(product.price_selling)}
-                        </span>
-                        <span className="inline-flex items-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#141d60]">
-                          Open <ArrowRight size={14} className="ml-1.5 transition group-hover:translate-x-1" />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        ) : null}
+        
 
         <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getProductsPage } from "../../lib/product";
 import { buildMetadata } from "../../lib/seo";
 
+const CATALOG_PAGE_SIZE = 24;
+
 export const metadata = buildMetadata({
   title: "New Arrivals",
   path: "/new-arrivals",
@@ -13,7 +15,7 @@ export const metadata = buildMetadata({
 export default async function NewArrivalsPage({ searchParams }) {
   const params = await searchParams;
   const page = Math.max(1, Number(params?.page || 1));
-  const { products, totalPages } = await getProductsPage({ page, pageSize: 60 });
+  const { products, totalPages } = await getProductsPage({ page, pageSize: CATALOG_PAGE_SIZE });
   const initialQuery = typeof params?.q === "string" ? params.q : "";
 
   return (

@@ -61,7 +61,12 @@ function formatProgressCount(visibleCount, totalCount) {
   return `${visibleCount} of ${totalCount} products`;
 }
 
-export default function ShopSection({ products = [], tabs: providedTabs = null }) {
+export default function ShopSection({
+  products = [],
+  tabs: providedTabs = null,
+  eyebrow = "Featured Products",
+  title = "Featured Products",
+}) {
   const tabs = useMemo(() => {
     if (Array.isArray(providedTabs) && providedTabs.length > 0) {
       return providedTabs;
@@ -213,9 +218,9 @@ export default function ShopSection({ products = [], tabs: providedTabs = null }
     <section id="shop-section" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
       <div className="rounded-[2rem] border border-slate-200 bg-white px-4 py-6 shadow-[0_28px_70px_-50px_rgba(15,23,42,0.28)] sm:px-6 sm:py-8">
         <div className="text-center">
-          {/* <p className="text-[11px] font-black uppercase tracking-[0.26em] text-[var(--brand-navy)]/55">Featured Products</p> */}
+          <p className="text-[11px] font-black uppercase tracking-[0.26em] text-[var(--brand-navy)]/55">{eyebrow}</p>
           <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.03em] text-[var(--brand-navy)] sm:text-3xl">
-            Featured Products
+            {title}
           </h2>
         </div>
 

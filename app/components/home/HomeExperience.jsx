@@ -25,12 +25,37 @@ function SectionHeading({ eyebrow, title, href, actionLabel }) {
   );
 }
 
-export default function HomeExperience({ brands = [], categories = [], featuredTabs = [], customerReviews = [] }) {
+export default function HomeExperience({
+  brands = [],
+  categories = [],
+  featuredProducts = [],
+  featuredTabs = [],
+  customerReviews = [],
+}) {
+  const shopTabs =
+    featuredProducts.length > 0
+      ? [
+          {
+            id: "featured-products",
+            label: "Featured Products",
+            categoryTitle: "Featured Products",
+            count: featuredProducts.length,
+            products: featuredProducts,
+            initialPage: 1,
+          },
+          ...featuredTabs,
+        ]
+      : featuredTabs;
+
   return (
     <div className="bg-transparent">
       <StaticPromoBanner />
 
-      <ShopSection tabs={featuredTabs} />
+      <ShopSection
+        tabs={shopTabs}
+        eyebrow="Category lanes"
+        title="Shop by Category"
+      />
 
       <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f4efe6_100%)] py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

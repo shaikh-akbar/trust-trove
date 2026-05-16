@@ -6,6 +6,8 @@ import {
 import { getCategorySummaries, getProductsPage } from "../../../lib/product";
 import { buildMetadata } from "../../../lib/seo";
 
+const CATALOG_PAGE_SIZE = 24;
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const category = (await getCategorySummaries()).find((item) => item.slug === slug);
@@ -39,7 +41,7 @@ export default async function CategoryDetailPage({ params, searchParams }) {
 
   const { products, totalPages } = await getProductsPage({
     page,
-    pageSize: 60,
+    pageSize: CATALOG_PAGE_SIZE,
     categoryTitle: category.title,
   });
 

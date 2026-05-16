@@ -687,6 +687,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
 import {
   ArrowRight,
@@ -699,6 +700,7 @@ import {
   ShoppingBag,
   Truck,
 } from "lucide-react";
+import { useRouteLoading } from "../feedback/RouteLoadingProvider";
 import { useCart } from "./CartProvider";
 
 function formatPrice(value) {
@@ -1026,7 +1028,9 @@ function loadRazorpayScript() {
 }
 
 export default function CheckoutClient({ user, initialAddresses = [] }) {
-  const { items, isHydrated } = useCart();
+  const router = useRouter();
+  const { items, isHydrated, clearCart } = useCart();
+  const { showLoader } = useRouteLoading();
 
   const [addresses, setAddresses] = useState(initialAddresses);
 
@@ -1200,9 +1204,9 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
       }
 
       if (orderData.paymentType === "cod") {
-        window.location.assign(
-          `/orders?placed=${encodeURIComponent(orderData.orderNumber)}`
-        );
+        await clearCart();
+        showLoader("Opening your order...");
+        router.push(`/orders?placed=${encodeURIComponent(orderData.orderNumber)}`);
         return;
       }
 
@@ -1251,9 +1255,9 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
             );
           }
 
-          window.location.assign(
-            `/orders?placed=${encodeURIComponent(verifyData.orderNumber)}`
-          );
+          await clearCart();
+          showLoader("Payment verified. Opening your order...");
+          router.push(`/orders?placed=${encodeURIComponent(verifyData.orderNumber)}`);
         },
       });
 

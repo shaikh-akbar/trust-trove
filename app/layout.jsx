@@ -6,7 +6,6 @@ import MobileBottomNav from "./components/layout/MobileBottomNav";
 import AppProviders from "./components/AppProviders";
 import { getSessionUser } from "../lib/auth/session";
 import { getCartSnapshotForUser } from "../lib/cart-server";
-import { getNavbarSearchItems } from "../lib/product";
 import { getWishlistProductIdsForUser } from "../lib/product-social-server";
 import { buildMetadata, buildOrganizationSchema, buildWebsiteSchema } from "../lib/seo";
 
@@ -38,7 +37,6 @@ export default async function RootLayout({ children }) {
   const user = await getSessionUser();
   const initialCart = user ? await getCartSnapshotForUser(user.id) : null;
   const initialWishlistProductIds = user ? await getWishlistProductIdsForUser(user.id) : [];
-  const navbarSearchItems = await getNavbarSearchItems();
   const organizationSchema = buildOrganizationSchema();
   const websiteSchema = buildWebsiteSchema();
 
@@ -54,7 +52,7 @@ export default async function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <AppProviders initialUser={user} initialCart={initialCart} initialWishlistProductIds={initialWishlistProductIds}>
-          <Navbar user={user} navbarSearchItems={navbarSearchItems} />
+          <Navbar user={user} />
           <main className="flex-grow pb-20 md:pb-0">
             {children}
           </main>

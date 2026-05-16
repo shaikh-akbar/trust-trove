@@ -331,7 +331,12 @@ async function saveOrderStatus(orderId, orderState, setOrderStates) {
     updateOrderState(setOrderStates, orderId, {
       saving: false,
       error: "",
-      success: "Status updated and customer email queued.",
+      success:
+        data.order?.email_status?.state === "sent"
+          ? data.order.email_status.message
+          : data.order?.email_status?.state === "failed"
+            ? `Status updated, but email failed: ${data.order.email_status.message}`
+            : data.order?.email_status?.message || "Status updated.",
       status: data.order.status,
       fulfillmentStatus: data.order.fulfillment_status,
       paymentStatus: data.order.payment_status,

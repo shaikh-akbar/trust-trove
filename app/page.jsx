@@ -10,7 +10,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Home() {
-  const { brands, categories, featuredTabs, customerReviews } = await getHomePageData();
+  const { brands, categories, featuredProducts, featuredTabs, customerReviews } = await getHomePageData();
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -29,6 +29,7 @@ export default async function Home() {
       <HomeExperience
         brands={brands}
         categories={categories}
+        featuredProducts={featuredProducts}
         featuredTabs={featuredTabs}
         customerReviews={customerReviews}
       />

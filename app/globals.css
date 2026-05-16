@@ -91,3 +91,46 @@ textarea {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+@keyframes tt-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tt-loader-bar {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+
+@keyframes tt-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.tt-loader-spinner {
+  animation: tt-loader-spin 0.8s linear infinite;
+}
+
+.tt-loader-bar {
+  animation: tt-loader-bar 1.15s ease-in-out infinite;
+}
+
+.tt-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(20, 29, 96, 0.06) 0%,
+    rgba(20, 29, 96, 0.12) 50%,
+    rgba(20, 29, 96, 0.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: tt-skeleton-shimmer 1.35s ease-in-out infinite;
+}

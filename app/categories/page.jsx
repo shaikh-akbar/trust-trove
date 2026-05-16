@@ -10,7 +10,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function CategoriesPage() {
-  const categories = await getCategoriesPageData();
+  const categories = await getCategoriesPageData({ previewCategoryLimit: 0 });
 
   return <CategoriesExperience categories={categories} />;
 }

@@ -38,22 +38,13 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
-function formatDateTime(value) {
-  if (!value) {
-    return "Not available";
-  }
-
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(value));
-}
-
 function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
+}
+
+function formatStatusLabel(value, fallback = "Pending") {
+  const normalizedValue = String(value || fallback).trim();
+  return normalizedValue ? normalizedValue.replace(/_/g, " ") : fallback;
 }
 
 function getInitials(profile) {
@@ -78,9 +69,16 @@ function getStatusMeta(order) {
     };
   }
 
-  if (fulfillmentStatus === "shipped" || fulfillmentStatus === "out_for_delivery") {
+  if (orderStatus === "out_for_delivery") {
     return {
-      label: fulfillmentStatus === "out_for_delivery" ? "Out for delivery" : "Shipped",
+      label: "Out for delivery",
+      className: "border-blue-200 bg-blue-50 text-blue-700",
+    };
+  }
+
+  if (orderStatus === "shipped" || fulfillmentStatus === "shipped") {
+    return {
+      label: "Shipped",
       className: "border-sky-200 bg-sky-50 text-sky-700",
     };
   }
@@ -96,6 +94,58 @@ function getStatusMeta(order) {
     label: "Processing",
     className: "border-[var(--line)] bg-[var(--surface-soft)] text-[var(--brand-navy)]",
   };
+}
+
+const ORDER_PROGRESS_STEPS = [
+  { key: "placed", label: "Placed", icon: CheckCircle2, activeClass: "border-violet-200 bg-violet-50 text-violet-700", iconClass: "bg-violet-500 text-white", doneClass: "border-violet-100 bg-violet-50 text-violet-600" },
+  { key: "processing", label: "In Progress", icon: Clock3, activeClass: "border-amber-200 bg-amber-50 text-amber-700", iconClass: "bg-amber-500 text-white", doneClass: "border-amber-100 bg-amber-50 text-amber-600" },
+  { key: "shipped", label: "Shipped", icon: Package, activeClass: "border-sky-200 bg-sky-50 text-sky-700", iconClass: "bg-sky-500 text-white", doneClass: "border-sky-100 bg-sky-50 text-sky-600" },
+  { key: "out_for_delivery", label: "Out for Delivery", icon: Truck, activeClass: "border-blue-200 bg-blue-50 text-blue-700", iconClass: "bg-blue-600 text-white", doneClass: "border-blue-100 bg-blue-50 text-blue-600" },
+  { key: "delivered", label: "Delivered", icon: CheckCircle2, activeClass: "border-emerald-200 bg-emerald-50 text-emerald-700", iconClass: "bg-emerald-500 text-white", doneClass: "border-emerald-100 bg-emerald-50 text-emerald-600" },
+  { key: "cancelled", label: "Cancelled", icon: XCircle, activeClass: "border-rose-200 bg-rose-50 text-rose-700", iconClass: "bg-rose-500 text-white", doneClass: "border-rose-100 bg-rose-50 text-rose-600" },
+];
+
+function getOrderProgressKey(order) {
+  const orderStatus = String(order.status || "").toLowerCase();
+  const fulfillmentStatus = String(order.fulfillment_status || "").toLowerCase();
+
+  if (orderStatus === "cancelled" || fulfillmentStatus === "cancelled") {
+    return "cancelled";
+  }
+
+  if (orderStatus === "delivered" || fulfillmentStatus === "delivered") {
+    return "delivered";
+  }
+
+  if (orderStatus === "out_for_delivery") {
+    return "out_for_delivery";
+  }
+
+  if (orderStatus === "shipped" || fulfillmentStatus === "shipped") {
+    return "shipped";
+  }
+
+  if (orderStatus === "processing" || fulfillmentStatus === "processing" || fulfillmentStatus === "packed") {
+    return "processing";
+  }
+
+  return "placed";
+}
+
+function getOrderProgressSteps(order) {
+  const currentKey = getOrderProgressKey(order);
+  const currentIndex = ORDER_PROGRESS_STEPS.findIndex((step) => step.key === currentKey);
+  const isCancelled = currentKey === "cancelled";
+
+  return ORDER_PROGRESS_STEPS.map((step, index) => ({
+    ...step,
+    state:
+      step.key === currentKey
+        ? "current"
+        : !isCancelled && currentIndex > index
+          ? "complete"
+          : "upcoming",
+  }));
 }
 
 function StatCard({ icon: Icon, label, value }) {
@@ -386,7 +436,7 @@ export function OrdersPanel({ orders }) {
                 </div>
               </div>
 
-              <div className="grid gap-5 pt-5 xl:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="space-y-5 pt-5">
                 <div className="space-y-3">
                   {(order.order_items || []).map((item) => (
                     <div key={item.id} className="flex items-start gap-4 rounded-[1.4rem] border border-[var(--line-soft)] bg-[linear-gradient(180deg,#ffffff_0%,#f9fbff_100%)] p-4">
@@ -407,12 +457,14 @@ export function OrdersPanel({ orders }) {
                 </div>
 
                 <div className="rounded-[1.5rem] border border-[var(--line-soft)] bg-[linear-gradient(180deg,#fbfcff_0%,#f5f8ff_100%)] p-5">
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#161f66]/70">Order timeline</p>
-                  <div className="mt-4 space-y-4">
-                    <TimelineStep icon={CheckCircle2} label="Order placed" detail={formatDateTime(order.created_at)} active />
-                    <TimelineStep icon={Truck} label={String(order.fulfillment_status || "unfulfilled").replace(/_/g, " ")} detail={`Payment ${String(order.payment_status || "pending").replace(/_/g, " ")}`} active={String(order.status || "").toLowerCase() !== "cancelled"} />
-                    <TimelineStep icon={Package} label={String(order.status || "processing").replace(/_/g, " ")} detail={`Method: ${order.payment_type || "online"}`} active />
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#161f66]/70">Order status</p>
+                  <OrderStatusRail order={order} />
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    <StatusPill label="Order" value={formatStatusLabel(order.status, "placed")} />
+                    <StatusPill label="Fulfillment" value={formatStatusLabel(order.fulfillment_status, "unfulfilled")} />
+                    <StatusPill label="Payment" value={`${formatStatusLabel(order.payment_status, "pending")} | ${formatStatusLabel(order.payment_type, "online")}`} />
                   </div>
+                  <p className="mt-4 text-xs text-slate-500">Last updated view based on your current order, fulfillment, and payment status.</p>
                 </div>
               </div>
             </article>
@@ -430,16 +482,53 @@ export function OrdersPanel({ orders }) {
   );
 }
 
-function TimelineStep({ icon: Icon, label, detail, active }) {
+function OrderStatusRail({ order }) {
+  const steps = getOrderProgressSteps(order);
+
   return (
-    <div className="flex items-start gap-3">
-      <div className={`mt-0.5 flex h-9 w-9 items-center justify-center rounded-full ${active ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-400"}`}>
-        <Icon size={16} />
+    <div className="mt-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex min-w-max items-start gap-2">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          const isCurrent = step.state === "current";
+          const isComplete = step.state === "complete";
+          const cardClass = isCurrent
+            ? step.activeClass
+            : isComplete
+              ? step.doneClass
+              : "border-slate-200 bg-white text-slate-400";
+          const iconClass = isCurrent
+            ? step.iconClass
+            : isComplete
+              ? "bg-white text-current"
+              : "bg-slate-100 text-slate-400";
+          const connectorClass = isCurrent || isComplete ? "bg-[#cfd8ff]" : "bg-slate-200";
+
+          return (
+            <div key={step.key} className="flex items-center gap-2">
+              <div className={`w-[108px] rounded-[1.35rem] border px-3 py-3 text-center transition ${cardClass}`}>
+                <div className={`mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-current/10 ${iconClass}`}>
+                  <Icon size={18} />
+                </div>
+                <p className="mt-3 text-sm font-black leading-4">{step.label}</p>
+                <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em]">
+                  {isCurrent ? "Current" : isComplete ? "Done" : "Waiting"}
+                </p>
+              </div>
+              {index < steps.length - 1 ? <div className={`hidden h-1 w-7 rounded-full md:block ${connectorClass}`} /> : null}
+            </div>
+          );
+        })}
       </div>
-      <div>
-        <p className="text-sm font-bold capitalize text-slate-900">{label}</p>
-        <p className="mt-1 text-xs text-slate-500">{detail}</p>
-      </div>
+    </div>
+  );
+}
+
+function StatusPill({ label, value }) {
+  return (
+    <div className="rounded-[1.15rem] border border-[var(--line-soft)] bg-white px-3 py-3">
+      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">{label}</p>
+      <p className="mt-2 text-sm font-bold capitalize text-slate-900">{value}</p>
     </div>
   );
 }
