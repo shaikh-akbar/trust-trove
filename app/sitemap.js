@@ -1,8 +1,7 @@
 import { BLOG_POSTS } from "../lib/content";
-import { getBrandSummaries, getCategorySummaries, getProductsPage } from "../lib/product";
+import { getBrandSummaries, getCategorySummaries } from "../lib/product";
+import { getSupabaseAdmin } from "../lib/supabase-admin";
 import { getSiteUrl } from "../lib/seo";
-
-const PRODUCT_SITEMAP_PAGE_SIZE = 120;
 
 function toDate(value) {
   const parsed = new Date(value || Date.now());
@@ -10,31 +9,36 @@ function toDate(value) {
 }
 
 async function getAllIndexedProducts() {
-  const collected = [];
-  let page = 1;
+  const supabase = getSupabaseAdmin();
+  const { data: products, error } = await supabase
+    .from("products")
+    .select(`
+      id,
+      slug,
+      handle,
+      main_image,
+      updated_at,
+      created_at,
+      variants!inner (
+        id,
+        inventory_quantity,
+        status
+      )
+    `)
+    .eq("status", "active")
+    .eq("variants.status", "active")
+    .order("updated_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false, nullsFirst: false });
 
-  while (true) {
-    const result = await getProductsPage({
-      page,
-      pageSize: PRODUCT_SITEMAP_PAGE_SIZE,
-      forceFresh: true,
-    });
-    const pageProducts = Array.isArray(result?.products) ? result.products : [];
-
-    if (!pageProducts.length) {
-      break;
-    }
-
-    collected.push(...pageProducts);
-
-    if (page >= Number(result?.totalPages || 0)) {
-      break;
-    }
-
-    page += 1;
+  if (error) {
+    console.error("Sitemap product query failed:", error);
+    return [];
   }
 
-  return collected;
+  return (products || []).filter((product) =>
+    Array.isArray(product?.variants) &&
+    product.variants.some((variant) => Number(variant?.inventory_quantity || 0) > 0)
+  );
 }
 
 export default async function sitemap() {
@@ -87,7 +91,7 @@ export default async function sitemap() {
   }));
 
   const productRoutes = (products || []).map((product) => ({
-    url: getSiteUrl(`/product/${product.slug || product.id}`),
+    url: getSiteUrl(`/product/${product.slug || product.handle || product.id}`),
     lastModified: toDate(product.updated_at || product.created_at),
     changeFrequency: "weekly",
     priority: 0.7,
