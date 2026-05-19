@@ -29,7 +29,7 @@ const Footer = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[var(--brand-navy)]/55">TrustTrove</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.32em] text-[var(--brand-navy)]/55">GoModexa</p>
             <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.04em] text-[var(--brand-navy)] sm:text-[3.5rem]">
               Better shopping links, policies, and support without the filler.
             </h2>
@@ -115,7 +115,7 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col gap-4 border-t border-[var(--brand-navy)]/10 pb-8 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
-          <p className="text-xs text-slate-500">&copy; 2026 TrustTrove. All rights reserved.</p>
+          <p className="text-xs text-slate-500">&copy; 2026 GoModexa. All rights reserved.</p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500 md:justify-end">
             <Link href="/shipping-policy" className="hover:text-[var(--brand-navy)]">Shipping Policy</Link>
             <Link href="/cancellation-refund-policy" className="hover:text-[var(--brand-navy)]">Refund Policy</Link>
@@ -128,3 +128,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

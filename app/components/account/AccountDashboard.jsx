@@ -216,7 +216,7 @@ export function AccountDashboardShell({
                       {getInitials(profile)}
                     </div>
                     <div>
-                      <p className="text-xs font-black uppercase tracking-[0.24em] text-white/70">TrustTrove Member</p>
+                      <p className="text-xs font-black uppercase tracking-[0.24em] text-white/70">GoModexa Member</p>
                       <h1 className="mt-2 font-display text-3xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">
                         {title}
                       </h1>
@@ -653,3 +653,4 @@ export function LogoutSidebarButton({ children }) {
     </div>
   );
 }
+

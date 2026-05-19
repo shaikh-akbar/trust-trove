@@ -21,7 +21,7 @@ export default function HomeCustomerReviews({ reviews = [] }) {
               What customers are saying
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
-              Real shopping feedback from TrustTrove customers about delivery, product quality, and overall experience.
+              Real shopping feedback from GoModexa customers about delivery, product quality, and overall experience.
             </p>
           </div>
           <Link
@@ -47,7 +47,7 @@ export default function HomeCustomerReviews({ reviews = [] }) {
                 <div className="mt-5 border-t border-slate-100 pt-4">
                   <p className="text-sm font-black text-[var(--brand-navy)]">{review.displayName}</p>
                   <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                    {review.city || "TrustTrove customer"}
+                    {review.city || "GoModexa customer"}
                   </p>
                 </div>
               </article>
@@ -57,7 +57,7 @@ export default function HomeCustomerReviews({ reviews = [] }) {
           <div className="rounded-[1.75rem] border border-[var(--line)] bg-white p-8 text-center shadow-[0_20px_60px_-46px_rgba(66,72,121,0.18)]">
             <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-slate-950 sm:text-2xl">No customer reviews yet</h3>
             <p className="mt-3 text-sm leading-7 text-slate-500">
-              Be the first customer to rate your TrustTrove shopping experience and we&apos;ll show it here.
+              Be the first customer to rate your GoModexa shopping experience and we&apos;ll show it here.
             </p>
           </div>
         )}
@@ -65,3 +65,4 @@ export default function HomeCustomerReviews({ reviews = [] }) {
     </section>
   );
 }
+

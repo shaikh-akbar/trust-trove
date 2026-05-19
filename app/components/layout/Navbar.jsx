@@ -316,7 +316,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             {Array.from({ length: 2 }).map((_, index) => (
               <div key={index} aria-hidden={index === 1} className="flex shrink-0 items-center gap-10 px-5">
                 <span className="text-xs font-extrabold uppercase tracking-[0.18em] whitespace-nowrap text-[var(--brand-gold)]">
-                  TrustTrove Edit
+                  GoModexa Edit
                 </span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/70">/</span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/95">Only a Few Left in Stock</span>
@@ -335,9 +335,9 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
           <div className="flex shrink-0 items-center overflow-visible">
             <Link href="/" className="group flex items-center gap-2">
               <img
-                src="/assets/trust-1.png"
-                alt="TrustTrove Logo"
-                className="-ml-3 h-16 w-auto max-w-none object-contain object-left transition-transform group-hover:scale-105 sm:-ml-4 sm:h-20 md:-ml-5 md:h-24"
+                src="/assets/gomodexa-13.png"
+                alt="GoModexa Logo"
+                className="-ml-2 h-12 w-auto max-w-none object-contain object-left transition-transform group-hover:scale-105 sm:-ml-3 sm:h-14 md:-ml-4 md:h-30"
               />
             </Link>
           </div>
@@ -367,7 +367,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
                   </span>
                   <span className="hidden text-left leading-tight lg:block">
                     <span className="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--brand-navy)]/42">
-                      Trove, welcome
+                      GoModexa, welcome
                     </span>
                     <span className="block max-w-28 truncate font-display text-lg font-semibold text-[var(--brand-navy)]">
                       {welcomeName}
@@ -601,7 +601,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             </span>
             <span className="min-w-0">
               <span className="block text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">
-                {isLoggedIn ? "Trove, welcome" : "My account"}
+                {isLoggedIn ? "GoModexa, welcome" : "My account"}
               </span>
               <span className="block truncate text-sm font-bold text-slate-900">
                 {isLoggedIn ? welcomeName : "Sign in"}
@@ -635,3 +635,4 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
     </nav>
   );
 }
+

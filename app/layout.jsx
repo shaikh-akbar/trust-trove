@@ -23,8 +23,8 @@ const bodyFont = Manrope({
 
 export const metadata = buildMetadata({
   description:
-    "TrustTrove is a premium ecommerce destination for curated lifestyle products, fashion, accessories, and fresh arrivals in India.",
-  keywords: ["TrustTrove India", "premium ecommerce brand", "curated products online", "fashion and gadgets"],
+    "GoModexa is a premium ecommerce destination for curated lifestyle products, fashion, accessories, and fresh arrivals in India.",
+  keywords: ["GoModexa India", "premium ecommerce brand", "curated products online", "fashion and gadgets"],
 });
 
 export const viewport = {
@@ -34,9 +34,20 @@ export const viewport = {
 };
 
 export default async function RootLayout({ children }) {
-  const user = await getSessionUser();
-  const initialCart = user ? await getCartSnapshotForUser(user.id) : null;
-  const initialWishlistProductIds = user ? await getWishlistProductIdsForUser(user.id) : [];
+  let user = await getSessionUser();
+  let initialCart = null;
+  let initialWishlistProductIds = [];
+
+  if (user) {
+    try {
+      initialCart = await getCartSnapshotForUser(user.id);
+      initialWishlistProductIds = await getWishlistProductIdsForUser(user.id);
+    } catch (error) {
+      console.warn("Ignoring stale session after user hydration failed:", error.message);
+      user = null;
+    }
+  }
+
   const organizationSchema = buildOrganizationSchema();
   const websiteSchema = buildWebsiteSchema();
 
@@ -63,3 +74,4 @@ export default async function RootLayout({ children }) {
     </html>
   );
 }
+

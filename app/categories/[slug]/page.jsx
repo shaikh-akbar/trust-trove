@@ -16,14 +16,14 @@ export async function generateMetadata({ params }) {
     return buildMetadata({
       title: "Category Not Found",
       path: `/categories/${slug}`,
-      description: "The requested category was not found on TrustTrove.",
+      description: "The requested category was not found on GoModexa.",
     });
   }
 
   return buildMetadata({
     title: category.title,
     path: `/categories/${slug}`,
-    description: `Browse ${category.title} products on TrustTrove with cleaner collection design, stronger structure, and easier discovery.`,
+    description: `Browse ${category.title} products on GoModexa with cleaner collection design, stronger structure, and easier discovery.`,
     keywords: [category.title, `${category.title} online`, `${category.title} collection`],
   });
 }
@@ -86,3 +86,4 @@ export default async function CategoryDetailPage({ params, searchParams }) {
     </>
   );
 }
+

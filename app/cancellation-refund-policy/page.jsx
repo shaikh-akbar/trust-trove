@@ -5,17 +5,17 @@ export const metadata = buildMetadata({
   title: "Cancellation, Return & Refund Policy",
   path: "/cancellation-refund-policy",
   description:
-    "Read the TrustTrove cancellation, return, replacement, and refund rules for confirmed orders and post-delivery issues.",
-  keywords: ["TrustTrove cancellation policy", "return policy", "refund policy", "replacement policy"],
+    "Read the GoModexa cancellation, return, replacement, and refund rules for confirmed orders and post-delivery issues.",
+  keywords: ["GoModexa cancellation policy", "return policy", "refund policy", "replacement policy"],
 });
 
 export default function CancellationRefundPolicyPage() {
   return (
     <div className="bg-[var(--surface-soft)]">
       <PolicyHero
-        eyebrow="TrustTrove Policy"
+        eyebrow="GoModexa Policy"
         title="Cancellation, return, and refund policy."
-        description="Please review these rules carefully before placing an order with TrustTrove. Once an order is confirmed, the fulfillment flow starts immediately, which limits cancellation and modification options."
+        description="Please review these rules carefully before placing an order with GoModexa. Once an order is confirmed, the fulfillment flow starts immediately, which limits cancellation and modification options."
       />
 
       <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20 py-5">
@@ -29,13 +29,13 @@ export default function CancellationRefundPolicyPage() {
           />
         </PolicySection>
 
-        <PolicySection title="Exceptional order cancellations by TrustTrove">
+        <PolicySection title="Exceptional order cancellations by GoModexa">
           <PolicyBulletList
             items={[
-              "In rare cases, TrustTrove may cancel an order if the item is out of stock.",
-              "TrustTrove may also cancel an order if a pricing error is identified.",
+              "In rare cases, GoModexa may cancel an order if the item is out of stock.",
+              "GoModexa may also cancel an order if a pricing error is identified.",
               "Orders may be canceled if the delivery pincode is not serviceable.",
-              "If TrustTrove cancels the order for any of the above reasons, the full paid amount will be refunded.",
+              "If GoModexa cancels the order for any of the above reasons, the full paid amount will be refunded.",
             ]}
           />
         </PolicySection>
@@ -58,9 +58,9 @@ export default function CancellationRefundPolicyPage() {
         <PolicySection title="Refund eligibility">
           <PolicyBulletList
             items={[
-              "Refunds or replacements are processed only after TrustTrove confirms the reported issue.",
+              "Refunds or replacements are processed only after GoModexa confirms the reported issue.",
               "For damaged or defective products, a full or partial refund may be issued depending on the case review.",
-              "If a replacement is approved instead of a refund, TrustTrove will communicate that during approval.",
+              "If a replacement is approved instead of a refund, GoModexa will communicate that during approval.",
               "If any item is missing and cannot be fulfilled, a refund will be issued for the missing item.",
             ]}
           />
@@ -79,7 +79,7 @@ export default function CancellationRefundPolicyPage() {
         <PolicySection title="Refund timeline">
           <PolicyBulletList
             items={[
-              "All refund requests are subject to review and approval by the TrustTrove support team.",
+              "All refund requests are subject to review and approval by the GoModexa support team.",
               "Customers will be notified by email once the refund request is approved.",
               "Approved refunds are processed within 7 working days.",
               "Refunds are credited back to the original payment source used for the purchase.",
@@ -94,3 +94,4 @@ export default function CancellationRefundPolicyPage() {
     </div>
   );
 }
+

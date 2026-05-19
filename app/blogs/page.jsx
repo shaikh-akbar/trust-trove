@@ -6,8 +6,8 @@ import { buildMetadata } from "../../lib/seo";
 export const metadata = buildMetadata({
   title: "Blogs",
   path: "/blogs",
-  description: "Read TrustTrove blog articles covering style, gifting, store trust, and smarter shopping decisions.",
-  keywords: ["TrustTrove blogs", "shopping blog", "style journal", "gift guide"],
+  description: "Read GoModexa blog articles covering style, gifting, store trust, and smarter shopping decisions.",
+  keywords: ["GoModexa blogs", "shopping blog", "style journal", "gift guide"],
 });
 
 export default function BlogsPage() {
@@ -15,7 +15,7 @@ export default function BlogsPage() {
     <div className="bg-[var(--surface-soft)]">
       <section className="border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">TrustTrove Journal</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">GoModexa Journal</p>
           <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--surface-cream)] sm:text-5xl">
             Editorial content that gives the store more depth and discoverability.
           </h1>
@@ -46,3 +46,4 @@ export default function BlogsPage() {
     </div>
   );
 }
+

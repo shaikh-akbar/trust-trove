@@ -5,16 +5,16 @@ import { PolicyHero, PolicySection } from "../components/store/PolicyPage";
 export const metadata = buildMetadata({
   title: "Contact Us",
   path: "/contact-us",
-  description: "Contact TrustTrove for support, order help, shipping questions, or brand-related inquiries.",
-  keywords: ["TrustTrove contact", "customer support", "contact ecommerce store"],
+  description: "Contact GoModexa for support, order help, shipping questions, or brand-related inquiries.",
+  keywords: ["GoModexa contact", "customer support", "contact ecommerce store"],
 });
 
 export default function ContactUsPage() {
   return (
     <div className="bg-[var(--surface-soft)]">
       <PolicyHero
-        eyebrow="Contact TrustTrove"
-        title="Reach the team behind your TrustTrove experience."
+        eyebrow="Contact GoModexa"
+        title="Reach the team behind your GoModexa experience."
         description="For order assistance, shipping questions, collaboration requests, or general support, this is the fastest place to start."
       />
 
@@ -47,3 +47,4 @@ export default function ContactUsPage() {
     </div>
   );
 }
+

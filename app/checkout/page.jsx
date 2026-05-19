@@ -2,11 +2,13 @@ import { redirect } from "next/navigation";
 import CheckoutClient from "../components/cart/CheckoutClient";
 import { getSessionUser } from "../../lib/auth/session";
 import { getUserAddresses } from "../../lib/checkout-server";
+import { buildNoIndexMetadata } from "../../lib/seo";
 
-export const metadata = {
-  title: "Checkout | TrustTrove",
-  description: "Secure checkout for your TrustTrove order.",
-};
+export const metadata = buildNoIndexMetadata({
+  title: "Checkout",
+  path: "/checkout",
+  description: "Secure checkout for your GoModexa order.",
+});
 
 export default async function CheckoutPage() {
   const user = await getSessionUser();
@@ -19,3 +21,4 @@ export default async function CheckoutPage() {
 
   return <CheckoutClient user={user} initialAddresses={addresses} />;
 }
+

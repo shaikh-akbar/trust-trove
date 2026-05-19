@@ -573,7 +573,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
                 </h1>
                 <p className="mt-5 max-w-2xl text-sm leading-7 text-white/78 sm:text-base sm:leading-8">
                   This page now pushes the newest products forward with stronger storytelling, a cleaner hierarchy,
-                  and a more premium first scroll while staying rooted in the TrustTrove navy.
+                  and a more premium first scroll while staying rooted in the GoModexa navy.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -836,3 +836,4 @@ export function BrandDetailExperience({ products, brand, initialQuery = "" }) {
 }
 
 export { buildCategorySummary, slugifyBrand, slugifyCategory };
+

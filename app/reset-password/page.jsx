@@ -1,8 +1,8 @@
 import { ResetPasswordExperience } from "../components/account/AccountExperience";
 
 export const metadata = {
-  title: "Reset Password | TrustTrove",
-  description: "Use your OTP and choose a new password for your TrustTrove account.",
+  title: "Reset Password | GoModexa",
+  description: "Use your OTP and choose a new password for your GoModexa account.",
 };
 
 export default async function ResetPasswordPage({ searchParams }) {
@@ -11,3 +11,4 @@ export default async function ResetPasswordPage({ searchParams }) {
 
   return <ResetPasswordExperience email={email} />;
 }
+

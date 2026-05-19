@@ -1,8 +1,8 @@
 import { SignUpExperience } from "../components/account/AccountExperience";
 
 export const metadata = {
-  title: "Sign Up | TrustTrove",
-  description: "Create a TrustTrove account for faster checkout, saved products, and order tracking.",
+  title: "Sign Up | GoModexa",
+  description: "Create a GoModexa account for faster checkout, saved products, and order tracking.",
 };
 
 export default async function SignUpPage({ searchParams }) {
@@ -11,3 +11,4 @@ export default async function SignUpPage({ searchParams }) {
 
   return <SignUpExperience redirectTo={redirectTo} />;
 }
+

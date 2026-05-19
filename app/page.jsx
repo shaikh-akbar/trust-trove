@@ -5,8 +5,8 @@ import { buildMetadata, getSiteUrl } from "../lib/seo";
 export const metadata = buildMetadata({
   path: "/",
   description:
-    "Explore a redesigned TrustTrove homepage with premium product cards, editorial collections, blog content, and stronger SEO foundations.",
-  keywords: ["TrustTrove homepage", "premium ecommerce homepage", "curated products India"],
+    "Explore a redesigned GoModexa homepage with premium product cards, editorial collections, blog content, and stronger SEO foundations.",
+  keywords: ["GoModexa homepage", "premium ecommerce homepage", "curated products India"],
 });
 
 export default async function Home() {
@@ -14,10 +14,10 @@ export default async function Home() {
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "TrustTrove Homepage",
+    name: "GoModexa Homepage",
     url: getSiteUrl("/"),
     description:
-      "A premium TrustTrove storefront featuring curated products, category edits, blog highlights, and new arrivals.",
+      "A premium GoModexa storefront featuring curated products, category edits, blog highlights, and new arrivals.",
   };
 
   return (
@@ -36,3 +36,4 @@ export default async function Home() {
     </>
   );
 }
+

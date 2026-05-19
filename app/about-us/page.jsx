@@ -5,20 +5,20 @@ import { buildMetadata } from "../../lib/seo";
 export const metadata = buildMetadata({
   title: "About Us",
   path: "/about-us",
-  description: "Learn about TrustTrove, our premium retail direction, and the trust-first philosophy behind the storefront.",
-  keywords: ["about TrustTrove", "TrustTrove brand", "premium ecommerce India"],
+  description: "Learn about GoModexa, our premium retail direction, and the trust-first philosophy behind the storefront.",
+  keywords: ["about GoModexa", "GoModexa brand", "premium ecommerce India"],
 });
 
 export default function AboutUsPage() {
   return (
     <div className="bg-[var(--brand-navy)] text-white">
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">About TrustTrove</p>
+        <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">About GoModexa</p>
         <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--surface-cream)] sm:text-5xl">
           Built to make online shopping feel more polished, trustworthy, and inspiring.
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200">
-          TrustTrove brings together curated lifestyle products, cleaner design, and better route-level structure so customers can browse with more confidence and less friction.
+          GoModexa brings together curated lifestyle products, cleaner design, and better route-level structure so customers can browse with more confidence and less friction.
         </p>
       </section>
 
@@ -44,7 +44,7 @@ export default function AboutUsPage() {
         <div className="rounded-[2rem] border border-white/10 bg-white/[0.08] p-8 backdrop-blur">
           <h2 className="font-display text-3xl font-semibold text-[var(--surface-cream)] sm:text-4xl">The next step</h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-200">
-            We’re shaping TrustTrove into a store that combines sharper merchandising, better search discovery, and modern content structure without disrupting the core shopping flow.
+            We’re shaping GoModexa into a store that combines sharper merchandising, better search discovery, and modern content structure without disrupting the core shopping flow.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link href="/shop" className="inline-flex rounded-full bg-[var(--brand-gold)] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]">
@@ -59,3 +59,4 @@ export default function AboutUsPage() {
     </div>
   );
 }
+

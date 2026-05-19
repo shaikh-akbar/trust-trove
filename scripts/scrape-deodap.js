@@ -507,9 +507,19 @@ function normalizeTags(tags) {
 }
 
 function normalizeImages(images) {
-  return (images || [])
+  const sourceImages = Array.isArray(images)
+    ? images
+    : images == null
+      ? []
+      : [images];
+
+  return sourceImages
     .map((image, index) => {
-      const src = typeof image === "string" ? image : image?.src;
+      const src =
+        typeof image === "string"
+          ? image
+          : image?.src || image?.url || image?.secure_url || image?.["@id"];
+
       if (!src) {
         return null;
       }
@@ -849,6 +859,7 @@ function buildSupabaseProducts(products) {
     const images = normalizeImages(product.images);
     const firstVariant = Array.isArray(product.variants) ? product.variants[0] : null;
     const shortDescription = safeTruncate(stripHtml(product.body_html), 220);
+    const normalizedCategory = removeInvalidUnicode(product.product_type || "").trim() || "Uncategorized";
 
     return {
       handle: product.handle,
@@ -858,8 +869,8 @@ function buildSupabaseProducts(products) {
       short_description: shortDescription,
       vendor: removeInvalidUnicode(product.vendor || ""),
       brand: removeInvalidUnicode(product.vendor || ""),
-      category: removeInvalidUnicode(product.product_type || ""),
-      product_type: removeInvalidUnicode(product.product_type || ""),
+      category: normalizedCategory,
+      product_type: normalizedCategory,
       tags: normalizeTags(product.tags).map(removeInvalidUnicode),
       main_image: removeInvalidUnicode(images[0]?.src || ""),
       status: removeInvalidUnicode(product.status || "active"),

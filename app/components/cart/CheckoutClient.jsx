@@ -866,36 +866,6 @@ function OrderSummaryPanel({
           </div>
 
           <div className="flex items-center justify-between text-slate-600">
-            <span>Base shipping</span>
-            <span className="font-bold text-slate-900">
-              {formatPrice(summary?.baseShippingAmount || 0)}
-            </span>
-          </div>
-
-          {summary?.shippingRuleLabel ? (
-            <div className="flex items-center justify-between text-slate-500">
-              <span>Shipping slab</span>
-              <span className="font-bold text-slate-900">
-                {summary.shippingRuleLabel}
-              </span>
-            </div>
-          ) : null}
-
-          <div className="flex items-center justify-between text-slate-600">
-            <span>Vendor shipping</span>
-            <span className="font-bold text-slate-900">
-              {formatPrice(summary?.vendorShippingAmount || 0)}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between text-slate-600">
-            <span>Shipping total</span>
-            <span className="font-bold text-slate-900">
-              {formatPrice(summary?.shippingAmount || 0)}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between text-slate-600">
             <span>Platform fee</span>
             <span className="font-bold text-slate-900">
               {formatPrice(summary?.platformFeeAmount || 0)}
@@ -1220,7 +1190,7 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
         key: orderData.razorpayKeyId,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: "TrustTrove",
+        name: "GoModexa",
         description: `Order ${orderData.orderNumber}`,
         order_id: orderData.razorpayOrderId,
         prefill: {

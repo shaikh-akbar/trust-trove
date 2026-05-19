@@ -18,8 +18,8 @@ function formatPrice(value) {
 }
 
 export const metadata = {
-  title: "Admin Customers | TrustTrove",
-  description: "Review TrustTrove customers, order history, and ticket activity.",
+  title: "Admin Customers | GoModexa",
+  description: "Review GoModexa customers, order history, and ticket activity.",
 };
 
 export default async function AdminCustomersPage() {
@@ -103,3 +103,4 @@ function SmallStat({ icon: Icon, label, value }) {
     </div>
   );
 }
+

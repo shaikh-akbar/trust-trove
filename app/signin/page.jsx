@@ -1,9 +1,11 @@
 import { SignInExperience } from "../components/account/AccountExperience";
+import { buildNoIndexMetadata } from "../../lib/seo";
 
-export const metadata = {
-  title: "Sign In | TrustTrove",
-  description: "Sign in to your TrustTrove account to track orders and manage your profile.",
-};
+export const metadata = buildNoIndexMetadata({
+  title: "Sign In",
+  path: "/signin",
+  description: "Sign in to your GoModexa account to track orders and manage your profile.",
+});
 
 export default async function SignInPage({ searchParams }) {
   const params = await searchParams;
@@ -11,3 +13,4 @@ export default async function SignInPage({ searchParams }) {
 
   return <SignInExperience redirectTo={redirectTo} />;
 }
+

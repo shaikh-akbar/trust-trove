@@ -103,7 +103,7 @@ export function SignInExperience({ redirectTo = "" }) {
 export function SignUpExperience({ redirectTo = "" }) {
   return (
     <ExperienceShell
-      eyebrow="Join TrustTrove"
+      eyebrow="Join GoModexa"
       title="Create your account and start shopping with confidence."
       description="Set up your member profile to unlock faster checkout, order tracking, curated drops, and saved favorites across devices."
       alternateAction={
@@ -192,7 +192,7 @@ export function ResetPasswordExperience({ email }) {
     <ExperienceShell
       eyebrow="Enter OTP"
       title="Finish resetting your password."
-      description="Use the OTP from your inbox and choose a fresh password to regain access to your TrustTrove account."
+      description="Use the OTP from your inbox and choose a fresh password to regain access to your GoModexa account."
       alternateAction={
         <Link
           href="/forgot-password"
@@ -335,3 +335,4 @@ export function ProfileExperience({ user, logoutButton }) {
     </ExperienceShell>
   );
 }
+

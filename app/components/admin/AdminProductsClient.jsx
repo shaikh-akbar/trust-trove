@@ -268,7 +268,7 @@ export default function AdminProductsClient({ initialProducts = [], statusOption
                         </div>
                         <div>
                           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Vendor</p>
-                          <p className="mt-1 truncate font-semibold text-slate-700">{product.vendor || "TrustTrove"}</p>
+                          <p className="mt-1 truncate font-semibold text-slate-700">{product.vendor || "GoModexa"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">SKU</p>
@@ -476,3 +476,4 @@ export default function AdminProductsClient({ initialProducts = [], statusOption
     </div>
   );
 }
+

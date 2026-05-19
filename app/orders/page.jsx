@@ -6,8 +6,8 @@ import { getAccountDashboardData } from "../../lib/account-server";
 import { getSessionUser } from "../../lib/auth/session";
 
 export const metadata = {
-  title: "Orders | TrustTrove",
-  description: "Track your TrustTrove orders and payment status.",
+  title: "Orders | GoModexa",
+  description: "Track your GoModexa orders and payment status.",
 };
 
 export default async function OrdersPage({ searchParams }) {
@@ -25,7 +25,7 @@ export default async function OrdersPage({ searchParams }) {
     <AccountDashboardShell
       currentPath="/orders"
       title="My Orders"
-      description="Track every TrustTrove purchase, payment status, and delivery milestone in one place."
+      description="Track every GoModexa purchase, payment status, and delivery milestone in one place."
       profile={profile}
       stats={stats}
       logoutButton={
@@ -53,3 +53,4 @@ export default async function OrdersPage({ searchParams }) {
     </AccountDashboardShell>
   );
 }
+

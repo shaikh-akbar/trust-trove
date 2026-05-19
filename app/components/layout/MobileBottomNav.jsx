@@ -70,7 +70,7 @@ export default function MobileBottomNav({ user }) {
             <div className="flex justify-center">
               <Link
                 href="/"
-                aria-label="TrustTrove home"
+                aria-label="GoModexa home"
                 className={`flex min-h-[44px] flex-col items-center justify-center rounded-[1rem] px-1.5 py-1.5 text-center transition ${
                   pathname === "/"
                     ? "bg-[var(--brand-navy)] text-white shadow-[0_10px_24px_-18px_rgba(15,23,42,0.24)]"
@@ -125,3 +125,4 @@ export default function MobileBottomNav({ user }) {
     </div>
   );
 }
+

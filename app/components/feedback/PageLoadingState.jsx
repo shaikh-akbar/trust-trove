@@ -1,5 +1,5 @@
 export default function PageLoadingState({
-  eyebrow = "TrustTrove",
+  eyebrow = "GoModexa",
   title = "Loading the next page",
   description = "We are preparing the next screen for you.",
 }) {
@@ -53,3 +53,4 @@ export default function PageLoadingState({
     </section>
   );
 }
+

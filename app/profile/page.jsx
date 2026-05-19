@@ -6,8 +6,8 @@ import { getAccountDashboardData } from "../../lib/account-server";
 import { getSessionUser } from "../../lib/auth/session";
 
 export const metadata = {
-  title: "My Profile | TrustTrove",
-  description: "Manage your TrustTrove account, orders, and saved products.",
+  title: "My Profile | GoModexa",
+  description: "Manage your GoModexa account, orders, and saved products.",
 };
 
 export default async function ProfilePage() {
@@ -23,7 +23,7 @@ export default async function ProfilePage() {
     <AccountDashboardShell
       currentPath="/profile"
       title="My Profile"
-      description="Manage your account details, saved addresses, and order activity from one clean TrustTrove dashboard."
+      description="Manage your account details, saved addresses, and order activity from one clean GoModexa dashboard."
       profile={profile}
       stats={stats}
       logoutButton={
@@ -46,3 +46,4 @@ export default async function ProfilePage() {
     </AccountDashboardShell>
   );
 }
+

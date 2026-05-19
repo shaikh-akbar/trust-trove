@@ -6,8 +6,8 @@ import { getAccountDashboardData } from "../../lib/account-server";
 import { getSessionUser } from "../../lib/auth/session";
 
 export const metadata = {
-  title: "My Addresses | TrustTrove",
-  description: "Manage your saved TrustTrove delivery addresses.",
+  title: "My Addresses | GoModexa",
+  description: "Manage your saved GoModexa delivery addresses.",
 };
 
 export default async function MyAddressesPage() {
@@ -41,3 +41,4 @@ export default async function MyAddressesPage() {
     </AccountDashboardShell>
   );
 }
+

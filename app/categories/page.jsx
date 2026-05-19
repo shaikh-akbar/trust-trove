@@ -5,8 +5,8 @@ import { buildMetadata } from "../../lib/seo";
 export const metadata = buildMetadata({
   title: "Categories",
   path: "/categories",
-  description: "Explore TrustTrove categories through cleaner collection pages designed for stronger discovery and SEO clarity.",
-  keywords: ["TrustTrove categories", "shop by category", "collection pages India"],
+  description: "Explore GoModexa categories through cleaner collection pages designed for stronger discovery and SEO clarity.",
+  keywords: ["GoModexa categories", "shop by category", "collection pages India"],
 });
 
 export default async function CategoriesPage() {
@@ -14,3 +14,4 @@ export default async function CategoriesPage() {
 
   return <CategoriesExperience categories={categories} />;
 }
+

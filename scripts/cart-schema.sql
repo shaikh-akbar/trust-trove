@@ -53,6 +53,6 @@ CREATE TRIGGER update_cart_items_updated_at
 ALTER TABLE public.carts DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.cart_items DISABLE ROW LEVEL SECURITY;
 
-GRANT USAGE ON SCHEMA public TO service_role;'''                                  
+GRANT USAGE ON SCHEMA public TO service_role;
 GRANT ALL ON TABLE public.carts TO service_role;
 GRANT ALL ON TABLE public.cart_items TO service_role;

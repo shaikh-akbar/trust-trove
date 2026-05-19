@@ -3,8 +3,8 @@ import CustomerReviewFormClient from "../components/reviews/CustomerReviewFormCl
 import { getSessionUser } from "../../lib/auth/session";
 
 export const metadata = {
-  title: "Share Feedback | TrustTrove",
-  description: "Leave a customer review about your TrustTrove shopping experience.",
+  title: "Share Feedback | GoModexa",
+  description: "Leave a customer review about your GoModexa shopping experience.",
 };
 
 export default async function ShareFeedbackPage() {
@@ -16,3 +16,4 @@ export default async function ShareFeedbackPage() {
 
   return <CustomerReviewFormClient user={user} />;
 }
+

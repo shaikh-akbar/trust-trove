@@ -8,8 +8,8 @@ const CATALOG_PAGE_SIZE = 24;
 export const metadata = buildMetadata({
   title: "Shop",
   path: "/shop",
-  description: "Browse the full TrustTrove catalog with product search, price filtering, and modern collection browsing.",
-  keywords: ["shop TrustTrove", "product filters", "search products online"],
+  description: "Browse the full GoModexa catalog with product search, price filtering, and modern collection browsing.",
+  keywords: ["shop GoModexa", "product filters", "search products online"],
 });
 
 export default async function ShopPage({ searchParams }) {
@@ -58,3 +58,4 @@ export default async function ShopPage({ searchParams }) {
     </>
   );
 }
+

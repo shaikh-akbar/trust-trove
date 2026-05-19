@@ -8,8 +8,8 @@ const CATALOG_PAGE_SIZE = 24;
 export const metadata = buildMetadata({
   title: "New Arrivals",
   path: "/new-arrivals",
-  description: "Discover the newest products on TrustTrove through a more premium launch-focused shopping experience.",
-  keywords: ["new arrivals", "latest products", "fresh drops TrustTrove"],
+  description: "Discover the newest products on GoModexa through a more premium launch-focused shopping experience.",
+  keywords: ["new arrivals", "latest products", "fresh drops GoModexa"],
 });
 
 export default async function NewArrivalsPage({ searchParams }) {
@@ -55,3 +55,4 @@ export default async function NewArrivalsPage({ searchParams }) {
     </>
   );
 }
+

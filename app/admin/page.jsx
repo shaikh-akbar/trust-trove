@@ -15,8 +15,8 @@ const iconMap = {
 };
 
 export const metadata = {
-  title: "Admin Dashboard | TrustTrove",
-  description: "Overview of TrustTrove store operations, orders, and customer activity.",
+  title: "Admin Dashboard | GoModexa",
+  description: "Overview of GoModexa store operations, orders, and customer activity.",
 };
 
 export default async function AdminDashboardPage() {
@@ -140,3 +140,4 @@ export default async function AdminDashboardPage() {
     </div>
   );
 }
+

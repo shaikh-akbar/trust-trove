@@ -33,7 +33,7 @@ function resolveNavigationMessage(url) {
     return "Loading new arrivals...";
   }
 
-  return "TrustTrove loading...";
+  return "GoModexa loading...";
 }
 
 export function useRouteLoading() {
@@ -46,7 +46,7 @@ export default function RouteLoadingProvider({ children }) {
   const searchKey = searchParams.toString();
   const timeoutRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [message, setMessage] = useState("TrustTrove loading...");
+  const [message, setMessage] = useState("GoModexa loading...");
 
   const clearHideTimer = useCallback(() => {
     if (timeoutRef.current) {
@@ -55,7 +55,7 @@ export default function RouteLoadingProvider({ children }) {
     }
   }, []);
 
-  const showLoader = useCallback((nextMessage = "TrustTrove loading...") => {
+  const showLoader = useCallback((nextMessage = "GoModexa loading...") => {
     clearHideTimer();
     setMessage(nextMessage);
     setIsVisible(true);
@@ -147,3 +147,4 @@ export default function RouteLoadingProvider({ children }) {
     </RouteLoadingContext.Provider>
   );
 }
+

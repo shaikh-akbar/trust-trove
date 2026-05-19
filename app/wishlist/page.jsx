@@ -5,8 +5,8 @@ import { getWishlistProductIdsForUser } from "../../lib/product-social-server";
 import { getProductsByIds } from "../../lib/product";
 
 export const metadata = {
-  title: "Wishlist | TrustTrove",
-  description: "View your saved TrustTrove products and return to them anytime.",
+  title: "Wishlist | GoModexa",
+  description: "View your saved GoModexa products and return to them anytime.",
 };
 
 export default async function WishlistPage() {
@@ -21,3 +21,4 @@ export default async function WishlistPage() {
 
   return <WishlistPageClient products={products} />;
 }
+

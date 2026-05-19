@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "scrape:deodap": "node scripts/scrape-deodap.js"
+    "import:deodap:json": "node scripts/import-deodap-json.js",
+    "scrape:deodap": "node scripts/scrape-deodap.js",
+    "scrape:deodap:import": "node scripts/scrape-deodap.js --import",
+    "scrape:wukusy": "node scripts/scrape-wukusy.js",
+    "scrape:wukusy:crawl": "node scripts/scrape-wukusy.js --crawl"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.0",

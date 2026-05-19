@@ -22,7 +22,7 @@ export default function AdminShell({ user, title, description, eyebrow = "Admin 
         <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
           <aside className="rounded-[2rem] border border-white/70 bg-[linear-gradient(180deg,rgba(37,46,94,0.98)_0%,rgba(24,31,66,0.98)_100%)] p-5 text-white shadow-[0_28px_80px_-46px_rgba(15,23,42,0.65)]">
             <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-white/60">TrustTrove</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-white/60">GoModexa</p>
               <h1 className="mt-2 text-2xl font-black tracking-[-0.04em]">Admin Console</h1>
               <p className="mt-2 text-sm leading-6 text-white/72">
                 Monitor orders, operations, and the customer pipeline from one focused workspace.
@@ -74,3 +74,4 @@ export default function AdminShell({ user, title, description, eyebrow = "Admin 
     </section>
   );
 }
+

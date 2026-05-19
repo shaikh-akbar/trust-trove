@@ -14,14 +14,14 @@ export async function generateMetadata({ params }) {
     return buildMetadata({
       title: "Brand Not Found",
       path: `/brands/${slug}`,
-      description: "The requested brand was not found on TrustTrove.",
+      description: "The requested brand was not found on GoModexa.",
     });
   }
 
   return buildMetadata({
     title: brand.title,
     path: `/brands/${slug}`,
-    description: `Browse ${brand.title} products on TrustTrove with a cleaner brand page and easier product discovery.`,
+    description: `Browse ${brand.title} products on GoModexa with a cleaner brand page and easier product discovery.`,
     keywords: [brand.title, `${brand.title} online`, `${brand.title} products`],
   });
 }
@@ -84,3 +84,4 @@ export default async function BrandDetailPage({ params, searchParams }) {
     </>
   );
 }
+

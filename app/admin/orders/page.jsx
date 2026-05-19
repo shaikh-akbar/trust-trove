@@ -7,8 +7,8 @@ import {
 } from "../../../lib/order-admin";
 
 export const metadata = {
-  title: "Admin Orders | TrustTrove",
-  description: "Manage and review TrustTrove orders from the admin panel.",
+  title: "Admin Orders | GoModexa",
+  description: "Manage and review GoModexa orders from the admin panel.",
 };
 
 export default async function AdminOrdersPage({ searchParams }) {
@@ -29,3 +29,4 @@ export default async function AdminOrdersPage({ searchParams }) {
     />
   );
 }
+

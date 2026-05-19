@@ -54,7 +54,7 @@ export default function CustomerReviewFormClient({ user }) {
       <div className="rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_24px_80px_-42px_rgba(66,72,121,0.18)] sm:p-8">
         <p className="text-xs font-black uppercase tracking-[0.24em] text-slate-400">Customer Review</p>
         <h1 className="mt-3 font-display text-2xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-3xl">
-          Share your TrustTrove experience
+          Share your GoModexa experience
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
           Signed in as {user.email}. Leave a customer rating and short review for the homepage customer voices section.
@@ -125,3 +125,4 @@ export default function CustomerReviewFormClient({ user }) {
     </section>
   );
 }
+

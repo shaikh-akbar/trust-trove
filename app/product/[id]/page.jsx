@@ -102,7 +102,7 @@ export default function ProductPage({ params }) {
     'Curated product details, trusted quality, and a clean presentation pulled directly from your catalog data.';
   const productUrl =
     typeof window !== 'undefined' ? window.location.href : `https://trusttrove.in/product/${product?.slug || product?.id || ''}`;
-  const shareText = product ? `Check out ${product.title} on TrustTrove` : 'Check this out on TrustTrove';
+  const shareText = product ? `Check out ${product.title} on GoModexa` : 'Check this out on GoModexa';
   const mailHref = `mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(`${shareText}\n\n${productUrl}`)}`;
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${productUrl}`)}`;
   const shouldShowReadMore = shortSummary.length > 140;
@@ -174,7 +174,7 @@ export default function ProductPage({ params }) {
     return (
       <div className="flex h-screen items-center justify-center bg-slate-50">
         <div className="text-center">
-          <div className="text-4xl font-bold tracking-tight text-slate-900">TRUSTTROVE</div>
+          <div className="text-4xl font-bold tracking-tight text-slate-900">GOMODEXA</div>
           <p className="mt-3 text-sm font-medium text-slate-400">Loading product...</p>
         </div>
       </div>
@@ -278,7 +278,7 @@ export default function ProductPage({ params }) {
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-2xl border border-slate-200 bg-white p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Vendor</p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">{product.vendor || 'TrustTrove'}</p>
+                      <p className="mt-2 text-sm font-semibold text-slate-900">{product.vendor || 'GoModexa'}</p>
                     </div>
                     <div className="rounded-2xl border border-slate-200 bg-white p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Category</p>

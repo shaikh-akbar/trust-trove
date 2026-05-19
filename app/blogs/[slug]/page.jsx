@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
     title: post.title,
     path: `/blogs/${slug}`,
     description: post.excerpt,
-    keywords: [post.category, post.title, "TrustTrove article"],
+    keywords: [post.category, post.title, "GoModexa article"],
   });
 }
 
@@ -52,3 +52,4 @@ export default async function BlogDetailPage({ params }) {
     </div>
   );
 }
+

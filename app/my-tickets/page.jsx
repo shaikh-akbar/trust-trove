@@ -8,8 +8,8 @@ import { getSessionUser } from "../../lib/auth/session";
 import { getTicketsForUser } from "../../lib/tickets-server";
 
 export const metadata = {
-  title: "My Tickets | TrustTrove",
-  description: "View account support status and support actions in your TrustTrove dashboard.",
+  title: "My Tickets | GoModexa",
+  description: "View account support status and support actions in your GoModexa dashboard.",
 };
 
 export default async function MyTicketsPage() {
@@ -29,7 +29,7 @@ export default async function MyTicketsPage() {
     <AccountDashboardShell
       currentPath="/my-tickets"
       title="My Tickets"
-      description="Keep support-related actions inside the same TrustTrove account center experience."
+      description="Keep support-related actions inside the same GoModexa account center experience."
       profile={profile}
       stats={stats}
       logoutButton={
@@ -44,3 +44,4 @@ export default async function MyTicketsPage() {
     </AccountDashboardShell>
   );
 }
+

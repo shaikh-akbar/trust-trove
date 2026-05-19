@@ -45,7 +45,8 @@ export function PolicyBulletList({ items }) {
 export function PolicyFooterNote() {
   return (
     <div className="rounded-[1.75rem] border border-[var(--line)] bg-[linear-gradient(180deg,#f7f8fc_0%,#eef1fb_100%)] p-6 text-sm leading-7 text-slate-700 sm:p-7">
-      Questions about these policies can be shared through the <Link href="/contact-us" className="font-bold text-[var(--brand-navy)] hover:text-slate-950">Contact Us</Link> page. TrustTrove will review and update these pages whenever store operations, shipping practices, or customer support processes change.
+      Questions about these policies can be shared through the <Link href="/contact-us" className="font-bold text-[var(--brand-navy)] hover:text-slate-950">Contact Us</Link> page. GoModexa will review and update these pages whenever store operations, shipping practices, or customer support processes change.
     </div>
   );
 }
+

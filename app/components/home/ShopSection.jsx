@@ -209,7 +209,7 @@ export default function ShopSection({
   if (!tabs.length) {
     return (
       <div className="mt-10 rounded-3xl bg-slate-50 py-20 text-center">
-        <p className="font-medium text-slate-500">No products found in the treasure trove yet.</p>
+        <p className="font-medium text-slate-500">No products found in GoModexa yet.</p>
       </div>
     );
   }
