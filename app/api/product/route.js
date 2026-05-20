@@ -1,10 +1,13 @@
 import { getProductByIdentifier, getProductsPage } from "../../../lib/product";
 
 export async function GET(request) {
-  const identifier = request.nextUrl.searchParams.get("id") || "";
+  const identifier =
+    request.nextUrl.searchParams.get("slug") ||
+    request.nextUrl.searchParams.get("id") ||
+    "";
 
   if (!identifier.trim()) {
-    return Response.json({ error: "Product id is required." }, { status: 400 });
+    return Response.json({ error: "Product slug is required." }, { status: 400 });
   }
 
   const product = await getProductByIdentifier(identifier);

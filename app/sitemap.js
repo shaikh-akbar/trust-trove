@@ -1,5 +1,6 @@
 import { BLOG_POSTS } from "../lib/content";
 import { getBrandSummaries, getCategorySummaries } from "../lib/product";
+import { getProductHref } from "../lib/product-route";
 import { getSupabaseAdmin } from "../lib/supabase-admin";
 import { getSiteUrl } from "../lib/seo";
 
@@ -35,9 +36,11 @@ async function getAllIndexedProducts() {
     return [];
   }
 
-  return (products || []).filter((product) =>
-    Array.isArray(product?.variants) &&
-    product.variants.some((variant) => Number(variant?.inventory_quantity || 0) > 0)
+  return (products || []).filter(
+    (product) =>
+      product?.slug &&
+      Array.isArray(product?.variants) &&
+      product.variants.some((variant) => Number(variant?.inventory_quantity || 0) > 0)
   );
 }
 
@@ -91,7 +94,7 @@ export default async function sitemap() {
   }));
 
   const productRoutes = (products || []).map((product) => ({
-    url: getSiteUrl(`/product/${product.slug || product.handle || product.id}`),
+    url: getSiteUrl(getProductHref(product)),
     lastModified: toDate(product.updated_at || product.created_at),
     changeFrequency: "weekly",
     priority: 0.7,

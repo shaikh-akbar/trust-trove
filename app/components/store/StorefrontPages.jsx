@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Gem, Layers3, Sparkles, TrendingUp } from "lucide-react";
 import CatalogExperienceClient from "./CatalogExperienceClient";
 import ProductCard from "../home/ProductCard";
+import { getProductHref } from "../../../lib/product-route";
 import {
   buildCategorySummary,
   formatBrandLabel,
@@ -578,7 +579,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
-                    href={spotlightProduct ? `/product/${spotlightProduct.id}` : "/shop"}
+                    href={spotlightProduct ? getProductHref(spotlightProduct) : "/shop"}
                     className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[#141d60]"
                   >
                     View featured drop <ArrowRight size={16} className="ml-2" />
@@ -619,7 +620,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
           <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
             <div className="grid gap-5 lg:grid-cols-[1.18fr_0.82fr]">
               <Link
-                href={`/product/${spotlightProduct.id}`}
+                href={getProductHref(spotlightProduct)}
                 className="group overflow-hidden rounded-[2rem] border border-[#141d60]/10 bg-white shadow-[0_32px_90px_-58px_rgba(20,29,96,0.4)]"
               >
                 <div className="grid h-full gap-0 lg:grid-cols-[0.95fr_1.05fr]">
@@ -675,7 +676,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
                 {arrivalLane.map((product, index) => (
                   <Link
                     key={product.id}
-                    href={`/product/${product.id}`}
+                    href={getProductHref(product)}
                     className={`group rounded-[1.7rem] border p-5 shadow-[0_24px_72px_-56px_rgba(20,29,96,0.35)] transition hover:-translate-y-1 ${
                       index === 0
                         ? "border-[#141d60]/12 bg-[#141d60] text-white"

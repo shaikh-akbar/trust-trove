@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import ProductCard from '../../components/home/ProductCard';
 import { buildCartItem, getCartItemKey, useCart } from '../../components/cart/CartProvider';
 import { useWishlist } from '../../components/wishlist/WishlistProvider';
+import { getProductHref } from '../../../lib/product-route';
 
 function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
@@ -30,7 +31,7 @@ function stripHtml(value) {
 
 export default function ProductPage({ params }) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  const productSlug = resolvedParams.slug;
   const router = useRouter();
 
   const [product, setProduct] = useState(null);
@@ -49,7 +50,7 @@ export default function ProductPage({ params }) {
     let active = true;
 
     async function loadProductPage() {
-      const response = await fetch(`/api/product?id=${encodeURIComponent(productId)}`);
+      const response = await fetch(`/api/product?slug=${encodeURIComponent(productSlug)}`);
       const payload = await response.json();
 
       if (!response.ok) {
@@ -77,6 +78,15 @@ export default function ProductPage({ params }) {
         return;
       }
 
+      const canonicalHref = getProductHref(productData);
+      if (
+        canonicalHref &&
+        typeof window !== 'undefined' &&
+        window.location.pathname !== canonicalHref
+      ) {
+        router.replace(canonicalHref);
+      }
+
       setIsMissingProduct(false);
       setProduct(productData);
       setMainImage(productData.main_image || productData.image_url || '');
@@ -85,14 +95,14 @@ export default function ProductPage({ params }) {
       setRelatedProducts(relatedItems.slice(0, 4));
     }
 
-    if (productId) {
+    if (productSlug) {
       void loadProductPage();
     }
 
     return () => {
       active = false;
     };
-  }, [productId]);
+  }, [productSlug, router]);
 
   const currentVariant = product?.variants?.[selectedVariantIndex] || product?.variants?.[0];
   const plainDescription = useMemo(() => stripHtml(product?.description), [product?.description]);
@@ -101,7 +111,7 @@ export default function ProductPage({ params }) {
     plainDescription ||
     'Curated product details, trusted quality, and a clean presentation pulled directly from your catalog data.';
   const productUrl =
-    typeof window !== 'undefined' ? window.location.href : `https://trusttrove.in/product/${product?.slug || product?.id || ''}`;
+    typeof window !== 'undefined' ? window.location.href : `https://trusttrove.in${getProductHref(product)}`;
   const shareText = product ? `Check out ${product.title} on GoModexa` : 'Check this out on GoModexa';
   const mailHref = `mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(`${shareText}\n\n${productUrl}`)}`;
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${productUrl}`)}`;
@@ -133,7 +143,7 @@ export default function ProductPage({ params }) {
     }
 
     if (!isLoggedIn) {
-      router.push(`/signin?redirectTo=${encodeURIComponent(`/product/${product.slug || product.id}`)}`);
+      router.push(`/signin?redirectTo=${encodeURIComponent(getProductHref(product))}`);
       return;
     }
 

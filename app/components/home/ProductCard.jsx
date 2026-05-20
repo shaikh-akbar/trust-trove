@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { buildCartItem, getCartItemKey, useCart } from '../cart/CartProvider';
+import { getProductHref } from '../../../lib/product-route';
 
 export default function ProductCard({ product, compact = false }) {
   const { addItem, isItemPending } = useCart();
@@ -21,6 +22,7 @@ export default function ProductCard({ product, compact = false }) {
 
   const cartItemKey = getCartItemKey(product, product?.variants?.[0]);
   const cartBusy = isItemPending(cartItemKey);
+  const productHref = getProductHref(product);
 
   async function handleAddToCart() {
     await addItem(buildCartItem(product, product?.variants?.[0], 1));
@@ -70,7 +72,7 @@ export default function ProductCard({ product, compact = false }) {
         </div>
 
         <Link
-          href={`/product/${product.id}`}
+          href={productHref}
           className="absolute inset-0 flex items-center justify-center gap-2 bg-black/20 opacity-0 transition-opacity group-hover:opacity-100"
         >
           <div className={`rounded-full bg-white text-slate-900 shadow-lg transition-transform hover:scale-110 ${compact ? "p-2.5" : "p-3"}`}>
@@ -86,7 +88,7 @@ export default function ProductCard({ product, compact = false }) {
       </div>
 
       <div className={bodyClassName}>
-        <Link href={`/product/${product.id}`}>
+        <Link href={productHref}>
           <h3 className={titleClassName}>
             {title}
           </h3>
@@ -98,7 +100,7 @@ export default function ProductCard({ product, compact = false }) {
         <div className={topMetaClassName}>
           <span>{comparePrice > sellingPrice ? "Limited pricing" : "Curated pick"}</span>
           <Link
-            href={`/product/${product.id}`}
+            href={productHref}
             aria-label={`View details for ${title}`}
             className="text-[var(--brand-navy)]"
           >
