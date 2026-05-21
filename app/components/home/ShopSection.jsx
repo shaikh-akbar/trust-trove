@@ -84,6 +84,7 @@ export default function ShopSection({
           products: tab.products || [],
           page: Number(tab.initialPage || (tab.products?.length ? 1 : 0)),
           isLoading: false,
+          hasAttemptedInitialLoad: Boolean(tab.products?.length) || Number(tab.initialPage || 0) > 0,
         },
       ])
     )
@@ -116,6 +117,7 @@ export default function ShopSection({
       products: tab.products || [],
       page: Number(tab.initialPage || (tab.products?.length ? 1 : 0)),
       isLoading: false,
+      hasAttemptedInitialLoad: Boolean(tab.products?.length) || Number(tab.initialPage || 0) > 0,
     };
 
     if (currentState.isLoading) {
@@ -153,6 +155,7 @@ export default function ShopSection({
             products: mergedProducts,
             page: targetPage,
             isLoading: false,
+            hasAttemptedInitialLoad: true,
           },
         };
       });
@@ -163,6 +166,7 @@ export default function ShopSection({
         [tab.id]: {
           ...(current[tab.id] || currentState),
           isLoading: false,
+          hasAttemptedInitialLoad: true,
         },
       }));
     }
@@ -177,20 +181,21 @@ export default function ShopSection({
       products: activeTab.products || [],
       page: Number(activeTab.initialPage || (activeTab.products?.length ? 1 : 0)),
       isLoading: false,
+      hasAttemptedInitialLoad: Boolean(activeTab.products?.length) || Number(activeTab.initialPage || 0) > 0,
     };
 
     if (currentState.isLoading) {
       return;
     }
 
-    if ((currentState.products?.length || 0) === 0 && activeTab.count > 0) {
+    if (!currentState.hasAttemptedInitialLoad && activeTab.count > 0) {
       await loadTabPage(activeTab, 1);
     }
   });
 
   useEffect(() => {
     void ensureActiveTabProducts();
-  }, [activeTab, tabState]);
+  }, [activeTab]);
 
   async function handleLoadMore() {
     if (!activeTab) {
@@ -201,6 +206,7 @@ export default function ShopSection({
       products: activeTab.products || [],
       page: Number(activeTab.initialPage || (activeTab.products?.length ? 1 : 0)),
       isLoading: false,
+      hasAttemptedInitialLoad: Boolean(activeTab.products?.length) || Number(activeTab.initialPage || 0) > 0,
     };
     const nextPage = Math.max(1, (currentState.page || 0) + 1);
     await loadTabPage(activeTab, nextPage);

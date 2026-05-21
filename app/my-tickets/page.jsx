@@ -5,12 +5,14 @@ import { logoutAction } from "../actions/auth";
 import { getAccountDashboardData } from "../../lib/account-server";
 import { getOrdersForUser } from "../../lib/checkout-server";
 import { getSessionUser } from "../../lib/auth/session";
+import { buildNoIndexMetadata } from "../../lib/seo";
 import { getTicketsForUser } from "../../lib/tickets-server";
 
-export const metadata = {
-  title: "My Tickets | GoModexa",
+export const metadata = buildNoIndexMetadata({
+  title: "My Tickets",
   description: "View account support status and support actions in your GoModexa dashboard.",
-};
+  path: "/my-tickets",
+});
 
 export default async function MyTicketsPage() {
   const user = await getSessionUser();

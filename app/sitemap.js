@@ -23,10 +23,12 @@ async function getAllIndexedProducts() {
       variants!inner (
         id,
         inventory_quantity,
+        supplier_name,
         status
       )
     `)
     .eq("status", "active")
+    .eq("variants.supplier_name", "wukusy")
     .eq("variants.status", "active")
     .order("updated_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false, nullsFirst: false });

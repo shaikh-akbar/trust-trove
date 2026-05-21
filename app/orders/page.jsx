@@ -4,11 +4,13 @@ import { AccountDashboardShell, LogoutSidebarButton, OrdersPanel } from "../comp
 import { logoutAction } from "../actions/auth";
 import { getAccountDashboardData } from "../../lib/account-server";
 import { getSessionUser } from "../../lib/auth/session";
+import { buildNoIndexMetadata } from "../../lib/seo";
 
-export const metadata = {
-  title: "Orders | GoModexa",
+export const metadata = buildNoIndexMetadata({
+  title: "Orders",
   description: "Track your GoModexa orders and payment status.",
-};
+  path: "/orders",
+});
 
 export default async function OrdersPage({ searchParams }) {
   const user = await getSessionUser();

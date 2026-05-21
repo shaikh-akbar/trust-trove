@@ -1,9 +1,11 @@
 import { SignUpExperience } from "../components/account/AccountExperience";
+import { buildNoIndexMetadata } from "../../lib/seo";
 
-export const metadata = {
-  title: "Sign Up | GoModexa",
+export const metadata = buildNoIndexMetadata({
+  title: "Sign Up",
   description: "Create a GoModexa account for faster checkout, saved products, and order tracking.",
-};
+  path: "/signup",
+});
 
 export default async function SignUpPage({ searchParams }) {
   const params = await searchParams;

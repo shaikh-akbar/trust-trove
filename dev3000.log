@@ -4,1628 +4,285 @@
 
 ▲ Next.js 16.2.4 (Turbopack)
 - Local:         http://localhost:3000
-- Network:       http://192.168.0.246:3000
+- Network:       http://172.23.176.1:3000
 - Environments: .env.local
-✓ Ready in 649ms
+✓ Ready in 604ms
 Creating turbopack project { dir: 'D:\\akbar-backup\\trusttrove\\trusttrove', testMode: true }
 
- GET /categories 200 in 5.2s (next.js: 637ms, application-code: 4.6s)
- GET / 200 in 2.7s (next.js: 46ms, application-code: 2.6s)
- GET /categories 200 in 2.2s (next.js: 4ms, application-code: 2.2s)
- GET /categories 200 in 2.4s (next.js: 5ms, application-code: 2.4s)
- GET / 200 in 3.0s (next.js: 5ms, application-code: 3.0s)
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
- GET /api/cron/catalog-cache?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR 200 in 75s (next.js: 191ms, application-code: 75s)
- GET / 200 in 1175ms (next.js: 46ms, application-code: 1130ms)
-✓ Compiled in 682ms
- GET /categories/grocery-and-gourmet-foods 200 in 9.4s (next.js: 1007ms, application-code: 8.4s)
- GET /categories/grocery-and-gourmet-foods 200 in 3.0s (next.js: 30ms, application-code: 3.0s)
- GET /categories/grocery-and-gourmet-foods 200 in 3.7s (next.js: 203ms, application-code: 3.5s)
- GET /categories/grocery-and-gourmet-foods 200 in 4.2s (next.js: 142ms, application-code: 4.1s)
- GET /categories/grocery-and-gourmet-foods 200 in 4.2s (next.js: 12ms, application-code: 4.2s)
- GET /categories/grocery-and-gourmet-foods 200 in 4.3s (next.js: 82ms, application-code: 4.2s)
- GET /categories/grocery-and-gourmet-foods 200 in 2.9s (next.js: 35ms, application-code: 2.9s)
- GET /categories/grocery-and-gourmet-foods 200 in 1471ms (next.js: 26ms, application-code: 1445ms)
- GET /categories/grocery-and-gourmet-foods 200 in 2.5s (next.js: 13ms, application-code: 2.5s)
- GET / 200 in 4.5s (next.js: 192ms, application-code: 4.3s)
- GET / 200 in 1316ms (next.js: 8ms, application-code: 1307ms)
- GET /shop 200 in 1380ms (next.js: 77ms, application-code: 1303ms)
- GET /categories 200 in 57s (next.js: 334ms, application-code: 57s)
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
- GET /categories 200 in 46s (next.js: 11ms, application-code: 46s)
- GET /api/cron/catalog-cache?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR 200 in 95s (next.js: 120ms, application-code: 94s)
-⨯ Error: useCart must be used within CartProvider.
-    at useCart (app\components\cart\CartProvider.jsx:355:11)
-    at ProductCard (app\components\home\ProductCard.jsx:9:45)
-  353 |
-  354 |   if (!context) {
-> 355 |     throw new Error("useCart must be used within CartProvider.");
-      |           ^
-  356 |   }
-  357 |
-  358 |   return context; {
-  digest: '3678158305'
-}
- GET /categories 500 in 45s (next.js: 6ms, application-code: 45s)
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
- GET / 200 in 21.6s (next.js: 14ms, application-code: 21.6s)
- GET / 200 in 31.0s (next.js: 22ms, application-code: 31.0s)
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
- GET / 200 in 51s (next.js: 4ms, application-code: 51s)
- GET /categories 200 in 26.5s (next.js: 13ms, application-code: 26.5s)
- GET / 200 in 458ms (next.js: 16ms, application-code: 443ms)
- GET /categories 200 in 842ms (next.js: 7ms, application-code: 836ms)
- GET /shop 200 in 1208ms (next.js: 8ms, application-code: 1200ms)
- GET / 200 in 6.0s (next.js: 6ms, application-code: 5.9s)
- GET /shop 200 in 696ms (next.js: 9ms, application-code: 687ms)
- GET /categories 200 in 867ms (next.js: 16ms, application-code: 852ms)
- GET /shop 200 in 733ms (next.js: 6ms, application-code: 727ms)
- GET / 200 in 457ms (next.js: 7ms, application-code: 450ms)
- GET /api/products?category=Home%20%26%20Kitchen&page=2&pageSize=10 200 in 990ms (next.js: 53ms, application-code: 938ms)
-⨯ ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m
-  [90m3 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m4 |[0m
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m3 |[0m [36mimport[0m { buildCatalogCacheKey, [33mCATALOG_CACHE_TTL_SECONDS[0m, withCatalogCache } [36mfrom[0m [32m"./catalo...[0m
-  [90m4 |[0m
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
-  [90m3 |[0m
-  [90m4 |[0m [36mfunction[0m getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m
-  [90m3 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m4 |[0m
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m3 |[0m [36mimport[0m { buildCatalogCacheKey, [33mCATALOG_CACHE_TTL_SECONDS[0m, withCatalogCache } [36mfrom[0m [32m"./catalo...[0m
-  [90m4 |[0m
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
-  [90m3 |[0m
-  [90m4 |[0m [36mfunction[0m getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
- GET /product/0e9643c4-f7f0-451d-9640-52ba83bef619 500 in 1587ms (next.js: 1382ms, application-code: 205ms)
-⨯ ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m
-  [90m3 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m4 |[0m
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m3 |[0m [36mimport[0m { buildCatalogCacheKey, [33mCATALOG_CACHE_TTL_SECONDS[0m, withCatalogCache } [36mfrom[0m [32m"./catalo...[0m
-  [90m4 |[0m
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
-  [90m3 |[0m
-  [90m4 |[0m [36mfunction[0m getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m
-  [90m3 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m4 |[0m
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m3 |[0m [36mimport[0m { buildCatalogCacheKey, [33mCATALOG_CACHE_TTL_SECONDS[0m, withCatalogCache } [36mfrom[0m [32m"./catalo...[0m
-  [90m4 |[0m
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
-  [90m3 |[0m
-  [90m4 |[0m [36mfunction[0m getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
- GET /product/0e9643c4-f7f0-451d-9640-52ba83bef619 500 in 87ms (next.js: 13ms, application-code: 75ms)
-[browser] ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] Uncaught Error: ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-    at <unknown> (Error: ./lib/catalog-cache.js:1:1)
-    at <unknown> (Error: (./lib/catalog-cache.js:1:1)
-[browser] ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-✓ Compiled in 499ms
-⨯ ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m
-  [90m3 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m4 |[0m
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m3 |[0m [36mimport[0m { buildCatalogCacheKey, [33mCATALOG_CACHE_TTL_SECONDS[0m, withCatalogCache } [36mfrom[0m [32m"./catalo...[0m
-  [90m4 |[0m
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
-  [90m3 |[0m
-  [90m4 |[0m [36mfunction[0m getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m
-  [90m3 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m4 |[0m
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { getSupabaseAdmin } [36mfrom[0m [32m"./supabase-admin"[0m;
-  [90m3 |[0m [36mimport[0m { buildCatalogCacheKey, [33mCATALOG_CACHE_TTL_SECONDS[0m, withCatalogCache } [36mfrom[0m [32m"./catalo...[0m
-  [90m4 |[0m
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-
-./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-[31m[1m>[0m [90m1 |[0m [36mimport[0m [32m"server-only"[0m;
-  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
-  [90m2 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
-  [90m3 |[0m
-  [90m4 |[0m [36mfunction[0m getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
- GET /product/0e9643c4-f7f0-451d-9640-52ba83bef619 500 in 61ms (next.js: 16ms, application-code: 45ms)
-[browser] Uncaught Error: ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component]
-
-
-    at <unknown> (Error: ./lib/catalog-cache.js:1:1)
-    at <unknown> (Error: (./lib/catalog-cache.js:1:1)
- GET /product/0e9643c4-f7f0-451d-9640-52ba83bef619 200 in 571ms
-[browser] ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-Ecmascript file had an error
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
-    Learn more: https://nextjs.org/docs/app/building-your-application/rendering/server-components
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-Ecmascript file had an error
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/catalog-cache.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 |
-  3 | import { getSupabaseAdmin } from "./supabase-admin";
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/catalog-cache.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/catalog-cache.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/catalog-cache.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/product-social-server.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { getSupabaseAdmin } from "./supabase-admin";
-  3 | import { buildCatalogCacheKey, CATALOG_CACHE_TTL_SECONDS, withCatalogCache } from "./catalo...
-  4 |
-
-It should only be used from a Server Component.
-
-Import traces:
-  Server Component:
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  Client Component Browser:
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  Client Component SSR:
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
-[browser] ./lib/supabase-admin.js:1:1
-'server-only' cannot be imported from a Client Component module
-> 1 | import "server-only";
-    | ^^^^^^^^^^^^^^^^^^^^^
-  2 | import { createClient } from "@supabase/supabase-js";
-  3 |
-  4 | function getRequiredEnv(name) {
-
-It should only be used from a Server Component.
-
-Import traces:
-  #1 [Server Component]:
-    ./lib/supabase-admin.js
-    ./app/actions/auth.js
-
-  #2 [Server Component]:
-    ./lib/supabase-admin.js
-    ./lib/product-social-server.js
-    ./app/layout.jsx
-
-  #3 [Client Component Browser]:
-    ./lib/supabase-admin.js [Client Component Browser]
-    ./lib/product-social-server.js [Client Component Browser]
-    ./lib/product.js [Client Component Browser]
-    ./app/product/[id]/page.jsx [Client Component Browser]
-    ./app/product/[id]/page.jsx [Server Component]
-
-  #4 [Client Component SSR]:
-    ./lib/supabase-admin.js [Client Component SSR]
-    ./lib/product-social-server.js [Client Component SSR]
-    ./lib/product.js [Client Component SSR]
-    ./app/product/[id]/page.jsx [Client Component SSR]
-    ./app/product/[id]/page.jsx [Server Component] 
- GET /product/0e9643c4-f7f0-451d-9640-52ba83bef619 200 in 6.0s (next.js: 747ms, application-code: 5.2s)
- GET /api/product?id=0e9643c4-f7f0-451d-9640-52ba83bef619 200 in 1814ms (next.js: 777ms, application-code: 1037ms)
- GET / 200 in 1774ms (next.js: 50ms, application-code: 1724ms)
+ GET / 200 in 2.8s (next.js: 1249ms, application-code: 1549ms)
+ GET /api/products?category=Wukusy%20Catalog&page=1&pageSize=10 200 in 226ms (next.js: 135ms, application-code: 91ms)
+✓ Compiled in 446ms
+ GET / 200 in 1000ms (next.js: 144ms, application-code: 857ms)
+ GET / 200 in 507ms (next.js: 68ms, application-code: 439ms)
+ GET / 200 in 514ms (next.js: 51ms, application-code: 462ms)
+ GET / 200 in 516ms (next.js: 8ms, application-code: 509ms)
+ GET / 200 in 515ms (next.js: 94ms, application-code: 421ms)
+ GET / 200 in 528ms (next.js: 210ms, application-code: 318ms)
+ GET / 200 in 546ms (next.js: 8ms, application-code: 538ms)
+ GET / 200 in 474ms (next.js: 11ms, application-code: 463ms)
+ GET / 200 in 366ms (next.js: 50ms, application-code: 317ms)
+ GET / 200 in 369ms (next.js: 7ms, application-code: 362ms)
+ GET / 200 in 368ms (next.js: 134ms, application-code: 234ms)
+ GET / 200 in 192ms (next.js: 31ms, application-code: 161ms)
+✓ Compiled in 239ms
+ GET / 200 in 582ms (next.js: 70ms, application-code: 511ms)
+ GET / 200 in 500ms (next.js: 3ms, application-code: 496ms)
+ GET / 200 in 429ms (next.js: 6ms, application-code: 422ms)
+ GET / 200 in 430ms (next.js: 96ms, application-code: 334ms)
+ GET / 200 in 432ms (next.js: 49ms, application-code: 384ms)
+ GET / 200 in 432ms (next.js: 205ms, application-code: 227ms)
+ GET / 200 in 498ms (next.js: 13ms, application-code: 485ms)
+ GET / 200 in 410ms (next.js: 9ms, application-code: 401ms)
+ GET / 200 in 335ms (next.js: 10ms, application-code: 324ms)
+ GET / 200 in 334ms (next.js: 95ms, application-code: 239ms)
+ GET / 200 in 330ms (next.js: 202ms, application-code: 128ms)
+ GET / 200 in 338ms (next.js: 53ms, application-code: 285ms)
+ GET /api/products?category=Wukusy%20Catalog&page=1&pageSize=10 200 in 892ms (next.js: 102ms, application-code: 790ms)
+ GET /api/products?category=Wukusy%20Catalog&page=1&pageSize=10 200 in 762ms (next.js: 2ms, application-code: 760ms)
+ GET /api/products?page=1&pageSize=10 200 in 566ms (next.js: 4ms, application-code: 563ms)
+ GET /api/product?slug=elegant-duo-personalized-bracelet-gourmet-chocolate-gift-combo-7259 200 in 589ms (next.js: 40ms, application-code: 550ms)
+ GET / 200 in 2.7s (next.js: 5ms, application-code: 2.7s)
+ GET /product/sweet-and-stylish-customized-bracelet-delicious-chocolate-combo-gift-set-7237 200 in 1142ms (next.js: 1085ms, application-code: 57ms)
+ GET /api/product?slug=sweet-and-stylish-customized-bracelet-delicious-chocolate-combo-gift-set-7237 200 in 190ms (next.js: 10ms, application-code: 180ms)
+ GET /api/product?slug=sweet-and-stylish-customized-bracelet-delicious-chocolate-combo-gift-set-7237 200 in 88ms (next.js: 18ms, application-code: 70ms)
+ GET / 200 in 153ms (next.js: 10ms, application-code: 143ms)
+ GET /product/customized-personalized-stylish-kada-bracelet-1-pc-silver-6523 200 in 56ms (next.js: 16ms, application-code: 40ms)
+ GET /api/product?slug=customized-personalized-stylish-kada-bracelet-1-pc-silver-6523 200 in 400ms (next.js: 7ms, application-code: 392ms)
+ GET /api/product?slug=customized-personalized-stylish-kada-bracelet-1-pc-silver-6523 200 in 77ms (next.js: 5ms, application-code: 72ms)
+ POST /api/cart 200 in 594ms (next.js: 84ms, application-code: 511ms)
+ GET / 200 in 735ms (next.js: 4ms, application-code: 730ms)
+ GET /api/products?category=Wukusy%20Catalog&page=2&pageSize=10 200 in 1252ms (next.js: 4ms, application-code: 1248ms)
+ GET /api/products?category=Wukusy%20Catalog&page=3&pageSize=10 200 in 161ms (next.js: 6ms, application-code: 154ms)
+ GET /product/perfect-pair-customized-bracelet-chocolate-gift-combo-7250 200 in 67ms (next.js: 15ms, application-code: 51ms)
+ GET /api/product?slug=perfect-pair-customized-bracelet-chocolate-gift-combo-7250 200 in 380ms (next.js: 5ms, application-code: 376ms)
+ GET /api/product?slug=perfect-pair-customized-bracelet-chocolate-gift-combo-7250 200 in 92ms (next.js: 5ms, application-code: 88ms)
+ GET / 200 in 506ms (next.js: 6ms, application-code: 500ms)
+ GET / 200 in 18ms (next.js: 6ms, application-code: 12ms)
+ GET / 200 in 299ms (next.js: 4ms, application-code: 295ms)
+ GET / 200 in 19ms (next.js: 8ms, application-code: 11ms)
+ GET / 200 in 131ms (next.js: 3ms, application-code: 127ms)
+ GET /product/raksha-bandhan-tying-love-tying-protection-13504 200 in 77ms (next.js: 14ms, application-code: 63ms)
+ GET /api/product?slug=raksha-bandhan-tying-love-tying-protection-13504 200 in 123ms (next.js: 5ms, application-code: 118ms)
+ GET /api/product?slug=raksha-bandhan-tying-love-tying-protection-13504 200 in 69ms (next.js: 3ms, application-code: 66ms)
+  Reload env: .env.local
+ GET /product/raksha-bandhan-tying-love-tying-protection-13504 200 in 414ms (next.js: 257ms, application-code: 156ms)
+  Reload env: .env.local
+ GET /product/raksha-bandhan-tying-love-tying-protection-13504 200 in 404ms (next.js: 228ms, application-code: 175ms)
+  Reload env: .env.local
+ GET /product/raksha-bandhan-tying-love-tying-protection-13504 200 in 306ms (next.js: 144ms, application-code: 162ms)
+  Reload env: .env.local
+ GET /product/raksha-bandhan-tying-love-tying-protection-13504 200 in 329ms (next.js: 179ms, application-code: 150ms)
+ GET /product/raksha-bandhan-tying-love-tying-protection-13504 200 in 385ms (next.js: 184ms, application-code: 201ms)
+ GET / 200 in 2.1s (next.js: 36ms, application-code: 2.1s)
+ GET /api/products?category=Bracelets&page=1&pageSize=10 200 in 250ms (next.js: 121ms, application-code: 129ms)
+ GET /api/products?category=Other%20Products&page=1&pageSize=10 200 in 226ms (next.js: 7ms, application-code: 219ms)
+ GET /api/products?category=Fashion&page=1&pageSize=10 200 in 118ms (next.js: 6ms, application-code: 112ms)
+ GET /api/products?category=Services&page=1&pageSize=10 200 in 196ms (next.js: 9ms, application-code: 188ms)
+ GET /api/products?category=Watches&page=1&pageSize=10 200 in 122ms (next.js: 6ms, application-code: 117ms)
+ GET /product/power-beam-led-bicycle-headlight-1-pc-16687 200 in 55ms (next.js: 14ms, application-code: 41ms)
+ GET /api/product?slug=power-beam-led-bicycle-headlight-1-pc-16687 200 in 259ms (next.js: 38ms, application-code: 221ms)
+ GET /api/product?slug=power-beam-led-bicycle-headlight-1-pc-16687 200 in 60ms (next.js: 4ms, application-code: 56ms)
+ GET / 200 in 200ms (next.js: 8ms, application-code: 192ms)
+ GET /product/1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292 200 in 64ms (next.js: 16ms, application-code: 48ms)
+ GET /api/product?slug=1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292 200 in 128ms (next.js: 6ms, application-code: 122ms)
+ GET /api/product?slug=1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292 200 in 85ms (next.js: 2ms, application-code: 83ms)
+ POST /api/cart 200 in 868ms (next.js: 69ms, application-code: 799ms)
+ GET /cart 200 in 171ms (next.js: 84ms, application-code: 86ms)
+ GET /checkout 200 in 237ms (next.js: 76ms, application-code: 160ms)
+ POST /api/checkout/summary 200 in 205ms (next.js: 81ms, application-code: 125ms)
+ POST /api/checkout/summary 200 in 446ms (next.js: 90ms, application-code: 356ms)
+ GET / 200 in 685ms (next.js: 6ms, application-code: 679ms)
+ GET /api/products?category=Bracelets&page=1&pageSize=10 200 in 181ms (next.js: 6ms, application-code: 175ms)
+ GET /product/customized-personalized-stylish-kada-bracelet-1-pc-silver-6523 200 in 55ms (next.js: 15ms, application-code: 40ms)
+ GET /api/product?slug=customized-personalized-stylish-kada-bracelet-1-pc-silver-6523 200 in 1004ms (next.js: 6ms, application-code: 998ms)
+ GET /api/product?slug=customized-personalized-stylish-kada-bracelet-1-pc-silver-6523 200 in 68ms (next.js: 4ms, application-code: 64ms)
+ GET / 200 in 629ms (next.js: 7ms, application-code: 622ms)
+ GET / 200 in 2.6s (next.js: 4ms, application-code: 2.6s)
+ GET /api/products?category=Office&page=1&pageSize=10 200 in 171ms (next.js: 3ms, application-code: 168ms)
+ GET /api/products?category=Travel&page=1&pageSize=10 200 in 294ms (next.js: 14ms, application-code: 281ms)
+ GET /product/stylish-multipurpose-cosmetic-storage-pouch-bag-1-pc-18x12-cm-20496 200 in 271ms (next.js: 37ms, application-code: 234ms)
+ GET /api/product?slug=stylish-multipurpose-cosmetic-storage-pouch-bag-1-pc-18x12-cm-20496 200 in 324ms (next.js: 20ms, application-code: 304ms)
+ GET /api/product?slug=stylish-multipurpose-cosmetic-storage-pouch-bag-1-pc-18x12-cm-20496 200 in 113ms (next.js: 21ms, application-code: 92ms)
+ GET / 200 in 688ms (next.js: 3ms, application-code: 685ms)
+ GET /api/products?category=Services&page=1&pageSize=10 200 in 1022ms (next.js: 13ms, application-code: 1009ms)
+ GET /api/products?category=Accessories&page=1&pageSize=10 200 in 399ms (next.js: 2ms, application-code: 397ms)
+ GET /api/products?category=Fashion&page=1&pageSize=10 200 in 214ms (next.js: 9ms, application-code: 204ms)
+ GET /api/products?category=Automotive&page=1&pageSize=10 200 in 144ms (next.js: 9ms, application-code: 135ms)
+ GET /api/products?category=Bracelets&page=1&pageSize=10 200 in 167ms (next.js: 7ms, application-code: 160ms)
+ GET /api/products?category=Foods&page=1&pageSize=10 200 in 433ms (next.js: 4ms, application-code: 429ms)
+ GET /categories 200 in 425ms (next.js: 87ms, application-code: 338ms)
+ GET /categories/wukusy-catalog 200 in 1607ms (next.js: 1069ms, application-code: 539ms)
+ GET /categories 200 in 242ms (next.js: 5ms, application-code: 237ms)
+ GET / 200 in 135ms (next.js: 7ms, application-code: 128ms)
+ GET / 200 in 2.3s (next.js: 10ms, application-code: 2.2s)
+ GET /api/products?category=Garden&page=1&pageSize=10 200 in 189ms (next.js: 12ms, application-code: 177ms)
+ GET /api/products?category=Foods&page=1&pageSize=10 200 in 662ms (next.js: 4ms, application-code: 658ms)
+ GET /api/products?category=Chocolates&page=1&pageSize=10 200 in 960ms (next.js: 5ms, application-code: 955ms)
+ GET /product/delicious-almond-chocolate-15560 200 in 68ms (next.js: 20ms, application-code: 48ms)
+ GET /api/product?slug=delicious-almond-chocolate-15560 200 in 269ms (next.js: 8ms, application-code: 261ms)
+ GET /api/product?slug=delicious-almond-chocolate-15560 200 in 65ms (next.js: 4ms, application-code: 61ms)
+ GET /api/search?q=al&limit=30 200 in 273ms (next.js: 51ms, application-code: 221ms)
+ GET /api/search?q=alm&limit=30 200 in 255ms (next.js: 4ms, application-code: 251ms)
+ GET /api/search?q=almo&limit=30 200 in 213ms (next.js: 11ms, application-code: 202ms)
+ GET /api/search?q=almon&limit=30 200 in 221ms (next.js: 2ms, application-code: 218ms)
+ GET /api/search?q=almond&limit=30 200 in 122ms (next.js: 3ms, application-code: 119ms)
+ GET / 200 in 169ms (next.js: 5ms, application-code: 164ms)
+ GET /brands/wukusy 200 in 1679ms (next.js: 1137ms, application-code: 542ms)
+ GET /brands/wukusy?page=2 200 in 1069ms (next.js: 17ms, application-code: 1052ms)
+ GET /product/7224-wi-fi-receiver-wireless-mini-wi-fi-network-adapter-with-with-driver-cd-for-computer-laptop-and-etc-device-use-5847 200 in 110ms (next.js: 25ms, application-code: 85ms)
+ GET /api/product?slug=7224-wi-fi-receiver-wireless-mini-wi-fi-network-adapter-with-with-driver-cd-for-computer-laptop-and-etc-device-use-5847 200 in 715ms (next.js: 10ms, application-code: 705ms)
+ GET /api/product?slug=7224-wi-fi-receiver-wireless-mini-wi-fi-network-adapter-with-with-driver-cd-for-computer-laptop-and-etc-device-use-5847 200 in 60ms (next.js: 3ms, application-code: 56ms)
+ GET / 200 in 363ms (next.js: 7ms, application-code: 356ms)
+ GET / 200 in 1961ms (next.js: 4ms, application-code: 1957ms)
+ GET /api/products?category=Kitchen%20Tool&page=1&pageSize=10 200 in 253ms (next.js: 5ms, application-code: 247ms)
+ GET /categories/bracelets 200 in 658ms (next.js: 16ms, application-code: 642ms)
+ GET /categories/home-decor 200 in 487ms (next.js: 14ms, application-code: 473ms)
+ GET / 200 in 417ms (next.js: 3ms, application-code: 414ms)
+ GET /product/slim-tablet-mobile-stand-adjustable-foldable-tablet-stand-scaffold-1-pc-1130 200 in 65ms (next.js: 15ms, application-code: 50ms)
+ GET /api/product?slug=slim-tablet-mobile-stand-adjustable-foldable-tablet-stand-scaffold-1-pc-1130 200 in 443ms (next.js: 7ms, application-code: 436ms)
+ GET /api/product?slug=slim-tablet-mobile-stand-adjustable-foldable-tablet-stand-scaffold-1-pc-1130 200 in 63ms (next.js: 4ms, application-code: 59ms)
+ GET / 200 in 814ms (next.js: 8ms, application-code: 806ms)
+ GET /api/products?category=Bracelets&page=1&pageSize=10 200 in 1305ms (next.js: 11ms, application-code: 1294ms)
+ GET /api/products?category=Chocolates&page=1&pageSize=10 200 in 432ms (next.js: 5ms, application-code: 427ms)
+ GET /product/effete-kesar-pista-almonds-chocolate-96-g-15570 200 in 57ms (next.js: 12ms, application-code: 45ms)
+ GET /api/product?slug=effete-kesar-pista-almonds-chocolate-96-g-15570 200 in 174ms (next.js: 4ms, application-code: 170ms)
+ GET /api/product?slug=effete-kesar-pista-almonds-chocolate-96-g-15570 200 in 64ms (next.js: 3ms, application-code: 61ms)
+ GET / 200 in 522ms (next.js: 4ms, application-code: 518ms)
+ GET / 200 in 2.3s (next.js: 5ms, application-code: 2.3s)
+ GET /api/products?category=8&page=1&pageSize=10 200 in 170ms (next.js: 9ms, application-code: 161ms)
+ GET /api/products?category=3&page=1&pageSize=10 200 in 374ms (next.js: 3ms, application-code: 371ms)
+ GET /api/products?category=4&page=1&pageSize=10 200 in 172ms (next.js: 3ms, application-code: 170ms)
+ GET /api/products?category=9&page=1&pageSize=10 200 in 492ms (next.js: 5ms, application-code: 487ms)
+ GET /api/products?category=6&page=1&pageSize=10 200 in 1058ms (next.js: 4ms, application-code: 1055ms)
+ GET /product/12v-single-usb-car-charger-adapter-for-mobile-charging-1-pc-19161 200 in 74ms (next.js: 16ms, application-code: 58ms)
+ GET /api/product?slug=12v-single-usb-car-charger-adapter-for-mobile-charging-1-pc-19161 200 in 513ms (next.js: 5ms, application-code: 508ms)
+ GET /api/product?slug=12v-single-usb-car-charger-adapter-for-mobile-charging-1-pc-19161 200 in 70ms (next.js: 4ms, application-code: 66ms)
+ GET / 200 in 959ms (next.js: 19ms, application-code: 940ms)
+ GET /api/search?q=su&limit=30 200 in 204ms (next.js: 3ms, application-code: 201ms)
+ GET /api/search?q=sun&limit=30 200 in 327ms (next.js: 4ms, application-code: 323ms)
+ GET /api/search?q=sung&limit=30 200 in 68ms (next.js: 3ms, application-code: 65ms)
+ GET /api/search?q=sungl&limit=30 200 in 64ms (next.js: 1936µs, application-code: 62ms)
+ GET /api/search?q=sungla&limit=30 200 in 49ms (next.js: 4ms, application-code: 45ms)
+ GET /api/search?q=sunglas&limit=30 200 in 55ms (next.js: 2ms, application-code: 53ms)
+ GET /api/search?q=sunglass&limit=30 200 in 52ms (next.js: 3ms, application-code: 49ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 91ms (next.js: 26ms, application-code: 64ms)
+ GET /api/product?slug=travel-sunglasses-protection-kit-1-set-19229 200 in 204ms (next.js: 12ms, application-code: 192ms)
+ GET /api/product?slug=travel-sunglasses-protection-kit-1-set-19229 200 in 80ms (next.js: 3ms, application-code: 77ms)
+✓ Compiled in 351ms
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 968ms (next.js: 196ms, application-code: 772ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 593ms (next.js: 6ms, application-code: 588ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 590ms (next.js: 11ms, application-code: 578ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 616ms (next.js: 245ms, application-code: 371ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 618ms (next.js: 111ms, application-code: 506ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 621ms (next.js: 62ms, application-code: 558ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 688ms (next.js: 12ms, application-code: 676ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 569ms (next.js: 13ms, application-code: 557ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 637ms (next.js: 10ms, application-code: 627ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 585ms (next.js: 54ms, application-code: 531ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 594ms (next.js: 154ms, application-code: 440ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 596ms (next.js: 102ms, application-code: 494ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 678ms (next.js: 10ms, application-code: 668ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 569ms (next.js: 4ms, application-code: 565ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 449ms (next.js: 6ms, application-code: 442ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 340ms (next.js: 110ms, application-code: 230ms)
+ GET /product/travel-sunglasses-protection-kit-1-set-19229 200 in 342ms (next.js: 31ms, application-code: 312ms)
+ GET /api/search?q=wa&limit=30 200 in 987ms (next.js: 154ms, application-code: 832ms)
+ GET /api/search?q=wat&limit=30 200 in 142ms (next.js: 3ms, application-code: 139ms)
+ GET /api/search?q=watc&limit=30 200 in 65ms (next.js: 3ms, application-code: 62ms)
+ GET /api/search?q=watch&limit=30 200 in 65ms (next.js: 3ms, application-code: 62ms)
+ GET /product/elegant-rose-gold-mesh-strap-analog-wrist-watch-for-women-1-pc-18361 200 in 124ms (next.js: 21ms, application-code: 103ms)
+ GET /api/product?slug=elegant-rose-gold-mesh-strap-analog-wrist-watch-for-women-1-pc-18361 200 in 754ms (next.js: 147ms, application-code: 606ms)
+ GET /api/product?slug=elegant-rose-gold-mesh-strap-analog-wrist-watch-for-women-1-pc-18361 200 in 91ms (next.js: 3ms, application-code: 88ms)
+ GET /api/search?q=wa&limit=30 200 in 90ms (next.js: 5ms, application-code: 85ms)
+ GET /api/search?q=wat&limit=30 200 in 68ms (next.js: 4ms, application-code: 63ms)
+ GET /api/search?q=watc&limit=30 200 in 55ms (next.js: 8ms, application-code: 47ms)
+ GET /api/search?q=watch&limit=30 200 in 55ms (next.js: 3ms, application-code: 52ms)
+ GET /api/search?q=watche&limit=30 200 in 65ms (next.js: 5ms, application-code: 61ms)
+ GET /api/search?q=watches&limit=30 200 in 49ms (next.js: 2ms, application-code: 46ms)
+ GET /categories/watches 200 in 1443ms (next.js: 288ms, application-code: 1154ms)
+ GET / 200 in 718ms (next.js: 215ms, application-code: 503ms)
+ GET /api/products?category=4&page=1&pageSize=10 200 in 225ms (next.js: 131ms, application-code: 94ms)
+ GET /api/products?category=5&page=1&pageSize=10 200 in 166ms (next.js: 7ms, application-code: 159ms)
+ GET / 200 in 1198ms (next.js: 5ms, application-code: 1194ms)
+ GET /api/products?category=5&page=1&pageSize=10 200 in 75ms (next.js: 6ms, application-code: 69ms)
+ GET / 200 in 3.3s (next.js: 13ms, application-code: 3.3s)
+ GET /api/products?category=Wukusy%20Catalog&page=1&pageSize=10 200 in 450ms (next.js: 5ms, application-code: 445ms)
+ GET /categories/mobile-accessories 200 in 754ms (next.js: 14ms, application-code: 741ms)
+ GET /api/search?q=tr&limit=30 200 in 348ms (next.js: 2ms, application-code: 346ms)
+ GET /api/search?q=tri&limit=30 200 in 98ms (next.js: 2ms, application-code: 96ms)
+ GET /api/search?q=trip&limit=30 200 in 59ms (next.js: 2ms, application-code: 57ms)
+ GET /api/search?q=tripo&limit=30 200 in 49ms (next.js: 2ms, application-code: 47ms)
+ GET /api/search?q=tripos&limit=30 200 in 45ms (next.js: 3ms, application-code: 42ms)
+ GET /api/search?q=tripo&limit=30 200 in 50ms (next.js: 2ms, application-code: 48ms)
+ GET /api/search?q=tripod&limit=30 200 in 52ms (next.js: 2ms, application-code: 50ms)
+ GET /product/0329-professional-tripod-with-multipurpose-head-for-low-level-shooting-panning-for-all-dslr-camera-257 200 in 107ms (next.js: 16ms, application-code: 90ms)
+ GET /api/product?slug=0329-professional-tripod-with-multipurpose-head-for-low-level-shooting-panning-for-all-dslr-camera-257 200 in 447ms (next.js: 16ms, application-code: 432ms)
+ GET /api/product?slug=0329-professional-tripod-with-multipurpose-head-for-low-level-shooting-panning-for-all-dslr-camera-257 200 in 57ms (next.js: 2ms, application-code: 55ms)
+ GET / 200 in 181ms (next.js: 7ms, application-code: 174ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 54ms (next.js: 11ms, application-code: 43ms)
+ GET /api/product?slug=stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 1228ms (next.js: 5ms, application-code: 1222ms)
+ GET /api/product?slug=stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 69ms (next.js: 3ms, application-code: 66ms)
+✓ Compiled in 379ms
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 774ms (next.js: 152ms, application-code: 622ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 483ms (next.js: 5ms, application-code: 478ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 467ms (next.js: 49ms, application-code: 417ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 468ms (next.js: 5ms, application-code: 463ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 467ms (next.js: 176ms, application-code: 292ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 469ms (next.js: 138ms, application-code: 331ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 488ms (next.js: 4ms, application-code: 484ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 415ms (next.js: 11ms, application-code: 403ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 400ms (next.js: 79ms, application-code: 320ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 403ms (next.js: 6ms, application-code: 397ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 403ms (next.js: 39ms, application-code: 364ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 296ms (next.js: 4ms, application-code: 291ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 452ms (next.js: 5ms, application-code: 448ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 370ms (next.js: 8ms, application-code: 362ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 250ms (next.js: 48ms, application-code: 202ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 252ms (next.js: 7ms, application-code: 246ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 129ms (next.js: 30ms, application-code: 99ms)
+ GET /product/stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 2.5s (next.js: 15ms, application-code: 2.5s)
+ GET /api/product?slug=stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 218ms (next.js: 111ms, application-code: 106ms)
+ GET /api/product?slug=stainless-steel-8-in-1-multipurpose-pocket-tool-kit-17160 200 in 60ms (next.js: 2ms, application-code: 58ms)
+ GET / 200 in 512ms (next.js: 221ms, application-code: 291ms)
+ GET /api/products?category=Wukusy%20Catalog&page=1&pageSize=10 200 in 715ms (next.js: 130ms, application-code: 585ms)
+ GET /product/power-beam-led-bicycle-headlight-1-pc-16687 200 in 57ms (next.js: 18ms, application-code: 39ms)
+ GET /api/product?slug=power-beam-led-bicycle-headlight-1-pc-16687 200 in 923ms (next.js: 2ms, application-code: 921ms)
+ GET /api/product?slug=power-beam-led-bicycle-headlight-1-pc-16687 200 in 69ms (next.js: 3ms, application-code: 66ms)
+ POST /api/cart 200 in 1010ms (next.js: 141ms, application-code: 869ms)
+ GET /cart 200 in 313ms (next.js: 216ms, application-code: 97ms)
+ GET /checkout 200 in 427ms (next.js: 231ms, application-code: 195ms)
+ POST /api/checkout/summary 200 in 310ms (next.js: 186ms, application-code: 124ms)
+ POST /api/checkout/summary 200 in 344ms (next.js: 216ms, application-code: 128ms)
+ GET / 200 in 210ms (next.js: 6ms, application-code: 203ms)
+ GET /cart 200 in 66ms (next.js: 8ms, application-code: 58ms)
+ GET /checkout 200 in 283ms (next.js: 11ms, application-code: 272ms)
+ POST /api/checkout/summary 200 in 171ms (next.js: 7ms, application-code: 164ms)
+ POST /api/checkout/summary 200 in 158ms (next.js: 13ms, application-code: 145ms)
+ POST /api/checkout/create-order 200 in 528ms (next.js: 85ms, application-code: 442ms)
+ POST /api/checkout/verify-payment 200 in 1314ms (next.js: 90ms, application-code: 1225ms)
+ DELETE /api/cart?mode=clear 200 in 178ms (next.js: 4ms, application-code: 175ms)
+Failed to send order email: Error: Failed to send email: {"statusCode":403,"name":"validation_error","message":"You can only send testing emails to your own email address (akbar000785@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain."}
+    at sendEmail (lib\auth\mail.js:48:11)
+  46 |   if (!response.ok) {
+  47 |     const body = await response.text();
+> 48 |     throw new Error(`Failed to send email: ${body}`);
+     |           ^
+  49 |   }
+  50 |
+  51 |   return { success: true };
+ GET /orders?placed=TT-20260521-YCIDMU 200 in 366ms (next.js: 66ms, application-code: 300ms)
+ GET / 200 in 707ms (next.js: 5ms, application-code: 702ms)
+ GET /brands 200 in 949ms (next.js: 97ms, application-code: 852ms)
+ GET /categories 200 in 816ms (next.js: 333ms, application-code: 483ms)
+ GET /shop 200 in 867ms (next.js: 88ms, application-code: 780ms)
+ GET /api/search?q=fa&limit=30 200 in 186ms (next.js: 123ms, application-code: 62ms)
+ GET /api/search?q=fac&limit=30 200 in 195ms (next.js: 3ms, application-code: 192ms)
+ GET /api/search?q=face&limit=30 200 in 220ms (next.js: 1879µs, application-code: 218ms)
+ GET /api/search?q=face&limit=30 200 in 73ms (next.js: 3ms, application-code: 70ms)
+ GET /api/search?q=face%20w&limit=30 200 in 58ms (next.js: 4ms, application-code: 55ms)
+ GET /api/search?q=face%20wa&limit=30 200 in 60ms (next.js: 7ms, application-code: 53ms)
+ GET /api/search?q=face%20was&limit=30 200 in 50ms (next.js: 1933µs, application-code: 48ms)
+ GET /api/search?q=face%20wash&limit=30 200 in 50ms (next.js: 2ms, application-code: 48ms)
+ GET /product/advanced-salicylic-acid-gel-face-wash-1-pc-100-ml-20324 200 in 71ms (next.js: 18ms, application-code: 53ms)
+ GET /api/product?slug=advanced-salicylic-acid-gel-face-wash-1-pc-100-ml-20324 200 in 71ms (next.js: 5ms, application-code: 66ms)
+ GET /api/product?slug=advanced-salicylic-acid-gel-face-wash-1-pc-100-ml-20324 200 in 63ms (next.js: 5ms, application-code: 58ms)

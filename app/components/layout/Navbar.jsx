@@ -211,7 +211,6 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
   );
   const navItems = [
     { href: "/shop", label: "Shop" },
-    { href: "/brands", label: "Brands" },
     { href: "/categories", label: "Categories" },
     { href: "/new-arrivals", label: "New Arrivals" },
   ];
@@ -635,4 +634,3 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
     </nav>
   );
 }
-

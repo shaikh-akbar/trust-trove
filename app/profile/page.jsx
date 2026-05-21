@@ -4,11 +4,13 @@ import ProfileEditorModal from "../components/account/ProfileEditorModal";
 import { logoutAction } from "../actions/auth";
 import { getAccountDashboardData } from "../../lib/account-server";
 import { getSessionUser } from "../../lib/auth/session";
+import { buildNoIndexMetadata } from "../../lib/seo";
 
-export const metadata = {
-  title: "My Profile | GoModexa",
+export const metadata = buildNoIndexMetadata({
+  title: "My Profile",
   description: "Manage your GoModexa account, orders, and saved products.",
-};
+  path: "/profile",
+});
 
 export default async function ProfilePage() {
   const user = await getSessionUser();

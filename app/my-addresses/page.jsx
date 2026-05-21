@@ -4,11 +4,13 @@ import AccountAddressesClient from "../components/account/AccountAddressesClient
 import { logoutAction } from "../actions/auth";
 import { getAccountDashboardData } from "../../lib/account-server";
 import { getSessionUser } from "../../lib/auth/session";
+import { buildNoIndexMetadata } from "../../lib/seo";
 
-export const metadata = {
-  title: "My Addresses | GoModexa",
+export const metadata = buildNoIndexMetadata({
+  title: "My Addresses",
   description: "Manage your saved GoModexa delivery addresses.",
-};
+  path: "/my-addresses",
+});
 
 export default async function MyAddressesPage() {
   const user = await getSessionUser();

@@ -34,6 +34,7 @@ function parseArgs(argv) {
     crawl: false,
     delayMs: DEFAULT_DELAY_MS,
     limit: null,
+    offset: 0,
     cookie: process.env.WUKUSY_COOKIE || "",
   };
 
@@ -64,6 +65,10 @@ function parseArgs(argv) {
         break;
       case "--limit":
         args.limit = normalizeInteger(nextValue, 0) || null;
+        index += 1;
+        break;
+      case "--offset":
+        args.offset = normalizeInteger(nextValue, 0);
         index += 1;
         break;
       case "--cookie":
@@ -279,6 +284,33 @@ function unique(items) {
   return Array.from(new Set((items || []).filter(Boolean)));
 }
 
+function slugify(value) {
+  return String(value || "wukusy-category")
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function normalizeCategoryTitle(value, fallback = "Uncategorized") {
+  const normalized = normalizeText(value).replace(/\s+/g, " ");
+
+  if (!normalized) {
+    return fallback;
+  }
+
+  if (/^\d+$/.test(normalized)) {
+    return fallback;
+  }
+
+  if (/^category\s+\d+$/i.test(normalized)) {
+    return fallback;
+  }
+
+  return normalized;
+}
+
 function extractLinks(html, baseUrl) {
   const matches = Array.from(
     html.matchAll(/href=["']([^"'#?][^"']*|\/[^"']*|https?:\/\/[^"']*)["']/gi)
@@ -297,10 +329,42 @@ function extractProductLinks(html, baseUrl) {
   );
 }
 
-function extractCategoryLinks(html, baseUrl) {
-  return extractLinks(html, baseUrl).filter((link) =>
-    /\/dropshiper\/category\/\d+/i.test(link)
+function extractCategoryEntries(html, baseUrl) {
+  const matches = Array.from(
+    html.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)
   );
+
+  const entries = [];
+  const seen = new Set();
+
+  for (const match of matches) {
+    const href = toAbsoluteUrl(decodeHtml(match[1]), baseUrl);
+    if (!href || !/\/dropshiper\/category\/\d+/i.test(href)) {
+      continue;
+    }
+
+    const label = stripHtml(match[2]);
+    const title = normalizeCategoryTitle(label || extractCategoryTitleFromUrl(href));
+    const key = `${href}::${title}`;
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    entries.push({
+      url: href,
+      title,
+      handle: slugify(title || extractCategoryTitleFromUrl(href)),
+    });
+  }
+
+  return entries;
+}
+
+function extractCategoryTitleFromUrl(url) {
+  const match = String(url || "").match(/\/category\/(\d+)/i);
+  return match ? `Category ${match[1]}` : "Uncategorized";
 }
 
 function extractMetaContent(html, key) {
@@ -425,37 +489,62 @@ function extractDetailData(html, url) {
   };
 }
 
-async function crawlWukusySite({ startUrl, cookie, delayMs, limit }) {
+async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 }) {
   const visitedCategoryLinks = new Set();
-  const queuedCategoryLinks = [startUrl];
+  const queuedCategoryLinks = [
+    {
+      url: startUrl,
+      title: "Wukusy Catalog",
+      handle: "wukusy-catalog",
+    },
+  ];
   const discoveredProductLinks = new Set();
+  const productCategoryMap = new Map();
+  const discoveredCategories = new Map();
   const products = [];
+  const targetProductCount =
+    typeof limit === "number" && limit > 0 ? offset + limit : null;
   const shouldStopCategoryDiscovery = () =>
-    typeof limit === "number" && limit > 0 && discoveredProductLinks.size >= limit;
+    typeof targetProductCount === "number" && targetProductCount > 0
+      ? discoveredProductLinks.size >= targetProductCount
+      : false;
 
   while (queuedCategoryLinks.length > 0) {
     if (shouldStopCategoryDiscovery()) {
       break;
     }
 
-    const nextCategoryUrl = queuedCategoryLinks.shift();
+    const nextCategory = queuedCategoryLinks.shift();
+    const nextCategoryUrl = nextCategory?.url;
 
     if (!nextCategoryUrl || visitedCategoryLinks.has(nextCategoryUrl)) {
       continue;
     }
 
     visitedCategoryLinks.add(nextCategoryUrl);
+    discoveredCategories.set(nextCategoryUrl, {
+      title: normalizeCategoryTitle(
+        nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl)
+      ),
+      handle:
+        nextCategory?.handle ||
+        slugify(normalizeCategoryTitle(nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl))),
+      url: nextCategoryUrl,
+    });
     console.log(`Crawling category page: ${nextCategoryUrl}`);
     const html = await fetchHtml(nextCategoryUrl, cookie, startUrl);
 
     extractProductLinks(html, nextCategoryUrl).forEach((link) => {
+      if (!productCategoryMap.has(link)) {
+        productCategoryMap.set(link, discoveredCategories.get(nextCategoryUrl));
+      }
       discoveredProductLinks.add(link);
     });
 
     if (!shouldStopCategoryDiscovery()) {
-      extractCategoryLinks(html, nextCategoryUrl).forEach((link) => {
-        if (!visitedCategoryLinks.has(link)) {
-          queuedCategoryLinks.push(link);
+      extractCategoryEntries(html, nextCategoryUrl).forEach((entry) => {
+        if (!visitedCategoryLinks.has(entry.url)) {
+          queuedCategoryLinks.push(entry);
         }
       });
     }
@@ -467,12 +556,20 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit }) {
 
   const productLinks = Array.from(discoveredProductLinks);
   const selectedProductLinks =
-    typeof limit === "number" && limit > 0 ? productLinks.slice(0, limit) : productLinks;
+    typeof limit === "number" && limit > 0
+      ? productLinks.slice(offset, offset + limit)
+      : productLinks.slice(offset);
 
   for (const productUrl of selectedProductLinks) {
     console.log(`Scraping product detail: ${productUrl}`);
     const html = await fetchHtml(productUrl, cookie, startUrl);
-    products.push(extractDetailData(html, productUrl));
+    const category = productCategoryMap.get(productUrl) || null;
+    products.push({
+      ...extractDetailData(html, productUrl),
+      category_title: normalizeCategoryTitle(category?.title),
+      category_handle: category?.handle || "uncategorized",
+      category_url: category?.url || "",
+    });
 
     if (delayMs > 0) {
       await sleep(delayMs);
@@ -482,6 +579,7 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit }) {
   return {
     startUrl,
     discoveredCategoryCount: visitedCategoryLinks.size,
+    categories: Array.from(discoveredCategories.values()),
     discoveredProductCount: productLinks.length,
     scrapedProductCount: products.length,
     products,
@@ -501,14 +599,17 @@ async function main() {
       cookie: args.cookie,
       delayMs: args.delayMs,
       limit: args.limit,
+      offset: args.offset,
     });
     products = crawlResult.products;
     metadata = {
       source: "crawl",
       startUrl: crawlResult.startUrl,
       discoveredCategoryCount: crawlResult.discoveredCategoryCount,
+      categories: crawlResult.categories,
       discoveredProductCount: crawlResult.discoveredProductCount,
       scrapedProductCount: crawlResult.scrapedProductCount,
+      offset: args.offset,
     };
   } else {
     const payload = await fetchPayload(args);

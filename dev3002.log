@@ -6,59 +6,13 @@
 - Local:         http://localhost:3002
 - Network:       http://172.23.176.1:3002
 - Environments: .env.local
-✓ Ready in 604ms
-Creating turbopack project { dir: 'D:\\akbar-backup\\trusttrove\\trusttrove', testMode: true }
+✓ Ready in 647ms
+⨯ Another next dev server is already running.
 
- GET /api/cron/wukusy-sync?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR&crawl=1 200 in 11.8min (next.js: 810ms, application-code: 11.8min)
- GET /api/cron/wukusy-sync?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR&crawl=1&limit=3 500 in 1904ms (next.js: 8ms, application-code: 1896ms)
-Catalog cache clear failed: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching brand summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching brand summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
- GET /api/cron/wukusy-sync?secret=sb_secret_w7MboTrLT-7JQWjh8mUQtA_unhOXamR&crawl=1&limit=3 200 in 104s (next.js: 87ms, application-code: 104s)
-Error fetching featured products: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
-Error fetching category summaries: {
-  code: '57014',
-  details: null,
-  hint: null,
-  message: 'canceling statement due to statement timeout'
-}
- GET / 200 in 48s (next.js: 234ms, application-code: 48s)
+- Local:        http://localhost:3000
+- PID:          52132
+- Dir:          D:\akbar-backup\trusttrove\trusttrove
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 52132 /F to stop it.
 [?25h

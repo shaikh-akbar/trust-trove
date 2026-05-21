@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import HomeCustomerReviews from "./HomeCustomerReviews";
 import ShopSection from "./ShopSection";
 import StaticPromoBanner from "./StaticPromoBanner";
-import BrandTilesClient from "./BrandTilesClient";
 import CategoryTilesClient from "./CategoryTilesClient";
 
 function SectionHeading({ eyebrow, title, href, actionLabel }) {
@@ -56,18 +55,6 @@ export default function HomeExperience({
         eyebrow="Category lanes"
         title="Shop by Category"
       />
-
-      <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f4efe6_100%)] py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            eyebrow="Shop by brand"
-            title="Discover Featured Brands"
-            href="/brands"
-            actionLabel="Browse brands"
-          />
-          <BrandTilesClient brands={brands} />
-        </div>
-      </section>
 
       <section className="bg-[linear-gradient(180deg,#f6ede2_0%,#fbf7f0_100%)] py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
