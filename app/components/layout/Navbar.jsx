@@ -330,13 +330,13 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between gap-6 sm:h-24">
+        <div className="flex h-24 items-center justify-between gap-6 sm:h-24">
           <div className="flex shrink-0 items-center overflow-visible">
             <Link href="/" className="group flex items-center gap-2">
               <img
                 src="/assets/gomodexa-13.png"
                 alt="GoModexa Logo"
-                className="-ml-2 h-12 w-auto max-w-none object-contain object-left transition-transform group-hover:scale-105 sm:-ml-3 sm:h-14 md:-ml-4 md:h-30"
+                className="-ml-1 h-18 w-auto max-w-none object-contain object-left transition-transform group-hover:scale-105 sm:-ml-2 sm:h-16 md:-ml-4 md:h-30"
               />
             </Link>
           </div>
