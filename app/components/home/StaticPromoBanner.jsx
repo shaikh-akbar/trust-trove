@@ -8,61 +8,64 @@ const AUTO_PLAY_MS = 4500;
 
 const CAROUSEL_SLIDES = [
   {
-    id: "women-style",
-    eyebrow: "New Arrivals",
-    title: "Women's Style",
-    description: "Up to 70% Off",
+    id: "health-beauty",
+    eyebrow: "Tech Trends",
+    title: "Health & Beauty",
+    description: "Skincare, wellness, and fitness essentials",
     href: "/shop",
-    image:
-      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1400&q=80",
+    image: "/banner/health.png",
+    imageClassName: "object-[72%_center] sm:object-center",
   },
   {
-    id: "streetwear",
-    eyebrow: "Style Drop",
-    title: "Street Looks",
-    description: "Fresh casual edits",
+   
+     id: "electronics",
+    eyebrow: "Electronics",
+    title: "Electronics",
+    description: "Smart gadgets for every day",
     href: "/shop",
-    image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1400&q=80",
+    image: "/banner/electronics.png",
+    imageClassName: "object-[64%_center] sm:object-center",
   },
   {
-    id: "weekend-wear",
-    eyebrow: "Weekend Edit",
-    title: "Light Layers",
-    description: "Smart picks for every day",
+    id: "Home Decor",
+    eyebrow: "Home Decor",
+    title: "Home Decor",
+    description: "Easy upgrades for every room",
     href: "/shop",
-    image:
-      "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1400&q=80",
+    image: "/banner/home-decor.png",
+    imageClassName: "object-[58%_center] sm:object-center",
   },
 ];
 
 const SIDE_TILES = [
   {
-    id: "handbag",
+    id: "Face Serum",
     badge: "25% Off",
-    title: "Handbag",
+    title: "Health & Beauty",
     description: "Polished carry picks",
-    href: "/shop",
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    href: "https://gomodexa.com/product/brightening-vitamin-c-gel-face-wash-1-pc-100ml-20325",
+    image: "/banner/ban-4.webp",
+    imagePosition: "center center",
   },
   {
-    id: "watch",
+    id: "Home Decor",
     badge: "45% Off",
-    title: "Watch",
+    title: "Pillow",
     description: "Classic statement styles",
-    href: "/shop",
+    href: "https://gomodexa.com/product/pillow-covers-cushion-cases-soft-leather-and-cotton-23-22-inch-1-pair-2-pc-2969",
     image:
-      "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=80",
+      "/banner/ban-5.png",
+    imagePosition: "center center",
   },
   {
-    id: "backpack",
-    eyebrow: "Accessories",
-    title: "Backpack",
+    id: "Stand",
+    eyebrow: "Mobile Stand",
+    title: "Mobile Stand",
     description: "Min. 40-80% Off",
-    href: "/shop",
+    href: "/",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+      "/banner/ban-6.png",
+    imagePosition: "78% center",
     className: "col-span-2",
   },
 ];
@@ -77,6 +80,7 @@ function SideTile({ tile }) {
         src={tile.image}
         alt={tile.title}
         className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+        style={{ objectPosition: tile.imagePosition || "center center" }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.38)_100%)]" />
 
@@ -134,15 +138,15 @@ export default function StaticPromoBanner() {
               key={slide.id}
               src={slide.image}
               alt={slide.title}
-              className={`absolute inset-0 h-full w-full object-cover object-top transition-all duration-700 ${
+              className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
                 index === activeIndex ? "scale-100 opacity-100" : "scale-105 opacity-0"
-              }`}
+              } ${slide.imageClassName || "object-center"}`}
             />
           ))}
 
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.04)_0%,rgba(15,23,42,0.46)_100%)]" />
 
-          <div className="relative flex min-h-[24rem] flex-col justify-between p-5 sm:min-h-[29rem] sm:p-7 lg:h-full lg:min-h-0 lg:p-4">
+          <div className="relative flex min-h-[26rem] flex-col justify-between p-5 sm:min-h-[29rem] sm:p-7 lg:h-full lg:min-h-0 lg:p-4">
             <div className="max-w-[13rem] rounded-[1.4rem] bg-white/18 p-4 shadow-[0_12px_28px_-18px_rgba(15,23,42,0.28)] backdrop-blur sm:max-w-[16rem] sm:p-5 lg:max-w-[14rem] lg:p-4">
               <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#3574d4] sm:text-[10px]">
                 {activeSlide.eyebrow}
@@ -160,15 +164,17 @@ export default function StaticPromoBanner() {
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5 rounded-full bg-white/8 px-2 py-1 backdrop-blur-sm">
                 {CAROUSEL_SLIDES.map((slide, index) => (
                   <button
                     key={slide.id}
                     type="button"
                     onClick={() => setActiveIndex(index)}
                     aria-label={`Go to ${slide.title}`}
-                    className={`h-2.5 rounded-full transition ${
-                      index === activeIndex ? "w-8 bg-[var(--brand-navy)]" : "w-2.5 bg-white/80"
+                    className={`rounded-full transition-all duration-300 ${
+                      index === activeIndex
+                        ? "h-2.5 w-7 bg-[#355fe6] shadow-[0_0_0_1px_rgba(255,255,255,0.16)]"
+                        : "h-2 w-2 bg-white/70 hover:bg-white/90"
                     }`}
                   />
                 ))}
