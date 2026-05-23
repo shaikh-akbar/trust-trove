@@ -14,17 +14,26 @@ export default function CancellationRefundPolicyPage() {
     <div className="bg-[var(--surface-soft)]">
       <PolicyHero
         eyebrow="GoModexa Policy"
-        title="Cancellation, return, and refund policy."
-        description="Please review these rules carefully before placing an order with GoModexa. Once an order is confirmed, the fulfillment flow starts immediately, which limits cancellation and modification options."
+        title="Order cancellation, return, and refund policy."
+        description="Please review these rules carefully before placing an order with GoModexa. Orders move into fulfillment immediately after confirmation, so cancellation and modification options are very limited."
       />
 
       <div className="mx-auto max-w-5xl space-y-6 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20 py-5">
-        <PolicySection title="Cancellation rules">
+        <PolicySection title="Order cancellation policy">
           <PolicyBulletList
             items={[
               "No cancellations are allowed after an order is confirmed.",
-              "No modifications are allowed after confirmation, including product changes, address changes, or item additions.",
-              "Please verify your order details carefully before placing the order.",
+              "We process all confirmed orders immediately to support prompt delivery, so cancellations are not permitted after confirmation.",
+              "Please ensure all order details are accurate before confirming your purchase.",
+            ]}
+          />
+        </PolicySection>
+
+        <PolicySection title="No modifications after confirmation">
+          <PolicyBulletList
+            items={[
+              "No changes or modifications are allowed after an order is confirmed.",
+              "This includes product additions, product swaps, address changes, contact detail updates, or any other order edits.",
             ]}
           />
         </PolicySection>
@@ -32,9 +41,9 @@ export default function CancellationRefundPolicyPage() {
         <PolicySection title="Exceptional order cancellations by GoModexa">
           <PolicyBulletList
             items={[
-              "In rare cases, GoModexa may cancel an order if the item is out of stock.",
+              "In rare circumstances, GoModexa may cancel an order if the item is out of stock.",
               "GoModexa may also cancel an order if a pricing error is identified.",
-              "Orders may be canceled if the delivery pincode is not serviceable.",
+              "Orders may be canceled if the delivery pincode provided is not serviceable.",
               "If GoModexa cancels the order for any of the above reasons, the full paid amount will be refunded.",
             ]}
           />
