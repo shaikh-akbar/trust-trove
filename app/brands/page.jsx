@@ -1,6 +1,10 @@
 import { BrandsExperience } from "../components/store/StorefrontPages";
 import { getBrandsPageData } from "../../lib/product";
-import { buildMetadata } from "../../lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildMetadata,
+} from "../../lib/seo";
 
 export const metadata = buildMetadata({
   title: "Brands",
@@ -12,6 +16,38 @@ export const metadata = buildMetadata({
 export default async function BrandsPage() {
   const brands = await getBrandsPageData();
 
-  return <BrandsExperience brands={brands} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Brands", path: "/brands" },
+            ])
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildCollectionPageSchema({
+              name: "Brands",
+              description:
+                "Explore all GoModexa brands through dedicated brand collection pages.",
+              path: "/brands",
+              items: brands.map((brand) => ({
+                name: brand.title,
+                url: `/brands/${brand.slug}`,
+              })),
+            })
+          ),
+        }}
+      />
+      <BrandsExperience brands={brands} />
+    </>
+  );
 }
 

@@ -1,7 +1,12 @@
 import { ShopExperience } from "../components/store/StorefrontPages";
 import Link from "next/link";
 import { getCategorySummaries, getProductsPage } from "../../lib/product";
-import { buildMetadata } from "../../lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildMetadata,
+} from "../../lib/seo";
+import { getProductHref } from "../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
@@ -23,6 +28,34 @@ export default async function ShopPage({ searchParams }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Shop", path: "/shop" },
+            ])
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildCollectionPageSchema({
+              name: "Shop",
+              description:
+                "Browse the full GoModexa catalog with product search and collection discovery.",
+              path: "/shop",
+              items: products.map((product) => ({
+                name: product.title || product.name,
+                url: getProductHref(product),
+              })),
+            })
+          ),
+        }}
+      />
       <ShopExperience products={products} categories={categories} initialQuery={initialQuery} />
       {totalPages > 1 ? (
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-14 pt-4 sm:px-6 lg:px-8">

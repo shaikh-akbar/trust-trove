@@ -4,7 +4,12 @@ import {
   CategoryDetailExperience,
 } from "../../components/store/StorefrontPages";
 import { getCategorySummaries, getProductsPage } from "../../../lib/product";
-import { buildMetadata } from "../../../lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildMetadata,
+} from "../../../lib/seo";
+import { getProductHref } from "../../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
@@ -47,6 +52,36 @@ export default async function CategoryDetailPage({ params, searchParams }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Categories", path: "/categories" },
+              { name: category.title, path: `/categories/${slug}` },
+            ])
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildCollectionPageSchema({
+              name: category.title,
+              description:
+                category.description ||
+                `Browse ${category.title} products on GoModexa.`,
+              path: `/categories/${slug}`,
+              items: products.map((product) => ({
+                name: product.title || product.name,
+                url: getProductHref(product),
+              })),
+            })
+          ),
+        }}
+      />
       <CategoryDetailExperience
         products={products}
         category={category}

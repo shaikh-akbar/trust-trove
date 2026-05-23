@@ -1,7 +1,12 @@
 import { NewArrivalsExperience } from "../components/store/StorefrontPages";
 import Link from "next/link";
 import { getProductsPage } from "../../lib/product";
-import { buildMetadata } from "../../lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildMetadata,
+} from "../../lib/seo";
+import { getProductHref } from "../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
@@ -20,6 +25,34 @@ export default async function NewArrivalsPage({ searchParams }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "New Arrivals", path: "/new-arrivals" },
+            ])
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildCollectionPageSchema({
+              name: "New Arrivals",
+              description:
+                "Discover the newest products on GoModexa through a launch-focused shopping experience.",
+              path: "/new-arrivals",
+              items: products.map((product) => ({
+                name: product.title || product.name,
+                url: getProductHref(product),
+              })),
+            })
+          ),
+        }}
+      />
       <NewArrivalsExperience products={products} initialQuery={initialQuery} />
       {totalPages > 1 ? (
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-14 pt-4 sm:px-6 lg:px-8">

@@ -150,44 +150,71 @@ function getOrderProgressSteps(order) {
 
 function StatCard({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-[1.6rem] border border-[var(--line)] bg-white p-5 shadow-[0_20px_45px_-40px_rgba(22,31,102,0.45)]">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgba(22,31,102,0.08)] text-[#161f66]">
+    <div className="rounded-[1.35rem] border border-[var(--line)] bg-white p-4 shadow-[0_20px_45px_-40px_rgba(22,31,102,0.45)] sm:rounded-[1.6rem] sm:p-5">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[rgba(22,31,102,0.08)] text-[#161f66] sm:h-12 sm:w-12 sm:rounded-2xl">
         <Icon size={22} />
       </div>
-      <p className="mt-5 text-sm text-slate-500">{label}</p>
-      <p className="mt-1 text-4xl font-black tracking-tight text-slate-950">{value}</p>
+      <p className="mt-4 text-xs text-slate-500 sm:mt-5 sm:text-sm">{label}</p>
+      <p className="mt-1 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{value}</p>
     </div>
   );
 }
 
 function SidebarNav({ currentPath, logoutButton }) {
   return (
-    <aside className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_24px_60px_-48px_rgba(22,31,102,0.48)]">
-      <div className="border-b border-[var(--line-soft)] px-5 py-5">
-        <p className="text-xs font-black uppercase tracking-[0.24em] text-[#161f66]/70">Account Center</p>
-      </div>
-      <nav className="p-3">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const isActive = currentPath === href;
+    <>
+      <div className="-mx-4 overflow-x-auto px-4 pb-1 lg:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex min-w-max gap-2">
+          {navItems.map(({ href, label, icon: Icon }) => {
+            const isActive = currentPath === href;
 
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={`mb-2 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold transition ${
-                isActive
-                  ? "bg-[rgba(22,31,102,0.08)] text-[#161f66]"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
-              }`}
-            >
-              <Icon size={18} />
-              <span>{label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="border-t border-[var(--line-soft)] p-4">{logoutButton}</div>
-    </aside>
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-xs font-black uppercase tracking-[0.14em] transition ${
+                  isActive
+                    ? "border-[#161f66] bg-[#161f66] text-white"
+                    : "border-[var(--line)] bg-white text-slate-600"
+                }`}
+              >
+                <Icon size={15} />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      <aside className="hidden overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_24px_60px_-48px_rgba(22,31,102,0.48)] lg:block">
+        <div className="border-b border-[var(--line-soft)] px-5 py-5">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#161f66]/70">Account Center</p>
+        </div>
+        <nav className="p-3">
+          {navItems.map(({ href, label, icon: Icon }) => {
+            const isActive = currentPath === href;
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`mb-2 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold transition ${
+                  isActive
+                    ? "bg-[rgba(22,31,102,0.08)] text-[#161f66]"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                }`}
+              >
+                <Icon size={18} />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="border-t border-[var(--line-soft)] p-4">{logoutButton}</div>
+      </aside>
+
+      <div className="lg:hidden">{logoutButton}</div>
+    </>
   );
 }
 
@@ -202,62 +229,62 @@ export function AccountDashboardShell({
   children,
 }) {
   return (
-    <section className="bg-[linear-gradient(180deg,#f7f9ff_0%,#ffffff_30%,#f5f8ff_100%)]">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+    <section className="overflow-x-hidden bg-[linear-gradient(180deg,#f7f9ff_0%,#ffffff_30%,#f5f8ff_100%)]">
+      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-10 lg:px-8">
+        <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-6">
           <SidebarNav currentPath={currentPath} logoutButton={logoutButton} />
 
-          <div className="space-y-6">
-            <div className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_28px_80px_-56px_rgba(22,31,102,0.5)]">
-              <div className="bg-[linear-gradient(135deg,#161f66_0%,#27318e_55%,#dcb86a_150%)] px-6 py-7 text-white sm:px-8">
-                <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-[1.6rem] bg-white/14 text-3xl font-black uppercase text-white backdrop-blur">
+          <div className="min-w-0 space-y-4 sm:space-y-6">
+            <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-white shadow-[0_28px_80px_-56px_rgba(22,31,102,0.5)] sm:rounded-[2rem]">
+              <div className="bg-[linear-gradient(135deg,#161f66_0%,#27318e_55%,#dcb86a_150%)] px-4 py-5 text-white sm:px-8 sm:py-7">
+                <div className="flex flex-col gap-4 sm:gap-5 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.2rem] bg-white/14 text-2xl font-black uppercase text-white backdrop-blur sm:h-[4.5rem] sm:w-[4.5rem] sm:rounded-[1.6rem] sm:text-3xl">
                       {getInitials(profile)}
                     </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.24em] text-white/70">GoModexa Member</p>
-                      <h1 className="mt-2 font-display text-3xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70 sm:text-xs sm:tracking-[0.24em]">GoModexa Member</p>
+                      <h1 className="mt-2 font-display text-2xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">
                         {title}
                       </h1>
-                      <p className="mt-2 max-w-2xl text-sm leading-6 text-white/82 sm:text-base">{description}</p>
+                      <p className="mt-2 max-w-2xl text-sm leading-6 text-white/82">{description}</p>
                     </div>
                   </div>
-                  {action ? <div className="shrink-0">{action}</div> : null}
+                  {action ? <div className="shrink-0 [&>a]:w-full sm:[&>a]:w-auto">{action}</div> : null}
                 </div>
               </div>
 
-              <div className="grid gap-5 border-t border-white/10 px-6 py-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto]">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-[1.8rem] bg-[rgba(22,31,102,0.08)] text-3xl font-black text-[#161f66]">
+              <div className="grid gap-4 border-t border-white/10 px-4 py-4 sm:px-8 sm:py-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-5">
+                <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-[1.4rem] bg-[rgba(22,31,102,0.08)] text-2xl font-black text-[#161f66] sm:h-20 sm:w-20 sm:rounded-[1.8rem] sm:text-3xl">
                     {getInitials(profile)}
                   </div>
-                  <div>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <p className="text-2xl font-black tracking-tight text-slate-950">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <p className="break-words text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
                         {profile.fullName || profile.email}
                       </p>
-                      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-bold text-emerald-700">
                         <ShieldCheck size={14} />
                         Verified
                       </span>
                     </div>
-                    <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-                      <span className="inline-flex items-center gap-2">
-                        <Mail size={16} className="text-[#161f66]" />
-                        {profile.email}
+                    <div className="mt-3 flex flex-col gap-2 text-xs text-slate-600 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:text-sm">
+                      <span className="inline-flex min-w-0 items-center gap-2">
+                        <Mail size={16} className="shrink-0 text-[#161f66]" />
+                        <span className="truncate">{profile.email}</span>
                       </span>
-                      <span className="inline-flex items-center gap-2">
-                        <Phone size={16} className="text-[#161f66]" />
-                        {profile.phone || "Add phone number"}
+                      <span className="inline-flex min-w-0 items-center gap-2">
+                        <Phone size={16} className="shrink-0 text-[#161f66]" />
+                        <span className="truncate">{profile.phone || "Add phone number"}</span>
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="rounded-[1.4rem] border border-[var(--line)] bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-5 py-4">
-                  <p className="text-sm text-slate-500">Member since</p>
-                  <p className="mt-2 inline-flex items-center gap-2 text-lg font-black tracking-tight text-slate-950">
+                <div className="rounded-[1.2rem] border border-[var(--line)] bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-4 py-4 sm:rounded-[1.4rem] sm:px-5">
+                  <p className="text-xs text-slate-500 sm:text-sm">Member since</p>
+                  <p className="mt-2 inline-flex items-center gap-2 text-base font-black tracking-tight text-slate-950 sm:text-lg">
                     <CalendarDays size={18} className="text-[#161f66]" />
                     {formatDate(profile.createdAt)}
                   </p>
@@ -265,7 +292,7 @@ export function AccountDashboardShell({
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-3 grid-cols-2 xl:grid-cols-4 sm:gap-4">
               <StatCard icon={Package} label="Total orders" value={stats.totalOrders} />
               <StatCard icon={Clock3} label="Pending orders" value={stats.pendingOrders} />
               <StatCard icon={Truck} label="Delivered orders" value={stats.deliveredOrders} />
@@ -419,11 +446,11 @@ export function OrdersPanel({ orders }) {
           const status = getStatusMeta(order);
 
           return (
-            <article key={order.id} className="rounded-[1.8rem] border border-[var(--line)] bg-white p-6 shadow-[0_22px_55px_-44px_rgba(22,31,102,0.42)]">
+            <article key={order.id} className="rounded-[1.4rem] border border-[var(--line)] bg-white p-4 shadow-[0_22px_55px_-44px_rgba(22,31,102,0.42)] sm:rounded-[1.8rem] sm:p-6">
               <div className="flex flex-col gap-5 border-b border-[var(--line-soft)] pb-5 lg:flex-row lg:items-start lg:justify-between">
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h2 className="text-xl font-black tracking-tight text-slate-950">{order.order_number}</h2>
+                    <h2 className="break-all text-lg font-black tracking-tight text-slate-950 sm:text-xl">{order.order_number}</h2>
                     <span className={`rounded-full border px-3 py-1 text-xs font-bold ${status.className}`}>
                       {status.label}
                     </span>
@@ -432,15 +459,15 @@ export function OrdersPanel({ orders }) {
                 </div>
                 <div className="text-left lg:text-right">
                   <p className="text-sm text-slate-500">{order.items_count || order.order_items?.length || 0} item(s)</p>
-                  <p className="mt-1 text-2xl font-black tracking-tight text-slate-950">{formatPrice(order.total_amount)}</p>
+                  <p className="mt-1 text-xl font-black tracking-tight text-slate-950 sm:text-2xl">{formatPrice(order.total_amount)}</p>
                 </div>
               </div>
 
               <div className="space-y-5 pt-5">
                 <div className="space-y-3">
                   {(order.order_items || []).map((item) => (
-                    <div key={item.id} className="flex items-start gap-4 rounded-[1.4rem] border border-[var(--line-soft)] bg-[linear-gradient(180deg,#ffffff_0%,#f9fbff_100%)] p-4">
-                      <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-slate-100">
+                    <div key={item.id} className="flex items-start gap-3 rounded-[1.15rem] border border-[var(--line-soft)] bg-[linear-gradient(180deg,#ffffff_0%,#f9fbff_100%)] p-3 sm:gap-4 sm:rounded-[1.4rem] sm:p-4">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 sm:h-16 sm:w-16 sm:rounded-2xl">
                         {item.image ? (
                           <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                         ) : (
@@ -456,10 +483,10 @@ export function OrdersPanel({ orders }) {
                   ))}
                 </div>
 
-                <div className="rounded-[1.5rem] border border-[var(--line-soft)] bg-[linear-gradient(180deg,#fbfcff_0%,#f5f8ff_100%)] p-5">
+                <div className="rounded-[1.25rem] border border-[var(--line-soft)] bg-[linear-gradient(180deg,#fbfcff_0%,#f5f8ff_100%)] p-4 sm:rounded-[1.5rem] sm:p-5">
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-[#161f66]/70">Order status</p>
                   <OrderStatusRail order={order} />
-                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <div className="mt-5 grid gap-3 md:grid-cols-3">
                     <StatusPill label="Order" value={formatStatusLabel(order.status, "placed")} />
                     <StatusPill label="Fulfillment" value={formatStatusLabel(order.fulfillment_status, "unfulfilled")} />
                     <StatusPill label="Payment" value={`${formatStatusLabel(order.payment_status, "pending")} | ${formatStatusLabel(order.payment_type, "online")}`} />

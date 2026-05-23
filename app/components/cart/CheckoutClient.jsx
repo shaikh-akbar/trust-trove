@@ -734,11 +734,12 @@ const PAYMENT_METHODS = [
     label: "Pay Online",
     description: "Complete payment securely with Razorpay.",
   },
-  {
-    id: "cod",
-    label: "Cash on Delivery",
-    description: "Place the order now and pay when it arrives.",
-  },
+  // Keep COD config here for future use.
+  // {
+  //   id: "cod",
+  //   label: "Cash on Delivery",
+  //   description: "Place the order now and pay when it arrives.",
+  // },
 ];
 
 function OrderSummaryPanel({

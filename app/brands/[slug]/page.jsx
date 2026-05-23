@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { BrandDetailExperience } from "../../components/store/StorefrontPages";
 import { getBrandSummaries, getProductsPage } from "../../../lib/product";
-import { buildMetadata } from "../../../lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildMetadata,
+} from "../../../lib/seo";
+import { getProductHref } from "../../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
@@ -45,6 +50,36 @@ export default async function BrandDetailPage({ params, searchParams }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Brands", path: "/brands" },
+              { name: brand.title, path: `/brands/${slug}` },
+            ])
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildCollectionPageSchema({
+              name: brand.title,
+              description:
+                brand.description ||
+                `Browse ${brand.title} products on GoModexa.`,
+              path: `/brands/${slug}`,
+              items: products.map((product) => ({
+                name: product.title || product.name,
+                url: getProductHref(product),
+              })),
+            })
+          ),
+        }}
+      />
       <BrandDetailExperience
         products={products}
         brand={brand}
