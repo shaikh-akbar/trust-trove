@@ -63,6 +63,23 @@ const CATEGORY_FALLBACK_IMAGES = {
     "https://d3np62i3isvr1h.cloudfront.net/catalog/products/12481_stylish_womens_wrist_watch_1pc_no1/V5o3JJkjrd6HeC8w018rbBAUnp33IF5wRvyRoctb_thumb.jpeg",
 };
 
+const CATEGORY_DEFAULT_IMAGES_BY_SLUG = {
+  automative: "/category/automative.png",
+  automotive: "/category/automative.png",
+  electronics: "/category/electronics.png",
+  "health-and-beauty":
+    "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1252_oval_stone_scrubber/HlCnhPGa00n7mu0Eo1b3kPIBfEKYO48T1WHP0Wpx_thumb.jpeg",
+  "health-care":
+    "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0979_oily_skin_face_wipes/FlCbdASZg0LLfEB7ON3xqiEizvppzds6u26ajmfr_thumb.jpeg",
+  jewellery: "/category/jewellery.png",
+  "home-kitchen": "/category/home-kitchen.png",
+  "home-and-kitchen": "/category/home-kitchen.png",
+  "mobile-accessories": "/category/mobile-accessoires.png",
+  office: "/category/office.png",
+  "other-products":
+    "https://d3np62i3isvr1h.cloudfront.net/catalog/products/5035_lucky_box_value_2500/vcraRNNE7wQVVLxXSkq3aQz8eqoXnBoP1rq9sc5Y_thumb.jpeg",
+};
+
 function buildCategoryDescription(category) {
   if (category?.description) {
     return category.description;
@@ -76,6 +93,13 @@ function formatProductCount(count) {
 }
 
 function getCategoryImage(category) {
+  const normalizedSlug = String(category?.slug || "").trim().toLowerCase();
+  const defaultImage = CATEGORY_DEFAULT_IMAGES_BY_SLUG[normalizedSlug];
+
+  if (defaultImage) {
+    return defaultImage;
+  }
+
   const explicitImage = String(category?.image || "").trim();
 
   if (explicitImage) {
@@ -194,8 +218,4 @@ export default function CategoryTilesClient({ categories }) {
     </div>
   );
 }
-
-
-
-
 

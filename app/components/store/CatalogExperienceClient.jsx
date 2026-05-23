@@ -37,6 +37,7 @@ export default function CatalogExperienceClient({
   emptyTitle,
   emptyText,
   heroBackgroundImage,
+  heroMobileBackgroundImage,
 }) {
   const filterOptions = useMemo(() => buildFilterOptions(products), [products]);
   const [query, setQuery] = useState(initialQuery);
@@ -115,11 +116,16 @@ export default function CatalogExperienceClient({
     <div className="bg-[var(--surface-soft)] pb-16">
       <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
         {heroBackgroundImage ? (
-          <img
-            src={heroBackgroundImage}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <picture className="absolute inset-0">
+            {heroMobileBackgroundImage ? (
+              <source media="(max-width: 639px)" srcSet={heroMobileBackgroundImage} />
+            ) : null}
+            <img
+              src={heroBackgroundImage}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </picture>
         ) : null}
         <div
           className={`absolute inset-0 ${

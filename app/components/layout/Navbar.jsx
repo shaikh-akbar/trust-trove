@@ -535,7 +535,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
               key={item.href}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              className="block font-display text-3xl font-semibold tracking-[-0.02em] text-[var(--brand-navy)]"
+              className="block font-display text-[1.9rem] font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-[2.2rem]"
             >
               {item.label}
             </Link>
@@ -608,26 +608,9 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             </span>
           </Link>
           {isLoggedIn ? (
-            <div className="space-y-2">
-              {profileMenuItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block rounded-[1.5rem] border border-[var(--line)] bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-[var(--surface-soft)]"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <form action={logoutAction}>
-                <button
-                  type="submit"
-                  className="block w-full rounded-[1.5rem] border border-rose-200 bg-rose-50 px-4 py-3 text-left text-sm font-bold text-rose-600 transition hover:bg-rose-100"
-                >
-                  Logout
-                </button>
-              </form>
-            </div>
+            <p className="rounded-[1.25rem] border border-dashed border-[var(--line)] bg-white/70 px-4 py-3 text-xs font-semibold text-slate-500">
+              Use the bottom Profile tab to open My Profile, Orders, Addresses, Wishlist, and more.
+            </p>
           ) : null}
         </div>
       ) : null}

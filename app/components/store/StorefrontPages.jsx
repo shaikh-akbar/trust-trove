@@ -11,14 +11,14 @@ import {
   slugifyCategory,
 } from "../../../lib/storefront";
 
-const SHOP_BANNER_IMAGE =
-  "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1600&q=80";
+const SHOP_BANNER_IMAGE = "/shop/shop-desktop.png";
+const SHOP_BANNER_MOBILE_IMAGE = "/shop/shop-mobile.png";
 const BRANDS_BANNER_IMAGE =
   "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1600&q=80";
-const CATEGORIES_BANNER_IMAGE =
-  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1600&q=80";
-const NEW_ARRIVALS_BANNER_IMAGE =
-  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80";
+const CATEGORIES_BANNER_IMAGE = "/shop/category-dekstop.png";
+const CATEGORIES_BANNER_MOBILE_IMAGE = "/shop/category-mobile.png";
+const NEW_ARRIVALS_BANNER_IMAGE = "/shop/new-arrival-desktop.png";
+const NEW_ARRIVALS_BANNER_MOBILE_IMAGE = "/shop/new-arrival-mobile.png";
 const FRESH_DROP_PANEL_IMAGE =
   "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1400&q=80";
 
@@ -162,6 +162,7 @@ export function ShopExperience({ products, categories = [], initialQuery = "" })
         title="A more magnetic storefront for thoughtful browsing."
         description="Search products instantly, slide through price ranges, and refine by category, color, and size in a cleaner shopping experience built to convert."
         heroBackgroundImage={SHOP_BANNER_IMAGE}
+        heroMobileBackgroundImage={SHOP_BANNER_MOBILE_IMAGE}
         spotlight={{
           title: "Designed for discovery",
           text: "The catalog now behaves like a modern retail experience, with faster scanning, richer merchandising, and better route-level structure for SEO.",
@@ -378,7 +379,10 @@ export function CategoriesExperience({ categories = [] }) {
   return (
     <div className="bg-[var(--surface-soft)] pb-16">
       <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
-        <img src={CATEGORIES_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <picture className="absolute inset-0">
+          <source media="(max-width: 639px)" srcSet={CATEGORIES_BANNER_MOBILE_IMAGE} />
+          <img src={CATEGORIES_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        </picture>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.88)_0%,rgba(20,29,96,0.76)_42%,rgba(20,29,96,0.62)_100%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">Categories</p>
@@ -559,7 +563,10 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
     <>
       <div className="bg-[linear-gradient(180deg,#e9edf9_0%,#f8f9ff_32%,#ffffff_100%)] pb-16">
         <section className="relative overflow-hidden border-b border-[#141d60]/12 bg-[#141d60] text-white">
-          <img src={NEW_ARRIVALS_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <picture className="absolute inset-0">
+            <source media="(max-width: 639px)" srcSet={NEW_ARRIVALS_BANNER_MOBILE_IMAGE} />
+            <img src={NEW_ARRIVALS_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          </picture>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.88)_0%,rgba(20,29,96,0.72)_42%,rgba(20,29,96,0.58)_100%)]" />
           <div className="absolute left-[-10%] top-[58%] h-56 w-56 rounded-full border border-white/10 bg-white/5 blur-2xl" />
           <div className="absolute right-[-6%] top-[8%] h-72 w-72 rounded-full border border-white/10 bg-white/5 blur-3xl" />
@@ -837,4 +844,3 @@ export function BrandDetailExperience({ products, brand, initialQuery = "" }) {
 }
 
 export { buildCategorySummary, slugifyBrand, slugifyCategory };
-

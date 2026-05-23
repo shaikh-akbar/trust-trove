@@ -14,16 +14,17 @@ const CAROUSEL_SLIDES = [
     description: "Skincare, wellness, and fitness essentials",
     href: "/shop",
     image: "/banner/health.png",
+    mobileImage: "/banner/health-beauty-mobile.png",
     imageClassName: "object-[72%_center] sm:object-center",
   },
   {
-   
      id: "electronics",
     eyebrow: "Electronics",
     title: "Electronics",
     description: "Smart gadgets for every day",
     href: "/shop",
     image: "/banner/electronics.png",
+    mobileImage: "/banner/electronics-mobile.png",
     imageClassName: "object-[64%_center] sm:object-center",
   },
   {
@@ -33,6 +34,7 @@ const CAROUSEL_SLIDES = [
     description: "Easy upgrades for every room",
     href: "/shop",
     image: "/banner/home-decor.png",
+    mobileImage: "/banner/home-decor-mobile.webp",
     imageClassName: "object-[58%_center] sm:object-center",
   },
 ];
@@ -62,9 +64,9 @@ const SIDE_TILES = [
     eyebrow: "Mobile Stand",
     title: "Mobile Stand",
     description: "Min. 40-80% Off",
-    href: "/",
+    href: "https://gomodexa.com/product/1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292",
     image:
-      "/banner/ban-6.png",
+      "/banner/mobile-stand.png",
     imagePosition: "78% center",
     className: "col-span-2",
   },
@@ -134,14 +136,19 @@ export default function StaticPromoBanner() {
       <div className="grid gap-3 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="relative overflow-hidden rounded-[1.8rem] border border-white/80 bg-slate-200 shadow-[0_28px_70px_-52px_rgba(15,23,42,0.35)] lg:h-[15.5rem]">
           {CAROUSEL_SLIDES.map((slide, index) => (
-            <img
+            <picture
               key={slide.id}
-              src={slide.image}
-              alt={slide.title}
               className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
                 index === activeIndex ? "scale-100 opacity-100" : "scale-105 opacity-0"
-              } ${slide.imageClassName || "object-center"}`}
-            />
+              }`}
+            >
+              <source media="(max-width: 639px)" srcSet={slide.mobileImage || slide.image} />
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className={`h-full w-full object-cover ${slide.imageClassName || "object-center"}`}
+              />
+            </picture>
           ))}
 
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.04)_0%,rgba(15,23,42,0.46)_100%)]" />
