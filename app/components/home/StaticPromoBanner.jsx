@@ -45,7 +45,7 @@ const SIDE_TILES = [
     badge: "25% Off",
     title: "Health & Beauty",
     description: "Polished carry picks",
-    href: "https://gomodexa.com/product/brightening-vitamin-c-gel-face-wash-1-pc-100ml-20325",
+    href: "/product/brightening-vitamin-c-gel-face-wash-1-pc-100ml-20325",
     image: "/banner/ban-4.webp",
     imagePosition: "center center",
   },
@@ -54,7 +54,7 @@ const SIDE_TILES = [
     badge: "45% Off",
     title: "Pillow",
     description: "Classic statement styles",
-    href: "https://gomodexa.com/product/pillow-covers-cushion-cases-soft-leather-and-cotton-23-22-inch-1-pair-2-pc-2969",
+    href: "/product/pillow-covers-cushion-cases-soft-leather-and-cotton-23-22-inch-1-pair-2-pc-2969",
     image:
       "/banner/ban-5.png",
     imagePosition: "center center",
@@ -64,7 +64,7 @@ const SIDE_TILES = [
     eyebrow: "Mobile Stand",
     title: "Mobile Stand",
     description: "Min. 40-80% Off",
-    href: "https://gomodexa.com/product/1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292",
+    href: "/product/1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292",
     image:
       "/banner/mobile-stand.png",
     imagePosition: "78% center",

@@ -20,6 +20,7 @@ import ProductCard from "../home/ProductCard";
 import { buildCartItem, getCartItemKey, useCart } from "../cart/CartProvider";
 import { useWishlist } from "../wishlist/WishlistProvider";
 import { getProductHref } from "../../../lib/product-route";
+import { getSiteUrl } from "../../../lib/seo";
 
 function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
@@ -63,7 +64,7 @@ export default function ProductPageClient({
   const productUrl =
     typeof window !== "undefined"
       ? window.location.href
-      : `https://gomodexa.com${getProductHref(product)}`;
+      : getSiteUrl(getProductHref(product));
   const shareText = product
     ? `Check out ${product.title} on GoModexa`
     : "Check this out on GoModexa";
