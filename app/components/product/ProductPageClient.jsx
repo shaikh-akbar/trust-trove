@@ -33,6 +33,9 @@ function stripHtml(value) {
 export default function ProductPageClient({
   product,
   relatedProducts = [],
+  relatedPosts = [],
+  reviewSummary = null,
+  categoryPath = "/categories",
 }) {
   const router = useRouter();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -144,6 +147,8 @@ export default function ProductPageClient({
       : addedToCart
         ? "Added to Cart"
         : "Add to Bag";
+  const averageRating = Number(reviewSummary?.averageRating || 0);
+  const reviewCount = Number(reviewSummary?.reviewCount || 0);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -455,6 +460,29 @@ export default function ProductPageClient({
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
+              {averageRating > 0 && reviewCount > 0 ? (
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:col-span-2">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Store rating
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-slate-950">
+                        {averageRating}/5 from {reviewCount} approved customer review{reviewCount === 1 ? "" : "s"}
+                      </p>
+                      <p className="mt-1 text-xs leading-6 text-slate-500">
+                        This reflects the overall GoModexa shopping experience and helps new visitors gauge trust before ordering.
+                      </p>
+                    </div>
+                    <Link
+                      href="/share-feedback"
+                      className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700"
+                    >
+                      Add rating
+                    </Link>
+                  </div>
+                </div>
+              ) : null}
               <div className="rounded-2xl border border-slate-200 bg-white p-4">
                 <div className="flex items-center gap-3">
                   <span className="rounded-xl bg-slate-100 p-3 text-slate-900">
@@ -485,6 +513,47 @@ export default function ProductPageClient({
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                Discovery links
+              </p>
+              <h2 className="mt-2 text-lg font-semibold text-slate-950 sm:text-xl">
+                Keep exploring this product topic
+              </h2>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link
+                  href={categoryPath}
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:border-slate-400"
+                >
+                  Shop {product.category || product.product_type || "Category"}
+                </Link>
+                <Link
+                  href="/blogs"
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:border-slate-400"
+                >
+                  Read buying guides
+                </Link>
+              </div>
+              {relatedPosts.length > 0 ? (
+                <div className="mt-5 grid gap-3">
+                  {relatedPosts.map((post) => (
+                    <Link
+                      key={post.slug}
+                      href={`/blogs/${post.slug}`}
+                      className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 transition hover:border-slate-400 hover:bg-white"
+                    >
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        {post.category}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold leading-6 text-slate-900">
+                        {post.title}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </div>
         </section>

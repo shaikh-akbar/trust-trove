@@ -6,8 +6,16 @@ import MobileBottomNav from "./components/layout/MobileBottomNav";
 import AppProviders from "./components/AppProviders";
 import { getSessionUser } from "../lib/auth/session";
 import { getCartSnapshotForUser } from "../lib/cart-server";
-import { getWishlistProductIdsForUser } from "../lib/product-social-server";
-import { buildMetadata, buildOrganizationSchema, buildWebsiteSchema } from "../lib/seo";
+import {
+  getApprovedCustomerReviewSummary,
+  getWishlistProductIdsForUser,
+} from "../lib/product-social-server";
+import {
+  buildMetadata,
+  buildOnlineStoreSchema,
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+} from "../lib/seo";
 
 const displayFont = Cormorant_Garamond({
   subsets: ["latin"],
@@ -50,6 +58,8 @@ export default async function RootLayout({ children }) {
 
   const organizationSchema = buildOrganizationSchema();
   const websiteSchema = buildWebsiteSchema();
+  const reviewSummary = await getApprovedCustomerReviewSummary();
+  const onlineStoreSchema = buildOnlineStoreSchema(reviewSummary);
 
   return (
     <html lang="en" data-scroll-behavior="smooth" className="h-full antialiased">
@@ -61,6 +71,10 @@ export default async function RootLayout({ children }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(onlineStoreSchema) }}
         />
         <AppProviders initialUser={user} initialCart={initialCart} initialWishlistProductIds={initialWishlistProductIds}>
           <Navbar user={user} />

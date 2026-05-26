@@ -25,11 +25,11 @@ function SectionHeading({ eyebrow, title, href, actionLabel }) {
 }
 
 export default function HomeExperience({
-  brands = [],
   categories = [],
   featuredProducts = [],
   featuredTabs = [],
   customerReviews = [],
+  reviewSummary = null,
 }) {
   const shopTabs =
     featuredProducts.length > 0
@@ -67,7 +67,7 @@ export default function HomeExperience({
           <CategoryTilesClient categories={categories} />
         </div>
       </section>
-      <HomeCustomerReviews reviews={customerReviews} />
+      <HomeCustomerReviews reviews={customerReviews} reviewSummary={reviewSummary} />
     </div>
   );
 }

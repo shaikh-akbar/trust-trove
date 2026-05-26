@@ -10,7 +10,10 @@ function ReviewStars({ rating }) {
   );
 }
 
-export default function HomeCustomerReviews({ reviews = [] }) {
+export default function HomeCustomerReviews({ reviews = [], reviewSummary = null }) {
+  const averageRating = Number(reviewSummary?.averageRating || 0);
+  const reviewCount = Number(reviewSummary?.reviewCount || 0);
+
   return (
     <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f7f8fc_100%)] py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,6 +34,25 @@ export default function HomeCustomerReviews({ reviews = [] }) {
             Give Rating
           </Link>
         </div>
+
+        {averageRating > 0 && reviewCount > 0 ? (
+          <div className="mb-8 rounded-[1.75rem] border border-[var(--line)] bg-white p-6 shadow-[0_20px_60px_-46px_rgba(66,72,121,0.18)]">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-400">
+                  Store Rating
+                </p>
+                <h3 className="mt-2 font-display text-3xl font-semibold tracking-[-0.02em] text-[var(--brand-navy)]">
+                  {averageRating}/5 from {reviewCount} approved review{reviewCount === 1 ? "" : "s"}
+                </h3>
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
+                  This rating reflects the overall GoModexa shopping experience across delivery, product quality, and trust.
+                </p>
+              </div>
+              <ReviewStars rating={Math.round(averageRating)} />
+            </div>
+          </div>
+        ) : null}
 
         {reviews.length ? (
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">

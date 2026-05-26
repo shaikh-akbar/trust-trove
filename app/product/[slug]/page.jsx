@@ -1,7 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import ProductPageClient from "../../components/product/ProductPageClient";
 import { getProductByIdentifier, getProductsPage } from "../../../lib/product";
+import { getBlogPostsForProduct, getCategoryPathFromTitle } from "../../../lib/content";
 import { getProductHref } from "../../../lib/product-route";
+import { getApprovedCustomerReviewSummary } from "../../../lib/product-social-server";
 import {
   buildBreadcrumbSchema,
   buildMetadata,
@@ -105,6 +107,11 @@ export default async function ProductPage({ params }) {
     { name: product.title, path: canonicalPath },
   ]);
   const productSchema = buildProductSchema(product, { path: canonicalPath });
+  const relatedPosts = getBlogPostsForProduct(product, { limit: 3 });
+  const reviewSummary = await getApprovedCustomerReviewSummary();
+  const categoryPath = getCategoryPathFromTitle(
+    product.category || product.product_type
+  );
 
   return (
     <>
@@ -121,6 +128,9 @@ export default async function ProductPage({ params }) {
       <ProductPageClient
         product={product}
         relatedProducts={relatedProducts}
+        relatedPosts={relatedPosts}
+        reviewSummary={reviewSummary}
+        categoryPath={categoryPath}
       />
     </>
   );
