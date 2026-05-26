@@ -21,6 +21,7 @@ const footerSupport = [
   { href: "/store-policies", label: "Store Policies" },
   { href: "/terms-of-service", label: "Terms of Service" },
   { href: "/about-us", label: "About Us" },
+  { href: "/brand-resources", label: "Brand Resources" },
 ];
 
 const Footer = () => {
@@ -120,6 +121,7 @@ const Footer = () => {
             <Link href="/shipping-policy" className="hover:text-[var(--brand-navy)]">Shipping Policy</Link>
             <Link href="/cancellation-refund-policy" className="hover:text-[var(--brand-navy)]">Refund Policy</Link>
             <Link href="/contact-us" className="hover:text-[var(--brand-navy)]">Contact</Link>
+            <Link href="/brand-resources" className="hover:text-[var(--brand-navy)]">Brand Resources</Link>
           </div>
         </div>
       </div>
