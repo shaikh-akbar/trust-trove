@@ -15,6 +15,7 @@ import {
   Truck,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProductCard from "../home/ProductCard";
 import { buildCartItem, getCartItemKey, useCart } from "../cart/CartProvider";
@@ -169,11 +170,14 @@ export default function ProductPageClient({
         <section className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr] lg:items-start lg:gap-6">
           <div className="space-y-3 sm:space-y-4">
             <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white">
-              <div className="relative">
-                <img
+              <div className="relative aspect-[4/3.2] sm:aspect-[4/3.1] lg:aspect-[4/3.15]">
+                <Image
                   src={mainImage || product.main_image}
                   alt={product.title}
-                  className="aspect-[4/3.2] h-full w-full object-cover sm:aspect-[4/3.1] lg:aspect-[4/3.15]"
+                  fill
+                  preload
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  className="object-cover"
                 />
                 <div className="absolute left-3 top-3 max-w-[78%] truncate rounded-full bg-white px-3 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm sm:left-4 sm:top-4 sm:max-w-none sm:text-[11px]">
                   {product.category || "Featured"}
@@ -194,9 +198,12 @@ export default function ProductPageClient({
                         : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img.src}
                       alt={img.alt || `${product.title} view ${index + 1}`}
+                      width={160}
+                      height={160}
+                      sizes="(max-width: 640px) 20vw, 10vw"
                       className="aspect-square w-full object-cover"
                     />
                   </button>

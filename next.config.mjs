@@ -1,12 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   images: {
-    // Agar aap external images (jaise Supabase ya DeoDap) use karenge, toh yahan domain allow karna padega
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**', // Filhaal sab allow kiya hai, baad mein specific kar sakte hain
+        protocol: "https",
+        hostname: "d3np62i3isvr1h.cloudfront.net",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "wukusy.app",
+      },
+      {
+        protocol: "https",
+        hostname: "seller.wukusy.app",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
       },
     ],
   },

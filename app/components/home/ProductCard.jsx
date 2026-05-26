@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { buildCartItem, getCartItemKey, useCart } from '../cart/CartProvider';
 import { getProductHref } from '../../../lib/product-route';
 
@@ -54,10 +55,16 @@ export default function ProductCard({ product, compact = false }) {
     <article className={cardClassName}>
       <div className={imageClassName}>
         {imageUrl ? (
-          <img
+          <Image
             src={imageUrl}
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            fill
+            sizes={
+              compact
+                ? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            }
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-[var(--surface-soft)] text-xs font-black uppercase tracking-[0.25em] text-slate-400">
