@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpenText, Layers3, ShoppingBag, Sparkles, Tags } from "lucide-react";
+import { ArrowRight, BookOpenText, Layers3, ShoppingBag, Sparkles } from "lucide-react";
 import HomeCustomerReviews from "./HomeCustomerReviews";
 import ShopSection from "./ShopSection";
 import StaticPromoBanner from "./StaticPromoBanner";
@@ -40,11 +40,11 @@ const crawlPriorityLinks = [
     icon: Layers3,
   },
   {
-    href: "/brands",
-    label: "Brands",
-    title: "Explore all brands",
-    text: "Brand routes create another strong path into deeper catalog pages.",
-    icon: Tags,
+    href: "/new-arrivals",
+    label: "New Arrivals",
+    title: "See fresh catalog drops",
+    text: "Recent arrivals help visitors and crawlers reach fresh product pages faster.",
+    icon: Sparkles,
   },
   {
     href: "/blogs",
@@ -58,7 +58,7 @@ const crawlPriorityLinks = [
     label: "Brand Resources",
     title: "Visit the trust page",
     text: "A stable brand reference page strengthens entity and business signals.",
-    icon: Sparkles,
+    icon: ShoppingBag,
   },
 ];
 

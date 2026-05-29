@@ -4,15 +4,15 @@ import Link from "next/link";
 const footerHighlights = [
   "Shop curated lifestyle products across home, kitchen, fashion, beauty, and everyday essentials.",
   "Cash on Delivery and prepaid checkout options with shipping details shown before payment.",
-  "Use category, brand, and new-arrival pages to discover products faster with less clutter.",
+  "Use category, blog, and new-arrival pages to discover products faster with less clutter.",
 ];
 
 const footerCollections = [
   { href: "/shop", label: "All Products" },
   { href: "/categories", label: "Categories" },
-  { href: "/brands", label: "Brands" },
   { href: "/new-arrivals", label: "New Arrivals" },
   { href: "/blogs", label: "Blogs" },
+  { href: "/brand-resources", label: "Brand Resources" },
 ];
 
 const footerSupport = [

@@ -54,12 +54,11 @@ export default async function sitemap() {
   ]);
   const now = new Date();
 
-  const staticRoutes = [
+  const staticRouteEntries = [
     { path: "/", priority: 1, changeFrequency: "daily" },
     { path: "/shop", priority: 0.95, changeFrequency: "daily" },
     { path: "/new-arrivals", priority: 0.9, changeFrequency: "daily" },
     { path: "/categories", priority: 0.85, changeFrequency: "weekly" },
-    { path: "/brands", priority: 0.8, changeFrequency: "weekly" },
     { path: "/blogs", priority: 0.75, changeFrequency: "weekly" },
     { path: "/about-us", priority: 0.6, changeFrequency: "monthly" },
     { path: "/brand-resources", priority: 0.58, changeFrequency: "monthly" },
@@ -68,7 +67,17 @@ export default async function sitemap() {
     { path: "/cancellation-refund-policy", priority: 0.45, changeFrequency: "monthly" },
     { path: "/store-policies", priority: 0.45, changeFrequency: "monthly" },
     { path: "/terms-of-service", priority: 0.4, changeFrequency: "monthly" },
-  ].map((entry) => ({
+  ];
+
+  if (brands.length > 0) {
+    staticRouteEntries.splice(4, 0, {
+      path: "/brands",
+      priority: 0.8,
+      changeFrequency: "weekly",
+    });
+  }
+
+  const staticRoutes = staticRouteEntries.map((entry) => ({
     url: getSiteUrl(entry.path),
     lastModified: now,
     changeFrequency: entry.changeFrequency,
