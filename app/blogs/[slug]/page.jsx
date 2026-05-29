@@ -45,6 +45,7 @@ export default async function BlogDetailPage({ params }) {
   const categoryPath = getCategoryPathFromTitle(
     post?.productSource?.categoryTitle || post.category
   );
+  const productPath = post?.productSource?.productPath || null;
   const relatedPosts = getBlogPostsByCategory(
     post?.productSource?.categoryTitle || post.category,
     { excludeSlug: post.slug, limit: 3 }
@@ -130,6 +131,14 @@ export default async function BlogDetailPage({ params }) {
                 Continue into the catalog
               </h2>
               <div className="mt-5 flex flex-wrap gap-3">
+                {productPath ? (
+                  <Link
+                    href={productPath}
+                    className="inline-flex rounded-full border border-[var(--line)] bg-[var(--brand-navy)] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.18em] text-white"
+                  >
+                    View this product
+                  </Link>
+                ) : null}
                 <Link
                   href={categoryPath}
                   className="inline-flex rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"

@@ -5,13 +5,16 @@ import { getBrandSummaries, getProductsPage } from "../../../lib/product";
 import {
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
+  buildCollectionMetadata,
   buildMetadata,
+  getPageNumber,
+  getQueryValue,
 } from "../../../lib/seo";
 import { getProductHref } from "../../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params, searchParams }) {
   const { slug } = await params;
   const brand = (await getBrandSummaries()).find((item) => item.slug === slug);
 
@@ -20,12 +23,22 @@ export async function generateMetadata({ params }) {
       title: "Brand Not Found",
       path: `/brands/${slug}`,
       description: "The requested brand was not found on GoModexa.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     });
   }
 
-  return buildMetadata({
+  const currentSearchParams = await searchParams;
+  const page = getPageNumber(currentSearchParams?.page);
+  const query = getQueryValue(currentSearchParams?.q);
+
+  return buildCollectionMetadata({
     title: brand.title,
     path: `/brands/${slug}`,
+    page,
+    query,
     description: `Browse ${brand.title} products on GoModexa with a cleaner brand page and easier product discovery.`,
     keywords: [brand.title, `${brand.title} online`, `${brand.title} products`],
   });
@@ -34,7 +47,7 @@ export async function generateMetadata({ params }) {
 export default async function BrandDetailPage({ params, searchParams }) {
   const { slug } = await params;
   const currentSearchParams = await searchParams;
-  const page = Math.max(1, Number(currentSearchParams?.page || 1));
+  const page = getPageNumber(currentSearchParams?.page);
   const brands = await getBrandSummaries();
   const brand = brands.find((item) => item.slug === slug);
 
@@ -83,7 +96,7 @@ export default async function BrandDetailPage({ params, searchParams }) {
       <BrandDetailExperience
         products={products}
         brand={brand}
-        initialQuery={typeof currentSearchParams?.q === "string" ? currentSearchParams.q : ""}
+        initialQuery={getQueryValue(currentSearchParams?.q)}
       />
       {totalPages > 1 ? (
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-14 pt-4 sm:px-6 lg:px-8">

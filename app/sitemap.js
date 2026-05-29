@@ -62,6 +62,7 @@ export default async function sitemap() {
     { path: "/brands", priority: 0.8, changeFrequency: "weekly" },
     { path: "/blogs", priority: 0.75, changeFrequency: "weekly" },
     { path: "/about-us", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/brand-resources", priority: 0.58, changeFrequency: "monthly" },
     { path: "/contact-us", priority: 0.55, changeFrequency: "monthly" },
     { path: "/shipping-policy", priority: 0.45, changeFrequency: "monthly" },
     { path: "/cancellation-refund-policy", priority: 0.45, changeFrequency: "monthly" },

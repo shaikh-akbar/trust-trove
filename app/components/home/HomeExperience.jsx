@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpenText, Layers3, ShoppingBag, Sparkles, Tags } from "lucide-react";
 import HomeCustomerReviews from "./HomeCustomerReviews";
 import ShopSection from "./ShopSection";
 import StaticPromoBanner from "./StaticPromoBanner";
@@ -21,6 +21,80 @@ function SectionHeading({ eyebrow, title, href, actionLabel }) {
         </Link>
       ) : null}
     </div>
+  );
+}
+
+const crawlPriorityLinks = [
+  {
+    href: "/shop",
+    label: "Shop",
+    title: "Open the full catalog",
+    text: "Give Google and shoppers one clear route into the full product inventory.",
+    icon: ShoppingBag,
+  },
+  {
+    href: "/categories",
+    label: "Categories",
+    title: "Browse category hubs",
+    text: "Category pages help distribute crawl attention into product clusters.",
+    icon: Layers3,
+  },
+  {
+    href: "/brands",
+    label: "Brands",
+    title: "Explore all brands",
+    text: "Brand routes create another strong path into deeper catalog pages.",
+    icon: Tags,
+  },
+  {
+    href: "/blogs",
+    label: "Blogs",
+    title: "Read buying guides",
+    text: "Editorial pages reinforce topical relevance and support product discovery.",
+    icon: BookOpenText,
+  },
+  {
+    href: "/brand-resources",
+    label: "Brand Resources",
+    title: "Visit the trust page",
+    text: "A stable brand reference page strengthens entity and business signals.",
+    icon: Sparkles,
+  },
+];
+
+function ExploreGoModexaSection() {
+  return (
+    <section className="border-y border-[var(--line)] bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Explore GoModexa"
+          title="Start with the pages that matter most."
+        />
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {crawlPriorityLinks.map(({ href, label, title, text, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group rounded-[1.75rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdf9_0%,#f7efe4_100%)] p-6 shadow-[0_24px_72px_-56px_rgba(20,29,96,0.24)] transition hover:-translate-y-1 hover:border-[var(--brand-navy)]/18 hover:bg-white"
+            >
+              <span className="inline-flex rounded-2xl bg-[var(--brand-navy)] p-3 text-[var(--surface-cream)]">
+                <Icon size={18} />
+              </span>
+              <p className="mt-5 text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                {label}
+              </p>
+              <h3 className="mt-2 font-display text-2xl font-semibold leading-tight text-[var(--brand-navy)]">
+                {title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600">{text}</p>
+              <span className="mt-5 inline-flex items-center text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]">
+                Open page <ArrowRight size={16} className="ml-2 transition group-hover:translate-x-1" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -67,6 +141,7 @@ export default function HomeExperience({
           <CategoryTilesClient categories={categories} />
         </div>
       </section>
+      <ExploreGoModexaSection />
       <HomeCustomerReviews reviews={customerReviews} reviewSummary={reviewSummary} />
     </div>
   );

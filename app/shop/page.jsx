@@ -4,27 +4,38 @@ import { getCategorySummaries, getProductsPage } from "../../lib/product";
 import {
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
-  buildMetadata,
+  buildCollectionMetadata,
+  getPageNumber,
+  getQueryValue,
 } from "../../lib/seo";
 import { getProductHref } from "../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
-export const metadata = buildMetadata({
-  title: "Shop",
-  path: "/shop",
-  description: "Browse the full GoModexa catalog with product search, price filtering, and modern collection browsing.",
-  keywords: ["shop GoModexa", "product filters", "search products online"],
-});
+export async function generateMetadata({ searchParams }) {
+  const params = await searchParams;
+  const page = getPageNumber(params?.page);
+  const query = getQueryValue(params?.q);
+
+  return buildCollectionMetadata({
+    title: "Shop",
+    path: "/shop",
+    page,
+    query,
+    description:
+      "Browse the full GoModexa catalog with product search, price filtering, and modern collection browsing.",
+    keywords: ["shop GoModexa", "product filters", "search products online"],
+  });
+}
 
 export default async function ShopPage({ searchParams }) {
   const params = await searchParams;
-  const page = Math.max(1, Number(params?.page || 1));
+  const page = getPageNumber(params?.page);
   const [{ products, totalPages }, categories] = await Promise.all([
     getProductsPage({ page, pageSize: CATALOG_PAGE_SIZE }),
     getCategorySummaries(),
   ]);
-  const initialQuery = typeof params?.q === "string" ? params.q : "";
+  const initialQuery = getQueryValue(params?.q);
 
   return (
     <>

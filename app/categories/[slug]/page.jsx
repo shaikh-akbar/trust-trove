@@ -11,13 +11,16 @@ import { getCategorySummaries, getProductsPage } from "../../../lib/product";
 import {
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
+  buildCollectionMetadata,
   buildMetadata,
+  getPageNumber,
+  getQueryValue,
 } from "../../../lib/seo";
 import { getProductHref } from "../../../lib/product-route";
 
 const CATALOG_PAGE_SIZE = 24;
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params, searchParams }) {
   const { slug } = await params;
   const category = (await getCategorySummaries()).find((item) => item.slug === slug);
 
@@ -26,12 +29,22 @@ export async function generateMetadata({ params }) {
       title: "Category Not Found",
       path: `/categories/${slug}`,
       description: "The requested category was not found on GoModexa.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     });
   }
 
-  return buildMetadata({
+  const currentSearchParams = await searchParams;
+  const page = getPageNumber(currentSearchParams?.page);
+  const query = getQueryValue(currentSearchParams?.q);
+
+  return buildCollectionMetadata({
     title: category.title,
     path: `/categories/${slug}`,
+    page,
+    query,
     description: `Browse ${category.title} products on GoModexa with cleaner collection design, stronger structure, and easier discovery.`,
     keywords: [category.title, `${category.title} online`, `${category.title} collection`],
   });
@@ -40,7 +53,7 @@ export async function generateMetadata({ params }) {
 export default async function CategoryDetailPage({ params, searchParams }) {
   const { slug } = await params;
   const currentSearchParams = await searchParams;
-  const page = Math.max(1, Number(currentSearchParams?.page || 1));
+  const page = getPageNumber(currentSearchParams?.page);
   const categories = await getCategorySummaries();
   const category = categories.find((item) => item.slug === slug);
 
@@ -91,7 +104,7 @@ export default async function CategoryDetailPage({ params, searchParams }) {
       <CategoryDetailExperience
         products={products}
         category={category}
-        initialQuery={typeof currentSearchParams?.q === "string" ? currentSearchParams.q : ""}
+        initialQuery={getQueryValue(currentSearchParams?.q)}
       />
       <section className="border-t border-[var(--line)] bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
