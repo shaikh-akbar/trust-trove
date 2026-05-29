@@ -37,6 +37,8 @@ export default function ProductPageClient({
   relatedPosts = [],
   reviewSummary = null,
   categoryPath = "/categories",
+  seoCopy = null,
+  faqs = [],
 }) {
   const router = useRouter();
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -316,6 +318,59 @@ export default function ProductPageClient({
                 </details>
               </div>
             </div>
+
+            {seoCopy ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                  Buying Guide
+                </p>
+                <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
+                  {seoCopy.title}
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {seoCopy.intro}
+                </p>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {seoCopy.body}
+                </p>
+                {Array.isArray(seoCopy.checklist) && seoCopy.checklist.length > 0 ? (
+                  <ul className="mt-5 space-y-3">
+                    {seoCopy.checklist.map((item) => (
+                      <li key={item} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : null}
+
+            {faqs.length > 0 ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                  Product FAQs
+                </p>
+                <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
+                  Common questions before ordering
+                </h2>
+                <div className="mt-5 space-y-3">
+                  {faqs.map((faq) => (
+                    <details key={faq.question} className="group rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-slate-900">
+                        {faq.question}
+                        <ChevronDown
+                          size={16}
+                          className="shrink-0 transition-transform group-open:rotate-180"
+                        />
+                      </summary>
+                      <p className="mt-4 text-sm leading-7 text-slate-600">
+                        {faq.answer}
+                      </p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="space-y-4 lg:sticky lg:top-6 lg:self-start">

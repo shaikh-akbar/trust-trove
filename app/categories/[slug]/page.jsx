@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   getBlogPostsByCategory,
+  getCategoryFaqs,
   getCategoryGuideCopy,
 } from "../../../lib/content";
 import {
@@ -12,6 +13,7 @@ import {
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
   buildCollectionMetadata,
+  buildFaqSchema,
   buildMetadata,
   getPageNumber,
   getQueryValue,
@@ -68,6 +70,8 @@ export default async function CategoryDetailPage({ params, searchParams }) {
   });
   const matchingPosts = getBlogPostsByCategory(category.title, { limit: 3 });
   const categoryGuide = getCategoryGuideCopy(category);
+  const categoryFaqs = getCategoryFaqs(category);
+  const faqSchema = buildFaqSchema(categoryFaqs);
 
   return (
     <>
@@ -101,6 +105,12 @@ export default async function CategoryDetailPage({ params, searchParams }) {
           ),
         }}
       />
+      {faqSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      ) : null}
       <CategoryDetailExperience
         products={products}
         category={category}
@@ -156,6 +166,34 @@ export default async function CategoryDetailPage({ params, searchParams }) {
           </div>
         </div>
       </section>
+      {categoryFaqs.length > 0 ? (
+        <section className="border-t border-[var(--line)] bg-[var(--surface-soft)]">
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+              Category FAQs
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-[var(--brand-navy)]">
+              Questions shoppers often ask before browsing deeper
+            </h2>
+            <div className="mt-6 grid gap-3">
+              {categoryFaqs.map((faq) => (
+                <details
+                  key={faq.question}
+                  className="group rounded-[1.35rem] border border-[var(--line)] bg-white px-5 py-4"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-[var(--brand-navy)]">
+                    {faq.question}
+                    <span className="text-slate-400 transition group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-4 text-sm leading-7 text-slate-600">
+                    {faq.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
       {totalPages > 1 ? (
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-14 pt-4 sm:px-6 lg:px-8">
           {page > 1 ? (

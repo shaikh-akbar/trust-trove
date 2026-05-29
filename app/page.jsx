@@ -1,4 +1,5 @@
 import HomeExperience from "./components/home/HomeExperience";
+import { getSortedBlogPosts } from "../lib/content";
 import { getHomePageData } from "../lib/product";
 import { getApprovedCustomerReviewSummary } from "../lib/product-social-server";
 import { buildMetadata, getSiteUrl } from "../lib/seo";
@@ -12,6 +13,7 @@ export const metadata = buildMetadata({
 
 export default async function Home() {
   const { brands, categories, featuredProducts, featuredTabs, customerReviews } = await getHomePageData();
+  const latestPosts = getSortedBlogPosts().slice(0, 3);
   const reviewSummary = await getApprovedCustomerReviewSummary();
   const homeSchema = {
     "@context": "https://schema.org",
@@ -35,6 +37,7 @@ export default async function Home() {
         featuredTabs={featuredTabs}
         customerReviews={customerReviews}
         reviewSummary={reviewSummary}
+        latestPosts={latestPosts}
       />
     </>
   );

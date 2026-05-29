@@ -1,11 +1,17 @@
 import { notFound, redirect } from "next/navigation";
 import ProductPageClient from "../../components/product/ProductPageClient";
 import { getProductByIdentifier, getProductsPage } from "../../../lib/product";
-import { getBlogPostsForProduct, getCategoryPathFromTitle } from "../../../lib/content";
+import {
+  getBlogPostsForProduct,
+  getCategoryPathFromTitle,
+  getProductFaqs,
+  getProductSeoCopy,
+} from "../../../lib/content";
 import { getProductHref } from "../../../lib/product-route";
 import { getApprovedCustomerReviewSummary } from "../../../lib/product-social-server";
 import {
   buildBreadcrumbSchema,
+  buildFaqSchema,
   buildMetadata,
   buildProductSchema,
 } from "../../../lib/seo";
@@ -112,6 +118,9 @@ export default async function ProductPage({ params }) {
   const categoryPath = getCategoryPathFromTitle(
     product.category || product.product_type
   );
+  const productSeoCopy = getProductSeoCopy(product);
+  const productFaqs = getProductFaqs(product);
+  const faqSchema = buildFaqSchema(productFaqs);
 
   return (
     <>
@@ -125,12 +134,20 @@ export default async function ProductPage({ params }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
         />
       ) : null}
+      {faqSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      ) : null}
       <ProductPageClient
         product={product}
         relatedProducts={relatedProducts}
         relatedPosts={relatedPosts}
         reviewSummary={reviewSummary}
         categoryPath={categoryPath}
+        seoCopy={productSeoCopy}
+        faqs={productFaqs}
       />
     </>
   );

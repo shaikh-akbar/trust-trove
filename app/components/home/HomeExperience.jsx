@@ -104,6 +104,7 @@ export default function HomeExperience({
   featuredTabs = [],
   customerReviews = [],
   reviewSummary = null,
+  latestPosts = [],
 }) {
   const shopTabs =
     featuredProducts.length > 0
@@ -142,6 +143,39 @@ export default function HomeExperience({
         </div>
       </section>
       <ExploreGoModexaSection />
+      {latestPosts.length > 0 ? (
+        <section className="bg-[linear-gradient(180deg,#fffdfa_0%,#f6ede2_100%)] py-14">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeading
+              eyebrow="Editorial Guides"
+              title="Read buying guides and product-led articles."
+              href="/blogs"
+              actionLabel="Browse blogs"
+            />
+            <div className="grid gap-6 lg:grid-cols-3">
+              {latestPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blogs/${post.slug}`}
+                  className="group rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.28)] transition hover:-translate-y-1 hover:border-[var(--brand-navy)]/18"
+                >
+                  <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                    <span>{post.category}</span>
+                    <span>{post.readingTime}</span>
+                  </div>
+                  <h3 className="mt-5 font-display text-3xl font-semibold leading-tight text-[var(--brand-navy)]">
+                    {post.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-600">{post.excerpt}</p>
+                  <span className="mt-6 inline-flex items-center text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]">
+                    Read guide <ArrowRight size={16} className="ml-2 transition group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
       <HomeCustomerReviews reviews={customerReviews} reviewSummary={reviewSummary} />
     </div>
   );
