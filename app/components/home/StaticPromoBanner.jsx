@@ -8,16 +8,6 @@ const AUTO_PLAY_MS = 4500;
 
 const CAROUSEL_SLIDES = [
   {
-    id: "health-beauty",
-    eyebrow: "Tech Trends",
-    title: "Health & Beauty",
-    description: "Skincare, wellness, and fitness essentials",
-    href: "/shop",
-    image: "/banner/health.png",
-    mobileImage: "/banner/health-beauty-mobile.png",
-    imageClassName: "object-[72%_center] sm:object-center",
-  },
-  {
      id: "electronics",
     eyebrow: "Electronics",
     title: "Electronics",
@@ -26,6 +16,16 @@ const CAROUSEL_SLIDES = [
     image: "/banner/electronics.png",
     mobileImage: "/banner/electronics-mobile.png",
     imageClassName: "object-[64%_center] sm:object-center",
+  },
+  {
+    id: "health-beauty",
+    eyebrow: "Tech Trends",
+    title: "Health & Beauty",
+    description: "Skincare, wellness, and fitness essentials",
+    href: "/shop",
+    image: "/banner/health.png",
+    mobileImage: "/banner/health-beauty-mobile.png",
+    imageClassName: "object-[72%_center] sm:object-center",
   },
   {
     id: "Home Decor",
@@ -46,7 +46,7 @@ const SIDE_TILES = [
     title: "Health & Beauty",
     description: "Polished carry picks",
     href: "/product/brightening-vitamin-c-gel-face-wash-1-pc-100ml-20325",
-    image: "/banner/ban-4.webp",
+    image: "/banner/ban-4.jpeg",
     imagePosition: "center center",
   },
   {
@@ -56,7 +56,7 @@ const SIDE_TILES = [
     description: "Classic statement styles",
     href: "/product/pillow-covers-cushion-cases-soft-leather-and-cotton-23-22-inch-1-pair-2-pc-2969",
     image:
-      "/banner/ban-5.png",
+      "/banner/ban-5.jpeg",
     imagePosition: "center center",
   },
   {
@@ -81,6 +81,8 @@ function SideTile({ tile }) {
       <img
         src={tile.image}
         alt={tile.title}
+        loading="lazy"
+        decoding="async"
         className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
         style={{ objectPosition: tile.imagePosition || "center center" }}
       />
@@ -135,21 +137,17 @@ export default function StaticPromoBanner() {
     <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <div className="grid gap-3 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="relative overflow-hidden rounded-[1.8rem] border border-white/80 bg-slate-200 shadow-[0_28px_70px_-52px_rgba(15,23,42,0.35)] lg:h-[15.5rem]">
-          {CAROUSEL_SLIDES.map((slide, index) => (
-            <picture
-              key={slide.id}
-              className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
-                index === activeIndex ? "scale-100 opacity-100" : "scale-105 opacity-0"
-              }`}
-            >
-              <source media="(max-width: 639px)" srcSet={slide.mobileImage || slide.image} />
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className={`h-full w-full object-cover ${slide.imageClassName || "object-center"}`}
-              />
-            </picture>
-          ))}
+          <picture key={activeSlide.id} className="absolute inset-0 block h-full w-full">
+            <source media="(max-width: 639px)" srcSet={activeSlide.mobileImage || activeSlide.image} />
+            <img
+              src={activeSlide.image}
+              alt={activeSlide.title}
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              className={`h-full w-full object-cover transition-all duration-700 ${activeSlide.imageClassName || "object-center"}`}
+            />
+          </picture>
 
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.04)_0%,rgba(15,23,42,0.46)_100%)]" />
 

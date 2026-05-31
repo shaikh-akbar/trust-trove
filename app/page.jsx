@@ -1,7 +1,7 @@
+import { Suspense } from "react";
 import HomeExperience from "./components/home/HomeExperience";
-import { getSortedBlogPosts } from "../lib/content";
-import { getHomePageData } from "../lib/product";
-import { getApprovedCustomerReviewSummary } from "../lib/product-social-server";
+import HomeDeferredSections from "./components/home/HomeDeferredSections";
+import { getFeaturedCategoryTabs, getFeaturedProductsPage } from "../lib/product";
 import { buildMetadata, getSiteUrl } from "../lib/seo";
 
 export const metadata = buildMetadata({
@@ -12,16 +12,14 @@ export const metadata = buildMetadata({
 });
 
 export default async function Home() {
-  const {
-    brands,
-    categories,
-    featuredProducts,
-    featuredProductsTotal,
-    featuredTabs,
-    customerReviews,
-  } = await getHomePageData();
-  const latestPosts = getSortedBlogPosts().slice(0, 3);
-  const reviewSummary = await getApprovedCustomerReviewSummary();
+  const [featuredProductsPage, featuredTabs] = await Promise.all([
+    getFeaturedProductsPage({ page: 1, pageSize: 10 }),
+    getFeaturedCategoryTabs({
+      categoryLimit: 8,
+      productsPerCategory: 10,
+      preloadedTabCount: 0,
+    }),
+  ]);
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -38,15 +36,13 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
       />
       <HomeExperience
-        brands={brands}
-        categories={categories}
-        featuredProducts={featuredProducts}
-        featuredProductsTotal={featuredProductsTotal}
+        featuredProducts={featuredProductsPage.products || []}
+        featuredProductsTotal={Number(featuredProductsPage.total || 0)}
         featuredTabs={featuredTabs}
-        customerReviews={customerReviews}
-        reviewSummary={reviewSummary}
-        latestPosts={latestPosts}
       />
+      <Suspense fallback={null}>
+        <HomeDeferredSections />
+      </Suspense>
     </>
   );
 }
