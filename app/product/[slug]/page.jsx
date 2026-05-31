@@ -13,6 +13,7 @@ import {
   buildBreadcrumbSchema,
   buildFaqSchema,
   buildMetadata,
+  buildProductKeywords,
   buildProductSchema,
 } from "../../../lib/seo";
 
@@ -79,14 +80,8 @@ export async function generateMetadata({ params }) {
     path: getProductHref(product),
     description,
     image: product.main_image || "/assets/gomodexa.png",
-    keywords: [
-      product.title,
-      product.category,
-      product.product_type,
-      product.vendor,
-      `${product.title} online`,
-      `${product.category || product.product_type || "product"} India`,
-    ].filter(Boolean),
+    keywords: buildProductKeywords(product),
+    includeDefaultKeywords: false,
   });
 }
 

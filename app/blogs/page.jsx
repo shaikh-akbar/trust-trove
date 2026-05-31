@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BLOGS_PER_PAGE, getSortedBlogPosts } from "../../lib/content";
 import { buildMetadata } from "../../lib/seo";
 
@@ -12,6 +12,79 @@ function parsePageValue(value) {
 
 function buildPageHref(pageNumber) {
   return pageNumber > 1 ? `/blogs?page=${pageNumber}` : "/blogs";
+}
+
+function buildPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const pages = new Set([1, totalPages, currentPage]);
+
+  if (currentPage <= 3) {
+    pages.add(2);
+    pages.add(3);
+  } else if (currentPage >= totalPages - 2) {
+    pages.add(totalPages - 1);
+    pages.add(totalPages - 2);
+  } else {
+    pages.add(currentPage - 1);
+    pages.add(currentPage + 1);
+  }
+
+  const sortedPages = Array.from(pages)
+    .filter((pageNumber) => pageNumber >= 1 && pageNumber <= totalPages)
+    .sort((left, right) => left - right);
+  const items = [];
+
+  for (let index = 0; index < sortedPages.length; index += 1) {
+    const pageNumber = sortedPages[index];
+    const previousPage = sortedPages[index - 1];
+
+    if (previousPage && pageNumber - previousPage > 1) {
+      items.push("ellipsis");
+    }
+
+    items.push(pageNumber);
+  }
+
+  return items;
+}
+
+function buildMobilePaginationItems(currentPage, totalPages) {
+  if (totalPages <= 4) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const pages = new Set([1, totalPages, currentPage]);
+
+  if (currentPage === 1) {
+    pages.add(2);
+    pages.add(3);
+  } else if (currentPage === totalPages) {
+    pages.add(totalPages - 1);
+    pages.add(totalPages - 2);
+  } else {
+    pages.add(currentPage + 1);
+  }
+
+  const sortedPages = Array.from(pages)
+    .filter((pageNumber) => pageNumber >= 1 && pageNumber <= totalPages)
+    .sort((left, right) => left - right);
+  const items = [];
+
+  for (let index = 0; index < sortedPages.length; index += 1) {
+    const pageNumber = sortedPages[index];
+    const previousPage = sortedPages[index - 1];
+
+    if (previousPage && pageNumber - previousPage > 1) {
+      items.push("ellipsis");
+    }
+
+    items.push(pageNumber);
+  }
+
+  return items;
 }
 
 export async function generateMetadata({ searchParams }) {
@@ -33,6 +106,8 @@ export default async function BlogsPage({ searchParams }) {
   const safePage = Math.min(currentPage, totalPages);
   const startIndex = (safePage - 1) * BLOGS_PER_PAGE;
   const paginatedPosts = posts.slice(startIndex, startIndex + BLOGS_PER_PAGE);
+  const paginationItems = buildPaginationItems(safePage, totalPages);
+  const mobilePaginationItems = buildMobilePaginationItems(safePage, totalPages);
 
   return (
     <div className="bg-[var(--surface-soft)]">
@@ -73,44 +148,89 @@ export default async function BlogsPage({ searchParams }) {
         </div>
 
         {totalPages > 1 ? (
-          <div className="mt-10 flex flex-col gap-4 rounded-[2rem] border border-[var(--line)] bg-white p-5 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)] sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-slate-500">
+          <div className="mt-10 flex flex-col gap-4 rounded-[2rem] border border-[var(--line)] bg-white p-4 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)] sm:flex-row sm:items-center sm:justify-between sm:p-5">
+            <p className="text-center text-sm text-slate-500 sm:text-left">
               Page {safePage} of {totalPages}
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex items-center justify-center gap-2 sm:justify-end">
               {safePage > 1 ? (
                 <Link
                   href={buildPageHref(safePage - 1)}
-                  className="inline-flex items-center rounded-full border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] transition hover:bg-white"
+                  aria-label="Previous page"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] text-[var(--brand-navy)] transition hover:bg-white"
                 >
-                  Previous
+                  <ArrowLeft size={16} />
                 </Link>
               ) : null}
-              {Array.from({ length: totalPages }, (_, index) => {
-                const pageNumber = index + 1;
-                const isActive = pageNumber === safePage;
+              <div className="flex items-center justify-center gap-2 sm:hidden">
+                {mobilePaginationItems.map((item, index) => {
+                  if (item === "ellipsis") {
+                    return (
+                      <span
+                        key={`mobile-ellipsis-${index}`}
+                        className="inline-flex min-w-7 items-center justify-center px-1 py-2 text-sm font-black text-slate-400"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
 
-                return (
-                  <Link
-                    key={pageNumber}
-                    href={buildPageHref(pageNumber)}
-                    className={`inline-flex min-w-11 items-center justify-center rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] transition ${
-                      isActive
-                        ? "bg-[var(--brand-navy)] text-white"
-                        : "border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] text-[var(--brand-navy)] hover:bg-white"
-                    }`}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {pageNumber}
-                  </Link>
-                );
-              })}
+                  const isActive = item === safePage;
+
+                  return (
+                    <Link
+                      key={`mobile-${item}`}
+                      href={buildPageHref(item)}
+                      className={`inline-flex min-w-11 items-center justify-center rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] transition ${
+                        isActive
+                          ? "bg-[var(--brand-navy)] text-white"
+                          : "border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] text-[var(--brand-navy)] hover:bg-white"
+                      }`}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      {item}
+                    </Link>
+                  );
+                })}
+              </div>
+              <div className="hidden flex-wrap gap-3 sm:flex">
+                {paginationItems.map((item, index) => {
+                  if (item === "ellipsis") {
+                    return (
+                      <span
+                        key={`ellipsis-${index}`}
+                        className="inline-flex min-w-11 items-center justify-center px-1 py-2 text-sm font-black text-slate-400"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
+
+                  const isActive = item === safePage;
+
+                  return (
+                    <Link
+                      key={item}
+                      href={buildPageHref(item)}
+                      className={`inline-flex min-w-11 items-center justify-center rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] transition ${
+                        isActive
+                          ? "bg-[var(--brand-navy)] text-white"
+                          : "border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] text-[var(--brand-navy)] hover:bg-white"
+                      }`}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      {item}
+                    </Link>
+                  );
+                })}
+              </div>
               {safePage < totalPages ? (
                 <Link
                   href={buildPageHref(safePage + 1)}
-                  className="inline-flex items-center rounded-full border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] transition hover:bg-white"
+                  aria-label="Next page"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--brand-navy)]/14 bg-[var(--surface-soft)] text-[var(--brand-navy)] transition hover:bg-white"
                 >
-                  Next
+                  <ArrowRight size={16} />
                 </Link>
               ) : null}
             </div>

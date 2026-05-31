@@ -10,6 +10,7 @@ import {
 } from "../../components/store/StorefrontPages";
 import { getCategorySummaries, getProductsPage } from "../../../lib/product";
 import {
+  buildCategoryKeywords,
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
   buildCollectionMetadata,
@@ -48,7 +49,7 @@ export async function generateMetadata({ params, searchParams }) {
     page,
     query,
     description: `Browse ${category.title} products on GoModexa with cleaner collection design, stronger structure, and easier discovery.`,
-    keywords: [category.title, `${category.title} online`, `${category.title} collection`],
+    keywords: buildCategoryKeywords(category),
   });
 }
 

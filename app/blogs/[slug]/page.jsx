@@ -30,6 +30,7 @@ export async function generateMetadata({ params }) {
     description: post.metaDescription || post.excerpt,
     image: post.image || "/assets/gomodexa.png",
     keywords: post.keywords || [post.category, post.title, "GoModexa article"],
+    includeDefaultKeywords: false,
   });
 }
 

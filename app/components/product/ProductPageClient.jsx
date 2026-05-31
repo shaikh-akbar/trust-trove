@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -49,6 +49,9 @@ export default function ProductPageClient({
   const [showFullSummary, setShowFullSummary] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [wishlistFeedback, setWishlistFeedback] = useState("");
+  const [productUrl, setProductUrl] = useState(() =>
+    getSiteUrl(getProductHref(product))
+  );
   const { addItem, getItemAction, isItemPending } = useCart();
   const {
     isLoggedIn,
@@ -67,10 +70,6 @@ export default function ProductPageClient({
     product?.short_description ||
     plainDescription ||
     "Curated product details, trusted quality, and a clean presentation pulled directly from your catalog data.";
-  const productUrl =
-    typeof window !== "undefined"
-      ? window.location.href
-      : getSiteUrl(getProductHref(product));
   const shareText = product
     ? `Check out ${product.title} on GoModexa`
     : "Check this out on GoModexa";
@@ -81,6 +80,14 @@ export default function ProductPageClient({
     `${shareText} ${productUrl}`
   )}`;
   const shouldShowReadMore = shortSummary.length > 140;
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    setProductUrl(window.location.href);
+  }, []);
 
   async function handleCopyLink() {
     if (typeof navigator === "undefined" || !navigator.clipboard) {

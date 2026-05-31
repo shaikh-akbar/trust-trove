@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BrandDetailExperience } from "../../components/store/StorefrontPages";
 import { getBrandSummaries, getProductsPage } from "../../../lib/product";
 import {
+  buildBrandKeywords,
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
   buildCollectionMetadata,
@@ -40,7 +41,7 @@ export async function generateMetadata({ params, searchParams }) {
     page,
     query,
     description: `Browse ${brand.title} products on GoModexa with a cleaner brand page and easier product discovery.`,
-    keywords: [brand.title, `${brand.title} online`, `${brand.title} products`],
+    keywords: buildBrandKeywords(brand),
   });
 }
 

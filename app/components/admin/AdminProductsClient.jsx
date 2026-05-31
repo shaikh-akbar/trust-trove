@@ -176,6 +176,7 @@ export default function AdminProductsClient({
       short_description: generatedDraft.short_description,
       seo_title: generatedDraft.seo_title,
       seo_description: generatedDraft.seo_description,
+      seo_keywords: generatedDraft.seo_keywords,
     }));
     setFormMessage("SEO draft generated. Review the fields and save when ready.");
   }
@@ -204,6 +205,7 @@ export default function AdminProductsClient({
           short_description: draft.short_description,
           seo_title: draft.seo_title,
           seo_description: draft.seo_description,
+          seo_keywords: draft.seo_keywords,
           brand: draft.brand,
           category: draft.category,
           supplier_name: draft.supplier_name,
@@ -579,6 +581,17 @@ export default function AdminProductsClient({
                       value={draft.seo_description || ""}
                       onChange={(event) => updateDraft("seo_description", event.target.value)}
                       rows={4}
+                      className="w-full rounded-[1.2rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[var(--brand-navy)] focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="block sm:col-span-2">
+                    <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">SEO keywords</span>
+                    <textarea
+                      value={draft.seo_keywords || ""}
+                      onChange={(event) => updateDraft("seo_keywords", event.target.value)}
+                      rows={3}
+                      placeholder="travelling storage bag, travel organizer bag, clothes storage bag"
                       className="w-full rounded-[1.2rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[var(--brand-navy)] focus:bg-white"
                     />
                   </label>
