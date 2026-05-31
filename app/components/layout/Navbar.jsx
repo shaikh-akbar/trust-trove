@@ -348,13 +348,23 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-24 items-center justify-between gap-6 sm:h-24">
-          <div className="flex shrink-0 items-center overflow-visible">
-            <Link href="/" className="group flex items-center gap-2">
+        <div className="relative flex h-20 items-center justify-between gap-3 sm:h-24 sm:gap-6">
+          <div className="flex items-center md:hidden">
+            <button
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-900 transition hover:bg-[var(--surface-soft)]"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+
+          <div className="absolute left-1/2 -translate-x-1/2 md:static md:left-auto md:translate-x-0">
+            <Link href="/" className="group flex items-center justify-center gap-2">
               <img
                 src="/assets/gomodexa-13.png"
                 alt="GoModexa Logo"
-                className="-ml-1 h-18 w-auto max-w-none object-contain object-left transition-transform group-hover:scale-105 sm:-ml-2 sm:h-16 md:-ml-4 md:h-30"
+                className="h-20 w-auto max-w-none object-contain transition-transform group-hover:scale-105 sm:h-10 md:-ml-4 md:h-30"
               />
             </Link>
           </div>
@@ -371,7 +381,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             ))}
           </div>
 
-          <div className="flex items-center space-x-3 sm:space-x-4">
+          <div className="ml-auto flex items-center justify-end gap-0.5 sm:gap-4">
             {isLoggedIn ? (
               <div ref={profileMenuRef} className="relative hidden sm:block">
                 <button
@@ -479,11 +489,11 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             </div>
 
             <button
-              className="rounded-full p-2 text-slate-700 transition hover:bg-[var(--surface-soft)] md:hidden"
+              className="rounded-full p-1 text-slate-700 transition hover:bg-[var(--surface-soft)] md:hidden"
               onClick={() => setIsSearchOpen((open) => !open)}
               aria-label="Toggle search"
             >
-              <Search size={20} strokeWidth={2.5} />
+              <Search size={17} strokeWidth={2.2} />
             </button>
 
             {user?.isAdmin ? (
@@ -496,25 +506,27 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
               </Link>
             ) : null}
 
-            <Link href="/cart" className="relative rounded-full p-2 text-slate-700 transition hover:bg-[var(--surface-soft)]">
-              <ShoppingBag size={20} strokeWidth={2.5} />
-              <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--brand-navy)] text-[9px] font-black text-white">
+            <Link
+              href="/cart"
+              className="relative rounded-full p-1 text-slate-700 transition hover:bg-[var(--surface-soft)] sm:p-2"
+            >
+              <ShoppingBag size={17} strokeWidth={2.2} className="sm:h-5 sm:w-5" />
+              <span className="absolute right-0 top-0 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-[var(--brand-navy)] px-0.5 text-[8px] font-black text-white sm:right-1 sm:top-1 sm:h-4 sm:min-w-4 sm:px-1 sm:text-[9px]">
                 {totalItems}
               </span>
             </Link>
 
-            <Link href="/wishlist" className="relative rounded-full p-2 text-slate-700 transition hover:bg-[var(--surface-soft)]">
-              <Heart size={20} strokeWidth={2.5} />
+            <Link
+              href="/wishlist"
+              className="relative rounded-full p-1 text-slate-700 transition hover:bg-[var(--surface-soft)] sm:p-2"
+            >
+              <Heart size={17} strokeWidth={2.2} className="sm:h-5 sm:w-5" />
               {isLoggedIn ? (
-                <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--brand-navy)] px-1 text-[9px] font-black text-white">
+                <span className="absolute right-0 top-0 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-[var(--brand-navy)] px-0.5 text-[8px] font-black text-white sm:right-1 sm:top-1 sm:h-4 sm:min-w-4 sm:px-1 sm:text-[9px]">
                   {totalWishlistItems}
                 </span>
               ) : null}
             </Link>
-
-            <button className="p-2 text-slate-900 md:hidden" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
           </div>
         </div>
       </div>
