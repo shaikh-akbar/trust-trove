@@ -132,9 +132,6 @@ export default function HomeExperience({
         eyebrow="Category lanes"
         title="Shop by Category"
       />
-
-      <h1>hello</h1>
-
       <section className="bg-[linear-gradient(180deg,#f6ede2_0%,#fbf7f0_100%)] py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
