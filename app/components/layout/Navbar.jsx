@@ -329,6 +329,24 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
         </div>
       </div>
 
+      <div className="border-b border-[var(--line)] bg-[rgba(255,253,250,0.96)]">
+        <div className="overflow-hidden py-2">
+          <div className="tt-marquee flex w-max items-center">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index} aria-hidden={index === 1} className="flex shrink-0 items-center gap-4 px-5">
+                <span className="rounded-full bg-[var(--brand-navy)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] whitespace-nowrap text-white">
+                  Dropshipping Notice
+                </span>
+                <p className="text-xs font-semibold whitespace-nowrap text-slate-600 sm:text-sm">
+                  We work as a dropshipping mediator, helping arrange your product with our supplier network and guiding your order through fulfillment.
+                </p>
+                <span className="text-sm font-semibold whitespace-nowrap text-slate-300">/</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-24 items-center justify-between gap-6 sm:h-24">
           <div className="flex shrink-0 items-center overflow-visible">

@@ -12,7 +12,14 @@ export const metadata = buildMetadata({
 });
 
 export default async function Home() {
-  const { brands, categories, featuredProducts, featuredTabs, customerReviews } = await getHomePageData();
+  const {
+    brands,
+    categories,
+    featuredProducts,
+    featuredProductsTotal,
+    featuredTabs,
+    customerReviews,
+  } = await getHomePageData();
   const latestPosts = getSortedBlogPosts().slice(0, 3);
   const reviewSummary = await getApprovedCustomerReviewSummary();
   const homeSchema = {
@@ -34,6 +41,7 @@ export default async function Home() {
         brands={brands}
         categories={categories}
         featuredProducts={featuredProducts}
+        featuredProductsTotal={featuredProductsTotal}
         featuredTabs={featuredTabs}
         customerReviews={customerReviews}
         reviewSummary={reviewSummary}

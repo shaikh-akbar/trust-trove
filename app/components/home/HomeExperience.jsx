@@ -101,6 +101,7 @@ function ExploreGoModexaSection() {
 export default function HomeExperience({
   categories = [],
   featuredProducts = [],
+  featuredProductsTotal = 0,
   featuredTabs = [],
   customerReviews = [],
   reviewSummary = null,
@@ -113,9 +114,10 @@ export default function HomeExperience({
             id: "featured-products",
             label: "Featured Products",
             categoryTitle: "Featured Products",
-            count: featuredProducts.length,
+            count: featuredProductsTotal || featuredProducts.length,
             products: featuredProducts,
             initialPage: 1,
+            isFeatured: true,
           },
           ...featuredTabs,
         ]

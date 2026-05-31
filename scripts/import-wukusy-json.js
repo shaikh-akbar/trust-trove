@@ -232,6 +232,33 @@ function calculateSupplierDisplayPrice({ costPrice, gstPercent, weightGrams, mar
   };
 }
 
+function resolveImportedStockQty(product) {
+  const fallbackStockQty = Math.max(0, toInteger(product.stock_qty) || 0);
+  const stockCandidates = [
+    ...(Array.isArray(product?.stockCandidates) ? product.stockCandidates : []),
+    ...(Array.isArray(product?.debug_extract?.stockCandidates) ? product.debug_extract.stockCandidates : []),
+    ...(Array.isArray(product?.raw_payload?.stockCandidates) ? product.raw_payload.stockCandidates : []),
+    ...(Array.isArray(product?.raw_payload?.debug_extract?.stockCandidates)
+      ? product.raw_payload.debug_extract.stockCandidates
+      : []),
+  ]
+    .map((value) => String(value || "").trim())
+    .filter(Boolean);
+
+  for (const candidate of stockCandidates) {
+    if (/out of stock|unavailable|0\s*pcs?\s*left/i.test(candidate)) {
+      return 0;
+    }
+
+    const numericMatch = candidate.match(/([0-9]+)\s*pcs?\s*left/i);
+    if (numericMatch) {
+      return Math.max(0, toInteger(numericMatch[1]) || 0);
+    }
+  }
+
+  return fallbackStockQty;
+}
+
 function buildSupabaseProducts(products) {
   return products.map((product) => {
     const title = safeTruncate(product.title || `Wukusy Product ${product.wukusy_product_id}`, 255);
@@ -284,6 +311,7 @@ function buildSupabaseVariants(products, productIdMap, options) {
       weightGrams: product.weight_grams,
       marginAmount: options.marginAmount,
     });
+    const stockQty = resolveImportedStockQty(product);
 
     variants.push({
       product_id: productId,
@@ -294,9 +322,9 @@ function buildSupabaseVariants(products, productIdMap, options) {
       price_compare: Math.max(Math.ceil(pricing.displayPriceFinal * 1.4), pricing.displayPriceFinal),
       barcode: "",
       weight_grams: Math.max(0, toInteger(product.weight_grams) || 0),
-      inventory_quantity: Math.max(0, toInteger(product.stock_qty) || 0),
+      inventory_quantity: stockQty,
       is_default: true,
-      status: product.status === "active" ? "active" : "inactive",
+      status: stockQty > 0 && product.status === "active" ? "active" : "inactive",
       gst_percent: pricing.gstPercent,
       cost_price: pricing.costPrice,
       supplier_name: "wukusy",
@@ -341,18 +369,22 @@ function buildSupabaseImages(products, productIdMap) {
 }
 
 function buildWukusyProducts(products) {
-  return products.map((product) => ({
-    wukusy_product_id: safeTruncate(product.wukusy_product_id, 255),
-    sku: safeTruncate(product.sku || `WUKUSY-${product.wukusy_product_id}`, 255),
-    title: safeTruncate(product.title || `Wukusy Product ${product.wukusy_product_id}`, 255),
-    cost_price: roundCurrency(product.cost_price),
-    gst_percent: roundCurrency(product.gst_percent || 18),
-    weight_grams: Math.max(0, toInteger(product.weight_grams) || 0),
-    stock_qty: Math.max(0, toInteger(product.stock_qty) || 0),
-    status: product.status === "active" ? "active" : "out_of_stock",
-    raw_payload: product.raw_payload || product,
-    last_synced_at: new Date().toISOString(),
-  }));
+  return products.map((product) => {
+    const stockQty = resolveImportedStockQty(product);
+
+    return {
+      wukusy_product_id: safeTruncate(product.wukusy_product_id, 255),
+      sku: safeTruncate(product.sku || `WUKUSY-${product.wukusy_product_id}`, 255),
+      title: safeTruncate(product.title || `Wukusy Product ${product.wukusy_product_id}`, 255),
+      cost_price: roundCurrency(product.cost_price),
+      gst_percent: roundCurrency(product.gst_percent || 18),
+      weight_grams: Math.max(0, toInteger(product.weight_grams) || 0),
+      stock_qty: stockQty,
+      status: stockQty > 0 && product.status === "active" ? "active" : "out_of_stock",
+      raw_payload: product.raw_payload || product,
+      last_synced_at: new Date().toISOString(),
+    };
+  });
 }
 
 function isSupabaseRateLimitError(error) {

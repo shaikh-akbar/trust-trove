@@ -133,9 +133,18 @@ export default function ShopSection({
     }));
 
     try {
-      const response = await fetch(
-        `/api/products?category=${encodeURIComponent(tab.categoryTitle || tab.label)}&page=${targetPage}&pageSize=${PAGE_SIZE}`
-      );
+      const searchParams = new URLSearchParams({
+        page: String(targetPage),
+        pageSize: String(PAGE_SIZE),
+      });
+
+      if (tab.isFeatured) {
+        searchParams.set('featured', 'true');
+      } else {
+        searchParams.set('category', tab.categoryTitle || tab.label);
+      }
+
+      const response = await fetch(`/api/products?${searchParams.toString()}`);
       const payload = await response.json();
 
       if (!response.ok) {
@@ -319,9 +328,14 @@ export default function ShopSection({
                   disabled={isLoadingMore}
                   className="inline-flex items-center justify-center rounded-full border border-slate-900 px-6 py-3 text-sm font-black uppercase tracking-[0.18em] text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-wait disabled:opacity-70 sm:px-8"
                 >
-                  {isLoadingMore ? 'Loading More...' : 'Load More Products'}
+                  {isLoadingMore ? 'Loading More...' : 'Load 10 More Products'}
                 </button>
               ) : null}
+              {/* {hasMoreProducts ? (
+                <p className="text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                  Each click adds 10 more products, about 2 more rows on desktop.
+                </p>
+              ) : null} */}
 
               <Link
                 href="/shop"
