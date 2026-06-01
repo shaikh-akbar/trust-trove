@@ -13,8 +13,11 @@ import {
   buildBreadcrumbSchema,
   buildFaqSchema,
   buildMetadata,
+  buildProductMetaDescription,
+  buildProductMetaTitle,
   buildProductKeywords,
   buildProductSchema,
+  hasIndexableProductPageSignals,
 } from "../../../lib/seo";
 
 function stripHtml(value) {
@@ -70,18 +73,33 @@ export async function generateMetadata({ params }) {
     });
   }
 
-  const description =
-    product.short_description ||
-    stripHtml(product.description).slice(0, 160) ||
-    `Shop ${product.title} online at GoModexa.`;
+  const shouldIndex = hasIndexableProductPageSignals(product);
 
   return buildMetadata({
-    title: product.title,
+    title: buildProductMetaTitle(product),
     path: getProductHref(product),
-    description,
+    description: buildProductMetaDescription({
+      ...product,
+      description:
+        product.short_description || stripHtml(product.description).slice(0, 220),
+    }),
     image: product.main_image || "/assets/gomodexa.png",
     keywords: buildProductKeywords(product),
     includeDefaultKeywords: false,
+    robots: shouldIndex
+      ? {
+          index: true,
+          follow: true,
+        }
+      : {
+          index: false,
+          follow: true,
+          googleBot: {
+            index: false,
+            follow: true,
+            noimageindex: true,
+          },
+        },
   });
 }
 

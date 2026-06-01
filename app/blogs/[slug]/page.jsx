@@ -84,7 +84,15 @@ export default async function BlogDetailPage({ params }) {
           <Link href="/blogs" className="inline-flex items-center text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]">
             <ArrowLeft size={16} className="mr-2" /> Back to blogs
           </Link>
-          <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.28em] text-slate-400">{post.category}</p>
+          <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-extrabold uppercase tracking-[0.28em] text-slate-400">
+            <Link href={categoryPath} className="transition hover:text-[var(--brand-navy)]">
+              {post.category}
+            </Link>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <Link href="/shop" className="transition hover:text-[var(--brand-navy)]">
+              Shop all products
+            </Link>
+          </div>
           <h1 className="mt-4 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--brand-navy)] sm:text-5xl">{post.title}</h1>
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500">
             <p>{post.readingTime}</p>
@@ -113,6 +121,22 @@ export default async function BlogDetailPage({ params }) {
                 <p>SKU: {post.productSource.sku}</p>
                 <p>Cost Price: Rs {post.productSource.costPrice}</p>
                 <p>Stock: {post.productSource.stockQty}</p>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {productPath ? (
+                  <Link
+                    href={productPath}
+                    className="inline-flex rounded-full border border-[var(--line)] bg-[var(--brand-navy)] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.18em] text-white"
+                  >
+                    Open product page
+                  </Link>
+                ) : null}
+                <Link
+                  href={categoryPath}
+                  className="inline-flex rounded-full border border-[var(--line)] bg-white px-5 py-3 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+                >
+                  Shop {post.productSource.categoryTitle}
+                </Link>
               </div>
             </div>
           ) : null}

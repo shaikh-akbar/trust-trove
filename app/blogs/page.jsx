@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { BLOGS_PER_PAGE, getSortedBlogPosts } from "../../lib/content";
+import {
+  BLOGS_PER_PAGE,
+  getCategoryPathFromTitle,
+  getSortedBlogPosts,
+} from "../../lib/content";
 import { buildMetadata } from "../../lib/seo";
 
 function parsePageValue(value) {
@@ -126,24 +130,56 @@ export default async function BlogsPage({ searchParams }) {
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-3">
           {paginatedPosts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blogs/${post.slug}`}
-              className="rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)] transition hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between text-xs font-extrabold uppercase tracking-[0.22em] text-slate-400">
-                <span>{post.category}</span>
-                <span>{post.readingTime}</span>
-              </div>
-              <h2 className="mt-5 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">{post.title}</h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">{post.excerpt}</p>
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Published {new Date(post.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-              </p>
-              <span className="mt-8 inline-flex items-center text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]">
-                Read article <ArrowRight size={16} className="ml-2" />
-              </span>
-            </Link>
+            (() => {
+              const categoryPath = getCategoryPathFromTitle(
+                post?.productSource?.categoryTitle || post.category
+              );
+
+              return (
+                <article
+                  key={post.slug}
+                  className="rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)] transition hover:-translate-y-1"
+                >
+                  <div className="flex items-center justify-between gap-3 text-xs font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                    <Link
+                      href={categoryPath}
+                      className="transition hover:text-[var(--brand-navy)]"
+                    >
+                      {post.category}
+                    </Link>
+                    <span>{post.readingTime}</span>
+                  </div>
+                  <Link href={`/blogs/${post.slug}`} className="block">
+                    <h2 className="mt-5 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                      {post.title}
+                    </h2>
+                    <p className="mt-4 text-sm leading-7 text-slate-600">{post.excerpt}</p>
+                  </Link>
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    Published{" "}
+                    {new Date(post.publishedAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Link
+                      href={`/blogs/${post.slug}`}
+                      className="inline-flex items-center text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+                    >
+                      Read article <ArrowRight size={16} className="ml-2" />
+                    </Link>
+                    <Link
+                      href={categoryPath}
+                      className="inline-flex items-center rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--brand-navy)] transition hover:bg-white"
+                    >
+                      Shop {post?.productSource?.categoryTitle || post.category}
+                    </Link>
+                  </div>
+                </article>
+              );
+            })()
           ))}
         </div>
 

@@ -4,6 +4,8 @@ import { BrandDetailExperience } from "../../components/store/StorefrontPages";
 import { getBrandSummaries, getProductsPage } from "../../../lib/product";
 import {
   buildBrandKeywords,
+  buildBrandMetaDescription,
+  buildBrandMetaTitle,
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
   buildCollectionMetadata,
@@ -36,11 +38,11 @@ export async function generateMetadata({ params, searchParams }) {
   const query = getQueryValue(currentSearchParams?.q);
 
   return buildCollectionMetadata({
-    title: brand.title,
+    title: buildBrandMetaTitle(brand, { page }),
     path: `/brands/${slug}`,
     page,
     query,
-    description: `Browse ${brand.title} products on GoModexa with a cleaner brand page and easier product discovery.`,
+    description: buildBrandMetaDescription(brand, { page }),
     keywords: buildBrandKeywords(brand),
   });
 }

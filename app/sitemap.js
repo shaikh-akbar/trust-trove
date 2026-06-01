@@ -2,7 +2,7 @@ import { BLOG_POSTS } from "../lib/content";
 import { getBrandSummaries, getCategorySummaries } from "../lib/product";
 import { getProductHref } from "../lib/product-route";
 import { getSupabaseAdmin } from "../lib/supabase-admin";
-import { getSiteUrl } from "../lib/seo";
+import { getSiteUrl, hasIndexableProductPageSignals } from "../lib/seo";
 
 function toDate(value) {
   const parsed = new Date(value || Date.now());
@@ -17,7 +17,18 @@ async function getAllIndexedProducts() {
       id,
       slug,
       handle,
+      title,
+      description,
+      short_description,
+      seo_description,
+      seo_keywords,
+      tags,
+      vendor,
+      brand,
+      category,
+      product_type,
       main_image,
+      is_featured,
       updated_at,
       created_at,
       variants!inner (
@@ -39,10 +50,7 @@ async function getAllIndexedProducts() {
   }
 
   return (products || []).filter(
-    (product) =>
-      product?.slug &&
-      Array.isArray(product?.variants) &&
-      product.variants.some((variant) => Number(variant?.inventory_quantity || 0) > 0)
+    (product) => product?.slug && hasIndexableProductPageSignals(product)
   );
 }
 

@@ -11,6 +11,8 @@ import {
 import { getCategorySummaries, getProductsPage } from "../../../lib/product";
 import {
   buildCategoryKeywords,
+  buildCategoryMetaDescription,
+  buildCategoryMetaTitle,
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
   buildCollectionMetadata,
@@ -44,11 +46,11 @@ export async function generateMetadata({ params, searchParams }) {
   const query = getQueryValue(currentSearchParams?.q);
 
   return buildCollectionMetadata({
-    title: category.title,
+    title: buildCategoryMetaTitle(category, { page }),
     path: `/categories/${slug}`,
     page,
     query,
-    description: `Browse ${category.title} products on GoModexa with cleaner collection design, stronger structure, and easier discovery.`,
+    description: buildCategoryMetaDescription(category, { page }),
     keywords: buildCategoryKeywords(category),
   });
 }

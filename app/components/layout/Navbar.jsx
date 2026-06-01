@@ -394,7 +394,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
                   </span>
                   <span className="hidden text-left leading-tight lg:block">
                     <span className="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--brand-navy)]/42">
-                      GoModexa, welcome
+                    GoModexa, welcome
                     </span>
                     <span className="block max-w-28 truncate font-display text-lg font-semibold text-[var(--brand-navy)]">
                       {welcomeName}
