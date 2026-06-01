@@ -5,6 +5,7 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import ProductCard from "../home/ProductCard";
 import { buildFilterOptions, filterProducts } from "../../../lib/storefront";
+import { getCategorySummaryEntry } from "../../../lib/storefront";
 
 const INITIAL_VISIBLE_PRODUCTS = 12;
 const LOAD_MORE_STEP = 8;
@@ -29,6 +30,7 @@ function FilterOption({ label, checked, onChange }) {
 
 export default function CatalogExperienceClient({
   products,
+  categories = [],
   initialQuery = "",
   eyebrow,
   title,
@@ -38,8 +40,21 @@ export default function CatalogExperienceClient({
   emptyText,
   heroBackgroundImage,
   heroMobileBackgroundImage,
+  currentPage = 1,
+  totalPages = 1,
 }) {
-  const filterOptions = useMemo(() => buildFilterOptions(products), [products]);
+  const catalogProducts = useMemo(
+    () =>
+      (products || []).filter((product) =>
+        Boolean(
+          product?.image_url ||
+            product?.main_image ||
+            product?.product_images?.[0]?.src
+        )
+      ),
+    [products]
+  );
+  const filterOptions = useMemo(() => buildFilterOptions(catalogProducts), [catalogProducts]);
   const [query, setQuery] = useState(initialQuery);
   const deferredQuery = useDeferredValue(query);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -84,7 +99,34 @@ export default function CatalogExperienceClient({
     }
 
     return nextProducts;
-  }, [deferredQuery, maxPrice, minPrice, products, selectedCategories, selectedColors, selectedSizes, sortBy]);
+  }, [catalogProducts, deferredQuery, maxPrice, minPrice, selectedCategories, selectedColors, selectedSizes, sortBy]);
+
+  const allCategoryLabels = useMemo(() => {
+    const resultDrivenCategories = Array.from(
+      new Set(
+        filteredProducts
+          .map((product) => getCategorySummaryEntry(product).title)
+          .filter(Boolean)
+      )
+    ).sort((left, right) => left.localeCompare(right));
+
+    if (resultDrivenCategories.length > 0) {
+      return resultDrivenCategories;
+    }
+
+    const summaryTitles = (categories || [])
+      .filter((category) => Number(category?.count || 0) > 0)
+      .map((category) => String(category?.title || "").trim())
+      .filter(Boolean);
+
+    if (summaryTitles.length > 0) {
+      return Array.from(new Set(summaryTitles)).sort((left, right) =>
+        left.localeCompare(right)
+      );
+    }
+
+    return filterOptions.categories;
+  }, [categories, filterOptions.categories, filteredProducts]);
 
   const activeFilterCount =
     selectedCategories.length + selectedColors.length + selectedSizes.length + (deferredQuery ? 1 : 0);
@@ -210,9 +252,9 @@ export default function CatalogExperienceClient({
               </div>
             </FilterSection>
 
-            {filterOptions.categories.length > 0 ? (
+            {allCategoryLabels.length > 0 ? (
               <FilterSection title="Categories">
-                {filterOptions.categories.map((category) => (
+                {allCategoryLabels.map((category) => (
                   <FilterOption
                     key={category}
                     label={category}
@@ -338,6 +380,36 @@ export default function CatalogExperienceClient({
                     <span className="rounded-full border border-[var(--line)] bg-white px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-navy)] shadow-[0_12px_36px_-28px_rgba(8,15,43,0.35)]">
                       Loading more products
                     </span>
+                  </div>
+                ) : totalPages > 1 ? (
+                  <div className="flex justify-end pt-2">
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={currentPage > 1 ? `/shop?page=${currentPage - 1}` : "#"}
+                        aria-disabled={currentPage <= 1}
+                        className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
+                          currentPage > 1
+                            ? "border-[var(--line)] bg-white text-[var(--brand-navy)]"
+                            : "pointer-events-none border-[var(--line)] bg-[var(--surface-soft)] text-slate-400"
+                        }`}
+                      >
+                        Prev
+                      </Link>
+                      <span className="text-[11px] font-semibold text-slate-500">
+                        {currentPage}/{totalPages}
+                      </span>
+                      <Link
+                        href={currentPage < totalPages ? `/shop?page=${currentPage + 1}` : "#"}
+                        aria-disabled={currentPage >= totalPages}
+                        className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
+                          currentPage < totalPages
+                            ? "border-[var(--line)] bg-white text-[var(--brand-navy)]"
+                            : "pointer-events-none border-[var(--line)] bg-[var(--surface-soft)] text-slate-400"
+                        }`}
+                      >
+                        Next
+                      </Link>
+                    </div>
                   </div>
                 ) : null}
               </>

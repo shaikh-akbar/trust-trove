@@ -37,8 +37,8 @@ export default function ProductCard({ product, compact = false }) {
   const imageClassName = compact ? "relative aspect-[4/3.5] overflow-hidden bg-[var(--surface-soft)]" : "relative aspect-[4/4.9] overflow-hidden bg-[var(--surface-soft)]";
   const bodyClassName = compact ? "flex flex-1 flex-col p-3 sm:p-3.5" : "flex flex-1 flex-col p-5";
   const titleClassName = compact
-    ? "tt-clamp-2 font-display min-h-[2.35rem] break-words text-[14px] leading-[1.16] text-[var(--brand-navy)] transition-colors group-hover:text-slate-700 sm:min-h-[2.55rem] sm:text-[15px]"
-    : "font-display line-clamp-2 min-h-[3.5rem] text-2xl leading-tight text-[var(--brand-navy)] transition-colors group-hover:text-slate-700";
+    ? "tt-clamp-2 min-h-[2.35rem] break-words text-[14px] font-normal leading-[1.24] text-[var(--brand-navy)] transition-colors group-hover:text-slate-700 sm:min-h-[2.55rem] sm:text-[15px]"
+    : "line-clamp-2 min-h-[3.5rem] text-2xl font-normal leading-[1.18] text-[var(--brand-navy)] transition-colors group-hover:text-slate-700";
   const descriptionClassName = compact
     ? "tt-clamp-2 mt-1.5 min-h-[2rem] text-[11px] leading-[1.36] text-slate-500"
     : "mt-3 line-clamp-2 min-h-[3.25rem] text-sm leading-6 text-slate-500";
@@ -75,7 +75,7 @@ export default function ProductCard({ product, compact = false }) {
 
         <div className={`absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(16,25,58,0.72))] ${compact ? "h-20" : "h-28"}`} />
 
-        <div className={`absolute left-3 top-3 inline-flex rounded-full border border-white/20 bg-white/88 text-[var(--brand-navy)] shadow-[0_12px_24px_-16px_rgba(20,29,96,0.28)] backdrop-blur ${compact ? "px-2.5 py-1 text-[8px] tracking-[0.16em]" : "px-3 py-1.5 text-[10px] tracking-[0.2em]"} font-black uppercase`}>
+        <div className={`absolute bottom-3 left-3 z-10 inline-flex rounded-full border border-white/20 bg-white/88 text-[var(--brand-navy)] shadow-[0_12px_24px_-16px_rgba(20,29,96,0.28)] backdrop-blur ${compact ? "px-2.5 py-1 text-[8px] tracking-[0.16em]" : "px-3 py-1.5 text-[10px] tracking-[0.2em]"} font-black uppercase`}>
           {categoryLabel}
         </div>
 

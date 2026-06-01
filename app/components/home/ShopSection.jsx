@@ -234,7 +234,7 @@ export default function ShopSection({
       <div className="rounded-[2rem] border border-slate-200 bg-white px-4 py-6 shadow-[0_28px_70px_-50px_rgba(15,23,42,0.28)] sm:px-6 sm:py-8">
         <div className="text-center">
           <p className="text-[11px] font-black uppercase tracking-[0.26em] text-[var(--brand-navy)]/55">{eyebrow}</p>
-          <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.03em] text-[var(--brand-navy)] sm:text-3xl">
+          <h2 className="mt-3 text-2xl font-normal tracking-normal text-[var(--brand-navy)] sm:text-3xl">
             {title}
           </h2>
         </div>
@@ -307,7 +307,7 @@ export default function ShopSection({
             <div className="mb-5 flex items-center justify-between gap-4 rounded-[1.5rem] bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#eff6ff_100%)] px-4 py-4 sm:px-6">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">Now showing</p>
-                <h3 className="mt-1 font-display text-lg font-semibold text-[var(--brand-navy)] sm:text-xl">{activeTab.label}</h3>
+                <h3 className="mt-1 text-lg font-normal text-[var(--brand-navy)] sm:text-xl">{activeTab.label}</h3>
               </div>
               <p className="text-xs font-semibold text-slate-500 sm:text-sm">
                 {formatProgressCount(visibleProducts.length, activeTab.count)}
@@ -328,15 +328,9 @@ export default function ShopSection({
                   disabled={isLoadingMore}
                   className="inline-flex items-center justify-center rounded-full border border-slate-900 px-6 py-3 text-sm font-black uppercase tracking-[0.18em] text-slate-900 transition hover:bg-slate-900 hover:text-white disabled:cursor-wait disabled:opacity-70 sm:px-8"
                 >
-                  {isLoadingMore ? 'Loading More...' : 'Load 10 More Products'}
+                  {isLoadingMore ? 'Loading More...' : 'Load More'}
                 </button>
               ) : null}
-              {/* {hasMoreProducts ? (
-                <p className="text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                  Each click adds 10 more products, about 2 more rows on desktop.
-                </p>
-              ) : null} */}
-
               <Link
                 href="/shop"
                 className="inline-flex items-center text-[11px] font-black uppercase tracking-[0.18em] text-[var(--brand-navy)]"

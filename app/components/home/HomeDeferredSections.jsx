@@ -11,7 +11,7 @@ function SectionHeading({ eyebrow, title, href, actionLabel }) {
     <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <p className="text-xs font-black uppercase tracking-[0.32em] text-[var(--brand-navy)]/42">{eyebrow}</p>
-        <h2 className="mt-3 font-display text-4xl font-semibold text-[var(--brand-navy)] sm:text-[2.9rem]">{title}</h2>
+        <h2 className="mt-3 text-4xl font-normal text-[var(--brand-navy)] sm:text-[2.9rem]">{title}</h2>
       </div>
       {href && actionLabel ? (
         <Link
@@ -109,7 +109,7 @@ export default async function HomeDeferredSections() {
                 <p className="mt-5 text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                   {label}
                 </p>
-                <h3 className="mt-2 font-display text-2xl font-semibold leading-tight text-[var(--brand-navy)]">
+                <h3 className="mt-2 text-2xl font-normal leading-tight text-[var(--brand-navy)]">
                   {title}
                 </h3>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{text}</p>
@@ -142,7 +142,7 @@ export default async function HomeDeferredSections() {
                     <span>{post.category}</span>
                     <span>{post.readingTime}</span>
                   </div>
-                  <h3 className="mt-5 font-display text-3xl font-semibold leading-tight text-[var(--brand-navy)]">
+                  <h3 className="mt-5 text-3xl font-normal leading-tight text-[var(--brand-navy)]">
                     {post.title}
                   </h3>
                   <p className="mt-4 text-sm leading-7 text-slate-600">{post.excerpt}</p>

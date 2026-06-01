@@ -93,7 +93,7 @@ function EditorialStrip({ items }) {
             <span className="inline-flex rounded-2xl bg-[var(--brand-navy)] p-3 text-[var(--surface-cream)]">
               <Icon size={18} />
             </span>
-            <h2 className="mt-5 font-display text-2xl font-semibold text-[var(--brand-navy)]">{title}</h2>
+            <h2 className="mt-5 text-2xl font-normal text-[var(--brand-navy)]">{title}</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">{text}</p>
           </div>
         ))}
@@ -113,7 +113,7 @@ function CategoryShowcase({ categories }) {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-slate-400">Collection jump</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold text-[var(--brand-navy)] sm:text-[2rem]">Explore distinctive category worlds</h2>
+            <h2 className="mt-3 text-3xl font-normal text-[var(--brand-navy)] sm:text-[2rem]">Explore distinctive category worlds</h2>
           </div>
           <Link
             href="/categories"
@@ -137,7 +137,7 @@ function CategoryShowcase({ categories }) {
               <p className={`text-xs font-extrabold uppercase tracking-[0.22em] ${index === 0 ? "text-[var(--brand-gold)]" : "text-slate-400"}`}>
                 {String(category.count).padStart(2, "0")} products
               </p>
-              <h3 className="mt-5 font-display text-3xl font-semibold sm:text-[2rem]">{category.title}</h3>
+              <h3 className="mt-5 text-3xl font-normal sm:text-[2rem]">{category.title}</h3>
               <p className={`mt-4 text-sm leading-7 ${index === 0 ? "text-slate-200" : "text-slate-600"}`}>
                 {category.description || "A curated collection designed for faster browsing and better discovery."}
               </p>
@@ -152,17 +152,26 @@ function CategoryShowcase({ categories }) {
   );
 }
 
-export function ShopExperience({ products, categories = [], initialQuery = "" }) {
+export function ShopExperience({
+  products,
+  categories = [],
+  initialQuery = "",
+  currentPage = 1,
+  totalPages = 1,
+}) {
   return (
     <>
       <CatalogExperienceClient
         products={products}
+        categories={categories}
         initialQuery={initialQuery}
         eyebrow="Shop"
         title="A more magnetic storefront for thoughtful browsing."
         description="Search products instantly, slide through price ranges, and refine by category, color, and size in a cleaner shopping experience built to convert."
         heroBackgroundImage={SHOP_BANNER_IMAGE}
         heroMobileBackgroundImage={SHOP_BANNER_MOBILE_IMAGE}
+        currentPage={currentPage}
+        totalPages={totalPages}
         spotlight={{
           title: "Designed for discovery",
           text: "The catalog now behaves like a modern retail experience, with faster scanning, richer merchandising, and better route-level structure for SEO.",
@@ -212,7 +221,7 @@ export function BrandsExperience({ brands = [] }) {
                   <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
                     Brand index
                   </p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                  <h2 className="mt-2 text-2xl font-normal text-[var(--brand-navy)] sm:text-3xl">
                     Browse all brands
                   </h2>
                 </div>
@@ -246,7 +255,7 @@ export function BrandsExperience({ brands = [] }) {
                   <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
                     Quick jump
                   </p>
-                  <p className="mt-1 font-display text-xl font-semibold text-[var(--brand-navy)]">
+                  <p className="mt-1 text-xl font-normal text-[var(--brand-navy)]">
                     Open brand list
                   </p>
                 </div>
@@ -290,7 +299,7 @@ export function BrandsExperience({ brands = [] }) {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="line-clamp-2 text-balance font-display text-lg font-semibold leading-[1.08] text-[var(--brand-navy)]">
+                    <p className="line-clamp-2 text-balance text-lg font-normal leading-[1.2] text-[var(--brand-navy)]">
                       {brand.title}
                     </p>
                     <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
@@ -312,7 +321,7 @@ export function BrandsExperience({ brands = [] }) {
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-slate-400">Preview lane</p>
-              <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+              <h2 className="mt-2 text-2xl font-normal text-[var(--brand-navy)] sm:text-3xl">
                 Popular brands with a quick product preview
               </h2>
             </div>
@@ -333,7 +342,7 @@ export function BrandsExperience({ brands = [] }) {
                       <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/68">
                         Shop By Brand
                       </p>
-                      <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
+                      <h2 className="mt-2 text-2xl font-normal sm:text-3xl">
                         {brand.title}
                       </h2>
                       <p className="mt-2 text-sm text-slate-200">
@@ -493,7 +502,7 @@ export function CategoriesExperience({ categories = [] }) {
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-slate-400">Preview lane</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
+            <h2 className="mt-2 text-2xl font-normal text-[var(--brand-navy)] sm:text-3xl">
               Popular categories with a quick product preview
             </h2>
           </div>
@@ -514,7 +523,7 @@ export function CategoriesExperience({ categories = [] }) {
                     <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/68">
                       Shop By Category
                     </p>
-                    <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
+                    <h2 className="mt-2 text-2xl font-normal sm:text-3xl">
                       {category.title}
                     </h2>
                     <p className="mt-2 text-sm text-slate-200">
@@ -720,7 +729,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-[#141d60]/40">Fresh grid</p>
-              <h2 className="mt-2 font-display text-2xl font-semibold text-[#141d60] sm:text-3xl">More recent arrivals</h2>
+              <h2 className="mt-2 text-2xl font-normal text-[#141d60] sm:text-3xl">More recent arrivals</h2>
             </div>
             <Link
               href={initialQuery ? `/shop?q=${encodeURIComponent(initialQuery)}` : "/shop"}
@@ -741,7 +750,7 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#141d60] text-[var(--surface-cream)]">
                 <Sparkles size={20} />
               </div>
-              <h3 className="mt-6 font-display text-3xl font-semibold text-[#141d60]">No recent arrivals found</h3>
+              <h3 className="mt-6 text-3xl font-normal text-[#141d60]">No recent arrivals found</h3>
               <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-500">
                 As soon as new products are added to the catalog, this page will surface them with the same feature-led presentation.
               </p>
@@ -791,7 +800,7 @@ export function CategoryDetailExperience({ products, category, initialQuery = ""
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-10 sm:px-6 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-slate-400">Related route</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">Keep exploring adjacent collections</h2>
+            <h2 className="mt-2 text-2xl font-normal text-[var(--brand-navy)] sm:text-3xl">Keep exploring adjacent collections</h2>
           </div>
           <Link
             href="/categories"
@@ -829,7 +838,7 @@ export function BrandDetailExperience({ products, brand, initialQuery = "" }) {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-10 sm:px-6 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-slate-400">Related route</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">Keep exploring adjacent brands</h2>
+            <h2 className="mt-2 text-2xl font-normal text-[var(--brand-navy)] sm:text-3xl">Keep exploring adjacent brands</h2>
           </div>
           <Link
             href="/brands"
