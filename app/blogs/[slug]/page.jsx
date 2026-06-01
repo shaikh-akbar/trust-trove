@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getProductByIdentifier } from "../../../lib/product";
 import {
   getBlogPostBySlug,
   getBlogPostsByCategory,
@@ -11,6 +12,20 @@ import {
   buildBreadcrumbSchema,
   buildMetadata,
 } from "../../../lib/seo";
+
+function formatPrice(value) {
+  return `Rs ${Number(value || 0)}`;
+}
+
+function getProductIdentifierFromPath(path) {
+  const normalizedPath = String(path || "").trim();
+
+  if (!normalizedPath.startsWith("/product/")) {
+    return "";
+  }
+
+  return normalizedPath.replace("/product/", "").trim();
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -47,6 +62,16 @@ export default async function BlogDetailPage({ params }) {
     post?.productSource?.categoryTitle || post.category
   );
   const productPath = post?.productSource?.productPath || null;
+  const productIdentifier = getProductIdentifierFromPath(productPath);
+  const linkedProduct = productIdentifier
+    ? await getProductByIdentifier(productIdentifier)
+    : null;
+  const displayPrice =
+    Number(linkedProduct?.price_selling || linkedProduct?.variants?.[0]?.price_selling || 0) ||
+    Number(post?.productSource?.costPrice || 0);
+  const displayStock =
+    Number(linkedProduct?.inventory_quantity || linkedProduct?.variants?.[0]?.inventory_quantity || 0) ||
+    Number(post?.productSource?.stockQty || 0);
   const relatedPosts = getBlogPostsByCategory(
     post?.productSource?.categoryTitle || post.category,
     { excludeSlug: post.slug, limit: 3 }
@@ -119,8 +144,8 @@ export default async function BlogDetailPage({ params }) {
               <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
                 <p>Category: {post.productSource.categoryTitle}</p>
                 <p>SKU: {post.productSource.sku}</p>
-                <p>Cost Price: Rs {post.productSource.costPrice}</p>
-                <p>Stock: {post.productSource.stockQty}</p>
+                <p>Price: {formatPrice(displayPrice)}</p>
+                <p>Stock: {displayStock}</p>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">
                 {productPath ? (

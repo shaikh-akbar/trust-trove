@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useDeferredValue, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, PackageCheck, Save, Search, Sparkles, X } from "lucide-react";
 import { generateProductSeoDraft } from "../../../lib/product-seo-drafts";
+import { hasIndexableProductPageSignals } from "../../../lib/seo";
 
 function formatDate(value) {
   if (!value) {
@@ -25,6 +26,130 @@ function formatDate(value) {
 
 function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
+}
+
+function normalizeText(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function getSeoKeywordCount(value) {
+  return normalizeText(value)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean).length;
+}
+
+function getInventoryCount(product) {
+  if (Array.isArray(product?.variants) && product.variants.length > 0) {
+    return product.variants.reduce(
+      (sum, variant) => sum + Number(variant?.inventory_quantity || 0),
+      0
+    );
+  }
+
+  if (product?.primary_variant) {
+    return Number(product.primary_variant.inventory_quantity || 0);
+  }
+
+  return Number(product?.inventory_quantity || 0);
+}
+
+function buildSeoQualityReport(product) {
+  const shortDescriptionLength = normalizeText(product?.short_description).length;
+  const seoTitleLength = normalizeText(product?.seo_title).length;
+  const seoDescriptionLength = normalizeText(product?.seo_description).length;
+  const keywordCount = getSeoKeywordCount(product?.seo_keywords);
+  const inventoryCount = getInventoryCount(product);
+  const imagePresent = Boolean(product?.image || product?.main_image || product?.image_url);
+  const isIndexable = hasIndexableProductPageSignals({
+    ...product,
+    title: product?.title || "",
+    main_image: product?.image || product?.main_image || product?.image_url || "",
+    inventory_quantity: inventoryCount,
+    variants:
+      Array.isArray(product?.variants) && product.variants.length > 0
+        ? product.variants
+        : [{ inventory_quantity: inventoryCount }],
+  });
+
+  const checks = [
+    {
+      label: "Product title",
+      passed: normalizeText(product?.title).length >= 20,
+      detail: normalizeText(product?.title).length >= 20 ? "Looks usable" : "Needs a clearer search-facing title",
+      weight: 10,
+    },
+    {
+      label: "Clean slug",
+      passed: normalizeText(product?.slug).length >= 8,
+      detail: normalizeText(product?.slug).length >= 8 ? "Slug is present" : "Add a meaningful slug",
+      weight: 10,
+    },
+    {
+      label: "Category or brand",
+      passed: Boolean(normalizeText(product?.category) || normalizeText(product?.brand)),
+      detail:
+        normalizeText(product?.category) || normalizeText(product?.brand)
+          ? "Taxonomy is present"
+          : "Add category or brand context",
+      weight: 10,
+    },
+    {
+      label: "Product image",
+      passed: imagePresent,
+      detail: imagePresent ? "Image is available" : "Add a product image",
+      weight: 10,
+    },
+    {
+      label: "Inventory",
+      passed: inventoryCount > 0,
+      detail: inventoryCount > 0 ? `In stock: ${inventoryCount}` : "Out of stock pages are weaker for indexing",
+      weight: 10,
+    },
+    {
+      label: "Short description",
+      passed: shortDescriptionLength >= 140,
+      detail:
+        shortDescriptionLength >= 140
+          ? `${shortDescriptionLength} characters`
+          : `Only ${shortDescriptionLength} characters, aim for 140+`,
+      weight: 20,
+    },
+    {
+      label: "SEO title",
+      passed: seoTitleLength >= 30 && seoTitleLength <= 65,
+      detail:
+        seoTitleLength >= 30 && seoTitleLength <= 65
+          ? `${seoTitleLength} characters`
+          : `${seoTitleLength} characters, aim for 30-65`,
+      weight: 10,
+    },
+    {
+      label: "SEO description",
+      passed: seoDescriptionLength >= 120 && seoDescriptionLength <= 160,
+      detail:
+        seoDescriptionLength >= 120 && seoDescriptionLength <= 160
+          ? `${seoDescriptionLength} characters`
+          : `${seoDescriptionLength} characters, aim for 120-160`,
+      weight: 10,
+    },
+    {
+      label: "SEO keywords",
+      passed: keywordCount >= 5,
+      detail: keywordCount >= 5 ? `${keywordCount} keywords` : `${keywordCount} keywords, aim for 5+`,
+      weight: 10,
+    },
+  ];
+
+  const score = checks.reduce(
+    (sum, check) => sum + (check.passed ? check.weight : 0),
+    0
+  );
+
+  const tone =
+    score >= 85 ? "strong" : score >= 60 ? "improving" : "weak";
+
+  return { checks, score, tone, isIndexable };
 }
 
 function buildEmptyMessages(query, filter) {
@@ -68,6 +193,7 @@ export default function AdminProductsClient({
     products.find((product) => product.id === selectedId) ||
     products[0] ||
     null;
+  const seoReport = draft ? buildSeoQualityReport(draft) : null;
 
   useEffect(() => {
     let isCancelled = false;
@@ -316,6 +442,7 @@ export default function AdminProductsClient({
           {products.length > 0 ? (
             products.map((product) => {
               const isActiveCard = product.id === (draft?.id || selectedProduct?.id);
+              const productSeoReport = buildSeoQualityReport(product);
 
               return (
                 <button
@@ -370,6 +497,20 @@ export default function AdminProductsClient({
                       <p className="mt-1 truncate text-sm font-semibold text-slate-500">
                         /product/{product.slug || product.id}
                       </p>
+                      <div className="mt-3 flex items-center gap-2">
+                        <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">
+                          SEO {productSeoReport.score}/100
+                        </span>
+                        {productSeoReport.isIndexable ? (
+                          <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">
+                            Index-ready
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">
+                            Needs work
+                          </span>
+                        )}
+                      </div>
 
                       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                         <div>
@@ -486,6 +627,69 @@ export default function AdminProductsClient({
                     /product/{draft.slug || draft.id}
                   </p>
                 </div>
+
+                {seoReport ? (
+                  <div className="rounded-[1.4rem] border border-[var(--line)] bg-white p-4 shadow-[0_20px_60px_-48px_rgba(66,72,121,0.24)]">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                          SEO Quality Score
+                        </p>
+                        <h4 className="mt-2 text-3xl font-black tracking-tight text-slate-950">
+                          {seoReport.score}/100
+                        </h4>
+                        <p className="mt-2 text-sm font-semibold text-slate-600">
+                          {seoReport.tone === "strong"
+                            ? "Strong indexing signals for this product."
+                            : seoReport.tone === "improving"
+                              ? "Decent foundation, but a few SEO fields still need tightening."
+                              : "This product is still thin for search and should be improved before relying on it for indexing."}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <span className={`rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] ${
+                          seoReport.isIndexable
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-amber-50 text-amber-700"
+                        }`}>
+                          {seoReport.isIndexable ? "Likely indexable" : "Currently weak for indexing"}
+                        </span>
+                        <span className="rounded-full bg-slate-100 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-slate-600">
+                          {seoReport.checks.filter((check) => check.passed).length}/{seoReport.checks.length} checks passed
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {seoReport.checks.map((check) => (
+                        <div
+                          key={check.label}
+                          className={`rounded-[1.1rem] border px-4 py-3 ${
+                            check.passed
+                              ? "border-emerald-200 bg-emerald-50/70"
+                              : "border-amber-200 bg-amber-50/70"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-700">
+                              {check.label}
+                            </p>
+                            <span className={`rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-[0.16em] ${
+                              check.passed
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-amber-100 text-amber-700"
+                            }`}>
+                              {check.passed ? "Pass" : "Fix"}
+                            </span>
+                          </div>
+                          <p className="mt-2 text-sm font-semibold text-slate-600">
+                            {check.detail}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block sm:col-span-2">
