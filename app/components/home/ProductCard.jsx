@@ -20,6 +20,9 @@ export default function ProductCard({ product, compact = false }) {
       (sellingPrice > 0 ? Math.round(sellingPrice * 1.4) : 0)
   );
   const description = product?.short_description || product?.description || 'Freshly added to the latest drops collection.';
+  const inventory = Number(
+    product?.inventory_quantity || product?.variants?.[0]?.inventory_quantity || product?.primary_variant?.inventory_quantity || 0
+  );
 
   const cartItemKey = getCartItemKey(product, product?.variants?.[0]);
   const cartBusy = isItemPending(cartItemKey);
@@ -128,6 +131,11 @@ export default function ProductCard({ product, compact = false }) {
                   Rs. {comparePrice}
                 </span>
               ) : null}
+            </div>
+            <div>
+              <span className="text-xs font-semibold text-slate-500">
+                {inventory > 0 ? `${inventory} pcs left` : "Out of stock"}
+              </span>
             </div>
           </div>
 

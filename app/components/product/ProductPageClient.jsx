@@ -405,6 +405,15 @@ export default function ProductPageClient({
                 >
                   {shortSummary}
                 </p>
+                <div className="mt-3">
+                  <p className="text-sm font-semibold">
+                    {Number(currentVariant?.inventory_quantity || 0) > 0 ? (
+                      <span className="text-emerald-700">In stock — {Number(currentVariant.inventory_quantity || 0)} pcs</span>
+                    ) : (
+                      <span className="text-rose-600">Out of stock</span>
+                    )}
+                  </p>
+                </div>
                 {shouldShowReadMore ? (
                   <button
                     type="button"

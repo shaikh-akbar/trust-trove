@@ -288,6 +288,17 @@ export default function AdminProductsClient({
     }));
   }
 
+  function updatePrimaryVariantInventory(value) {
+    const numeric = Number(value || 0);
+    setDraft((current) => ({
+      ...(current || {}),
+      primary_variant: {
+        ...(current?.primary_variant || {}),
+        inventory_quantity: numeric,
+      },
+    }));
+  }
+
   function handleGenerateSeoDraft() {
     if (!draft) {
       return;
@@ -336,6 +347,7 @@ export default function AdminProductsClient({
           category: draft.category,
           supplier_name: draft.supplier_name,
           supplier_product_code: draft.supplier_product_code,
+          inventory_quantity: draft.primary_variant?.inventory_quantity,
         }),
       });
       const payload = await response.json();
@@ -826,9 +838,19 @@ export default function AdminProductsClient({
                   <div className="rounded-[1.3rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4">
                     <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Primary SKU</p>
                     <p className="mt-2 text-sm font-semibold text-slate-900">{draft.primary_variant?.sku || "N/A"}</p>
-                    <p className="mt-2 text-[11px] text-slate-500">
-                      Price {formatPrice(draft.primary_variant?.price_selling || 0)} | Stock {draft.primary_variant?.inventory_quantity || 0}
-                    </p>
+                              <div className="mt-2 flex items-center gap-3">
+                                <p className="text-sm font-semibold text-slate-900">Price {formatPrice(draft.primary_variant?.price_selling || 0)}</p>
+                                <label className="ml-auto flex items-center gap-2 text-sm text-slate-500">
+                                  <span className="text-[11px]">Stock</span>
+                                  <input
+                                    type="number"
+                                    min={0}
+                                    value={Number(draft.primary_variant?.inventory_quantity || 0)}
+                                    onChange={(event) => updatePrimaryVariantInventory(event.target.value)}
+                                    className="w-20 rounded-[0.6rem] border border-[var(--line)] bg-white px-2 py-1 text-sm font-semibold text-slate-900 outline-none"
+                                  />
+                                </label>
+                              </div>
                   </div>
                   <div className="rounded-[1.3rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4">
                     <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Last updated</p>
