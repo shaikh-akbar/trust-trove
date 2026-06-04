@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import Script from "next/script";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import MobileBottomNav from "./components/layout/MobileBottomNav";
@@ -28,6 +29,8 @@ const bodyFont = Manrope({
   variable: "--font-body",
   weight: ["400", "500", "600", "700", "800"],
 });
+
+const GOOGLE_ANALYTICS_ID = "G-MV4EMJ3BSR";
 
 export const metadata = buildMetadata({
   description:
@@ -64,6 +67,18 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className="h-full antialiased">
       <body className={`${displayFont.variable} ${bodyFont.variable} min-h-full flex flex-col font-sans`}>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ANALYTICS_ID}');
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
