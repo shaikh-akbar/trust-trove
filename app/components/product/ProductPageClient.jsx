@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -31,6 +31,81 @@ function stripHtml(value) {
   return (value || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+function decodeHtmlEntities(value) {
+  return String(value || "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">");
+}
+
+function extractSectionList(html, labels = []) {
+  const source = String(html || "");
+  const lowerSource = source.toLowerCase();
+  const normalizedLabels = labels.map((label) => String(label || "").toLowerCase());
+  const start = normalizedLabels
+    .map((label) => lowerSource.indexOf(label))
+    .find((index) => index >= 0);
+
+  if (start == null || start < 0) {
+    return [];
+  }
+
+  const allBoundaryLabels = [
+    "description",
+    "key features",
+    "ideal for",
+    "specifications",
+    "keywords",
+    "dimension",
+  ];
+  const nextBoundary = allBoundaryLabels
+    .map((label) => lowerSource.indexOf(label, start + 1))
+    .filter((index) => index > start)
+    .sort((left, right) => left - right)[0];
+  const section = source.slice(start, nextBoundary > start ? nextBoundary : undefined);
+  const listMatches = [...section.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)].map((match) =>
+    decodeHtmlEntities(stripHtml(match[1]))
+  );
+
+  if (listMatches.length > 0) {
+    return listMatches.filter(Boolean);
+  }
+
+  const paragraphText = decodeHtmlEntities(stripHtml(section));
+  return paragraphText ? [paragraphText] : [];
+}
+
+function extractDimensionPairs(html) {
+  const normalized = decodeHtmlEntities(
+    String(html || "")
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/<\/li>/gi, "\n")
+  )
+    .replace(/<[^>]*>/g, " ")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return normalized
+    .map((line) => {
+      const match = line.match(/^([A-Za-z0-9 .()]+)\s*:-\s*(.+)$/);
+
+      if (!match) {
+        return null;
+      }
+
+      return {
+        label: match[1].trim(),
+        value: match[2].trim(),
+      };
+    })
+    .filter(Boolean);
+}
+
 export default function ProductPageClient({
   product,
   relatedProducts = [],
@@ -49,9 +124,10 @@ export default function ProductPageClient({
   const [showFullSummary, setShowFullSummary] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [wishlistFeedback, setWishlistFeedback] = useState("");
-  const [productUrl, setProductUrl] = useState(() =>
-    getSiteUrl(getProductHref(product))
-  );
+  const productUrl =
+    typeof window === "undefined"
+      ? getSiteUrl(getProductHref(product))
+      : window.location.href;
   const { addItem, getItemAction, isItemPending } = useCart();
   const {
     isLoggedIn,
@@ -64,6 +140,22 @@ export default function ProductPageClient({
     product?.variants?.[selectedVariantIndex] || product?.variants?.[0];
   const plainDescription = useMemo(
     () => stripHtml(product?.description),
+    [product?.description]
+  );
+  const featureList = useMemo(
+    () => extractSectionList(product?.description, ["key features"]),
+    [product?.description]
+  );
+  const idealForList = useMemo(
+    () => extractSectionList(product?.description, ["ideal for"]),
+    [product?.description]
+  );
+  const specificationList = useMemo(
+    () => extractSectionList(product?.description, ["specifications"]),
+    [product?.description]
+  );
+  const dimensionPairs = useMemo(
+    () => extractDimensionPairs(product?.description),
     [product?.description]
   );
   const shortSummary =
@@ -80,14 +172,6 @@ export default function ProductPageClient({
     `${shareText} ${productUrl}`
   )}`;
   const shouldShowReadMore = shortSummary.length > 140;
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    setProductUrl(window.location.href);
-  }, []);
 
   async function handleCopyLink() {
     if (typeof navigator === "undefined" || !navigator.clipboard) {
@@ -324,6 +408,68 @@ export default function ProductPageClient({
                       </p>
                     </div>
                   </div>
+
+                  {featureList.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Key Features
+                      </p>
+                      <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                        {featureList.slice(0, 6).map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {specificationList.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Specifications
+                      </p>
+                      <ul className="mt-3 grid gap-2 text-sm leading-7 text-slate-700 sm:grid-cols-2">
+                        {specificationList.slice(0, 8).map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {idealForList.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Ideal For
+                      </p>
+                      <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                        {idealForList.slice(0, 6).map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {dimensionPairs.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Shipping Dimensions
+                      </p>
+                      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                        {dimensionPairs.slice(0, 8).map((item) => (
+                          <div
+                            key={`${item.label}-${item.value}`}
+                            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+                          >
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                              {item.label}
+                            </p>
+                            <p className="mt-2 text-sm font-semibold text-slate-900">
+                              {item.value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
                 </details>
               </div>
             </div>
