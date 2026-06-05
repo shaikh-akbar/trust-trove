@@ -5,7 +5,6 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import ProductCard from "../home/ProductCard";
 import { buildFilterOptions, filterProducts } from "../../../lib/storefront";
-import { getCategorySummaryEntry } from "../../../lib/storefront";
 
 const INITIAL_VISIBLE_PRODUCTS = 12;
 const LOAD_MORE_STEP = 8;
@@ -32,6 +31,8 @@ export default function CatalogExperienceClient({
   products,
   categories = [],
   initialQuery = "",
+  activeCategorySlug = "",
+  activeCategoryTitle = "",
   eyebrow,
   title,
   description,
@@ -57,15 +58,22 @@ export default function CatalogExperienceClient({
   const filterOptions = useMemo(() => buildFilterOptions(catalogProducts), [catalogProducts]);
   const [query, setQuery] = useState(initialQuery);
   const deferredQuery = useDeferredValue(query);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(
+    activeCategoryTitle ? [activeCategoryTitle] : []
+  );
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState("featured");
+  const [categorySearch, setCategorySearch] = useState("");
   const [minPrice, setMinPrice] = useState(filterOptions.minPrice);
   const [maxPrice, setMaxPrice] = useState(filterOptions.maxPrice);
   const [showFilters, setShowFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_PRODUCTS);
   const loadMoreRef = useRef(null);
+
+  useEffect(() => {
+    setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
+  }, [activeCategoryTitle]);
 
   function resetVisibleProducts() {
     setVisibleCount(INITIAL_VISIBLE_PRODUCTS);
@@ -76,8 +84,31 @@ export default function CatalogExperienceClient({
     setter((current) => (current.includes(value) ? current.filter((item) => item !== value) : [...current, value]));
   }
 
+  function buildShopHref({
+    page = 1,
+    categorySlug = activeCategorySlug || "",
+    queryValue = initialQuery,
+  } = {}) {
+    const params = new URLSearchParams();
+
+    if (page > 1) {
+      params.set("page", String(page));
+    }
+
+    if (categorySlug) {
+      params.set("category", categorySlug);
+    }
+
+    if (queryValue) {
+      params.set("q", queryValue);
+    }
+
+    const search = params.toString();
+    return search ? `/shop?${search}` : "/shop";
+  }
+
   const filteredProducts = useMemo(() => {
-    const nextProducts = filterProducts(products, {
+    const nextProducts = filterProducts(catalogProducts, {
       query: deferredQuery,
       minPrice,
       maxPrice,
@@ -102,31 +133,42 @@ export default function CatalogExperienceClient({
   }, [catalogProducts, deferredQuery, maxPrice, minPrice, selectedCategories, selectedColors, selectedSizes, sortBy]);
 
   const allCategoryLabels = useMemo(() => {
-    const resultDrivenCategories = Array.from(
-      new Set(
-        filteredProducts
-          .map((product) => getCategorySummaryEntry(product).title)
-          .filter(Boolean)
-      )
-    ).sort((left, right) => left.localeCompare(right));
-
-    if (resultDrivenCategories.length > 0) {
-      return resultDrivenCategories;
-    }
-
     const summaryTitles = (categories || [])
       .filter((category) => Number(category?.count || 0) > 0)
-      .map((category) => String(category?.title || "").trim())
-      .filter(Boolean);
+      .map((category) => ({
+        slug: String(category?.slug || "").trim(),
+        title: String(category?.title || "").trim(),
+      }))
+      .filter((category) => category.slug && category.title);
 
     if (summaryTitles.length > 0) {
-      return Array.from(new Set(summaryTitles)).sort((left, right) =>
-        left.localeCompare(right)
+      return Array.from(
+        new Map(summaryTitles.map((category) => [category.slug, category])).values()
+      ).sort((left, right) =>
+        left.title.localeCompare(right.title)
       );
     }
 
-    return filterOptions.categories;
-  }, [categories, filterOptions.categories, filteredProducts]);
+    return filterOptions.categories.map((title) => ({
+      slug: title
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, ""),
+      title,
+    }));
+  }, [categories, filterOptions.categories]);
+  const filteredCategoryLabels = useMemo(() => {
+    const normalizedQuery = categorySearch.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      return allCategoryLabels;
+    }
+
+    return allCategoryLabels.filter((category) =>
+      category.title.toLowerCase().includes(normalizedQuery)
+    );
+  }, [allCategoryLabels, categorySearch]);
 
   const activeFilterCount =
     selectedCategories.length + selectedColors.length + selectedSizes.length + (deferredQuery ? 1 : 0);
@@ -205,7 +247,79 @@ export default function CatalogExperienceClient({
 
       <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className={`space-y-5 ${showFilters ? "block" : "hidden"} lg:block`}>
+          {showFilters ? (
+            <button
+              type="button"
+              aria-label="Close filters"
+              onClick={() => setShowFilters(false)}
+              className="fixed inset-0 z-40 bg-slate-950/40 lg:hidden"
+            />
+          ) : null}
+
+          <aside
+            className={`space-y-5 ${
+              showFilters
+                ? "fixed inset-x-3 bottom-3 top-3 z-50 overflow-y-auto rounded-[2rem] bg-[var(--surface-soft)] p-4 shadow-[0_32px_90px_-45px_rgba(8,15,43,0.52)]"
+                : "hidden"
+            } lg:static lg:block lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none`}
+          >
+            <div className="flex items-start justify-between rounded-[1.75rem] border border-[var(--line)] bg-[var(--brand-navy)] px-5 py-4 text-white lg:hidden">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-200">
+                  Filter products
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-200">
+                  Narrow the catalog faster on mobile by category, price, color, and size.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowFilters(false)}
+                className="ml-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {activeFilterCount > 0 ? (
+              <div className="rounded-[1.5rem] border border-[var(--line)] bg-white p-4 lg:hidden">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+                  Active filters
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {selectedCategories.map((category) => (
+                    <span
+                      key={category}
+                      className="inline-flex rounded-full bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--brand-navy)]"
+                    >
+                      {category}
+                    </span>
+                  ))}
+                  {selectedColors.map((color) => (
+                    <span
+                      key={color}
+                      className="inline-flex rounded-full bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--brand-navy)]"
+                    >
+                      {color}
+                    </span>
+                  ))}
+                  {selectedSizes.map((size) => (
+                    <span
+                      key={size}
+                      className="inline-flex rounded-full bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--brand-navy)]"
+                    >
+                      {size}
+                    </span>
+                  ))}
+                  {deferredQuery ? (
+                    <span className="inline-flex rounded-full bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--brand-navy)]">
+                      {deferredQuery}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+
             <FilterSection title="Search">
               <div className="flex items-center gap-3 rounded-full border border-[var(--line)] bg-white px-4 py-3">
                 <Search size={18} className="text-slate-400" />
@@ -254,14 +368,46 @@ export default function CatalogExperienceClient({
 
             {allCategoryLabels.length > 0 ? (
               <FilterSection title="Categories">
-                {allCategoryLabels.map((category) => (
-                  <FilterOption
-                    key={category}
-                    label={category}
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => toggleValue(setSelectedCategories, category)}
+                <div className="flex items-center gap-3 rounded-full border border-[var(--line)] bg-white px-4 py-3">
+                  <Search size={16} className="text-slate-400" />
+                  <input
+                    value={categorySearch}
+                    onChange={(event) => setCategorySearch(event.target.value)}
+                    placeholder="Search categories..."
+                    className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
                   />
-                ))}
+                </div>
+                {filteredCategoryLabels.length > 0 ? (
+                  filteredCategoryLabels.map((category) => (
+                    <Link
+                      key={category.slug}
+                      href={
+                        activeCategorySlug === category.slug
+                          ? buildShopHref({ page: 1, categorySlug: "", queryValue: initialQuery })
+                          : buildShopHref({
+                              page: 1,
+                              categorySlug: category.slug,
+                              queryValue: initialQuery,
+                            })
+                      }
+                      onClick={() => setShowFilters(false)}
+                      className={`flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm transition ${
+                        activeCategorySlug === category.slug
+                          ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white"
+                          : "border-[var(--line-soft)] bg-[var(--surface-soft)] text-slate-700 hover:border-[var(--line)]"
+                      }`}
+                    >
+                      <span className="font-medium">{category.title}</span>
+                      <span className="text-[10px] font-extrabold uppercase tracking-[0.16em]">
+                        {activeCategorySlug === category.slug ? "Active" : "Open"}
+                      </span>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface-soft)] px-4 py-5 text-sm text-slate-500">
+                    No categories matched your search.
+                  </div>
+                )}
               </FilterSection>
             ) : null}
 
@@ -290,6 +436,32 @@ export default function CatalogExperienceClient({
                 ))}
               </FilterSection>
             ) : null}
+
+            <div className="sticky bottom-0 flex gap-3 rounded-[1.5rem] border border-[var(--line)] bg-white p-3 shadow-[0_18px_48px_-32px_rgba(8,15,43,0.3)] lg:hidden">
+              <button
+                type="button"
+                onClick={() => {
+                  resetVisibleProducts();
+                  setQuery("");
+                  setCategorySearch("");
+                  setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
+                  setSelectedColors([]);
+                  setSelectedSizes([]);
+                  setMinPrice(filterOptions.minPrice);
+                  setMaxPrice(filterOptions.maxPrice);
+                }}
+                className="inline-flex flex-1 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--brand-navy)]"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowFilters(false)}
+                className="inline-flex flex-1 items-center justify-center rounded-full bg-[var(--brand-navy)] px-4 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white"
+              >
+                View {filteredProducts.length}
+              </button>
+            </div>
           </aside>
 
           <div className="space-y-6">
@@ -312,7 +484,7 @@ export default function CatalogExperienceClient({
                     className="inline-flex items-center justify-center rounded-full border border-[var(--line)] px-5 py-3 text-sm font-bold text-[var(--brand-navy)] lg:hidden"
                   >
                     <SlidersHorizontal size={16} className="mr-2" />
-                    Filters
+                    Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
                   </button>
 
                   <select
@@ -338,7 +510,7 @@ export default function CatalogExperienceClient({
                     onClick={() => {
                       resetVisibleProducts();
                       setQuery("");
-                      setSelectedCategories([]);
+                      setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
                       setSelectedColors([]);
                       setSelectedSizes([]);
                       setMinPrice(filterOptions.minPrice);
@@ -385,7 +557,15 @@ export default function CatalogExperienceClient({
                   <div className="flex justify-end pt-2">
                     <div className="flex items-center gap-2">
                       <Link
-                        href={currentPage > 1 ? `/shop?page=${currentPage - 1}` : "#"}
+                        href={
+                          currentPage > 1
+                            ? buildShopHref({
+                                page: currentPage - 1,
+                                categorySlug: activeCategorySlug,
+                                queryValue: initialQuery,
+                              })
+                            : "#"
+                        }
                         aria-disabled={currentPage <= 1}
                         className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
                           currentPage > 1
@@ -399,7 +579,15 @@ export default function CatalogExperienceClient({
                         {currentPage}/{totalPages}
                       </span>
                       <Link
-                        href={currentPage < totalPages ? `/shop?page=${currentPage + 1}` : "#"}
+                        href={
+                          currentPage < totalPages
+                            ? buildShopHref({
+                                page: currentPage + 1,
+                                categorySlug: activeCategorySlug,
+                                queryValue: initialQuery,
+                              })
+                            : "#"
+                        }
                         aria-disabled={currentPage >= totalPages}
                         className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
                           currentPage < totalPages

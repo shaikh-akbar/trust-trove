@@ -1,101 +1,151 @@
-# GoModexa 30-Page SEO Content Plan
+# GoModexa SEO Content Plan
 
-This plan is built around the current storefront structure:
+This plan is aligned to the current storefront and content implementation in the repo.
+
+## Live Route Map
+
 - Main shop: `/shop`
+- Product pages: `/product/[slug]`
 - Categories: `/categories/[slug]`
 - Brands: `/brands/[slug]`
-- Blogs: `/blogs/[slug]`
+- Blog index: `/blogs`
+- Blog detail: `/blogs/[slug]`
 
-How to use this plan:
-- Publish 2 to 4 pages per week.
-- Link every blog to 1 category page and 2 to 4 relevant product pages.
-- Add a "Related guide" link from the matching category page back to the blog.
-- Prefer search-intent titles over supplier-style product names.
+## How This Repo Currently Supports SEO Content
 
-## Priority Blog Pages
+- Blog posts are stored in `lib/content.js` under `BLOG_POSTS`.
+- Blog pages already output metadata and `BlogPosting` schema.
+- Category pages already surface related guides from matching blog categories.
+- Product-led posts can link directly into a `productSource.productPath`.
 
-| # | Target Title | Primary Keyword | Intent | Main Link Target |
-|---|---|---|---|---|
-| 1 | Best Mobile Accessories For Everyday Use In India | best mobile accessories for everyday use | Commercial investigation | `/categories/mobile-accessories` |
-| 2 | Best Mobile Stands For Desk Work, Study, And Streaming | best mobile stand for desk | Commercial investigation | `/categories/mobile-accessories` |
-| 3 | Best Home And Kitchen Products For Small Indian Homes | best home and kitchen products for everyday use | Commercial investigation | `/categories/home-and-kitchen` |
-| 4 | Best Kitchen Tools To Make Daily Cooking Easier | best kitchen tools online India | Commercial investigation | `/categories/kitchen-tool` |
-| 5 | Best Electronics Products For Daily Use And Gifting | best electronics products online India | Commercial investigation | `/categories/electronics` |
-| 6 | Best Health And Beauty Products For Daily Routine | best health and beauty products online | Commercial investigation | `/categories/health-and-beauty` |
-| 7 | Best Face And Body Care Products For Everyday Self Care | best face and body care products | Commercial investigation | `/categories/face-and-body-care` |
-| 8 | Best Office Accessories For A More Productive Desk Setup | best office accessories for desk setup | Commercial investigation | `/categories/office` |
-| 9 | Best Travel Accessories For Smarter Packing | best travel accessories online India | Commercial investigation | `/categories/travel` |
-| 10 | Best Automotive Accessories For Daily Convenience | best automotive accessories online India | Commercial investigation | `/categories/automotive` |
-| 11 | Best Fashion Accessories To Upgrade Daily Outfits | best fashion accessories online India | Commercial investigation | `/categories/fashion` |
-| 12 | Best Watches To Gift Or Wear Every Day | best watches online India | Commercial investigation | `/categories/watches` |
-| 13 | Best Baby Care Products For New Parents | best baby care products online India | Commercial investigation | `/categories/baby-care` |
-| 14 | Best Toys For Everyday Play And Gifting | best toys online India | Commercial investigation | `/categories/toys` |
-| 15 | Best Kids Products For Daily Use And School Time | best kids products online India | Commercial investigation | `/categories/kids` |
-| 16 | Best Sports Products For Home Fitness And Activity | best sports products online India | Commercial investigation | `/categories/sports` |
-| 17 | Best Garden Utility Products For Home Use | best garden tools online India | Commercial investigation | `/categories/garden` |
-| 18 | Best Home Decor Products To Refresh A Room | best home decor products online India | Commercial investigation | `/categories/home-decor` |
-| 19 | Best Home Improvement Products Worth Buying Online | best home improvement products online | Commercial investigation | `/categories/home-improvement` |
-| 20 | Best Hardware And Utility Products For Everyday Fixes | best hardware products online India | Commercial investigation | `/categories/hardware` |
-| 21 | Best Power And Hand Tools For Home Projects | best power and hand tools online | Commercial investigation | `/categories/power-and-hand-tools` |
-| 22 | Best Health Care Products For Everyday Wellness | best health care products online India | Commercial investigation | `/categories/health-care` |
-| 23 | Best Accessories To Keep At Home, Work, And Travel | useful accessories for everyday life | Commercial investigation | `/categories/accessories` |
-| 24 | Best Food And Snack Products To Keep At Home | snacks and foods online India | Commercial investigation | `/categories/snacks-and-khakhara` |
-| 25 | Best Chocolate Gift Options For Small Surprises | chocolates online India gifting | Commercial investigation | `/categories/chocolates` |
-| 26 | Best Utility Products That Make Daily Life Easier | best utility products for home use | Commercial investigation | `/categories/utilities` |
-| 27 | What To Check Before Buying A Body Spray Online | body spray buying guide India | Informational | `/categories/health-and-beauty` |
-| 28 | What To Check Before Buying A Kitchen Tool Online | kitchen tool buying guide India | Informational | `/categories/kitchen-tool` |
-| 29 | What Makes An Online Store Feel Trustworthy Before Checkout | trustworthy online shopping store India | Informational | `/about-us` |
-| 30 | How To Choose Better Everyday Products Without Overspending | how to choose better everyday products | Informational | `/shop` |
+That means the fastest SEO wins are:
+- Publish more category-level buying guides.
+- Add more product-led review guides for high-intent products.
+- Keep category names in blog posts consistent with storefront category titles.
 
-## Product-Led Blog Targets
+## Status Snapshot
 
-Use these for individual product pages or supplier-title normalization:
+This is the current status of the original 30-topic plan.
 
-| Product-Type Angle | Suggested Title Pattern | Internal Links |
-|---|---|---|
-| Body spray | `[Product Name] review and buying guide` | matching category + `/blogs` + 2 related products |
-| Mobile stand | `Best [Product Type] features before you buy` | mobile accessories category + related products |
-| Kitchen tool | `[Product Type] for small kitchens: what matters most` | kitchen tool category + home and kitchen category |
-| Electronics gadget | `[Product Name] review: who it is best for` | electronics category + related products |
-| Office item | `Is [Product Type] worth it for desk use?` | office category + work setup blog |
+| # | Topic | Status | Notes |
+|---|---|---|---|
+| 1 | Best Mobile Accessories For Everyday Use In India | Published | Live in `BLOG_POSTS` |
+| 2 | Best Mobile Stands For Desk Work, Study, And Streaming | Partial | Covered by `Best Mobile Stand Features To Look For While Working, Studying, Or Streaming` |
+| 3 | Best Home And Kitchen Products For Small Indian Homes | Published | Live in `BLOG_POSTS` |
+| 4 | Best Kitchen Tools To Make Daily Cooking Easier | Published | Live in `BLOG_POSTS` |
+| 5 | Best Electronics Products For Daily Use And Gifting | Published | Live in `BLOG_POSTS` |
+| 6 | Best Health And Beauty Products For Daily Routine | Published | Live in `BLOG_POSTS` |
+| 7 | Best Face And Body Care Products For Everyday Self Care | Not started | Good cluster expansion for Health & Beauty |
+| 8 | Best Office Accessories For A More Productive Desk Setup | Published | Live in `BLOG_POSTS` |
+| 9 | Best Travel Accessories For Smarter Packing | Published | Live in `BLOG_POSTS` |
+| 10 | Best Automotive Accessories For Daily Convenience | Not started | Product-led auto guides exist, but not the broad category guide |
+| 11 | Best Fashion Accessories To Upgrade Daily Outfits | Published | Live in `BLOG_POSTS` |
+| 12 | Best Watches To Gift Or Wear Every Day | Published | Live in `BLOG_POSTS` |
+| 13 | Best Baby Care Products For New Parents | Not started | Needs a category-level guide |
+| 14 | Best Toys For Everyday Play And Gifting | Not started | Needs a category-level guide |
+| 15 | Best Kids Products For Daily Use And School Time | Not started | Needs a category-level guide |
+| 16 | Best Sports Products For Home Fitness And Activity | Not started | Needs a category-level guide |
+| 17 | Best Garden Utility Products For Home Use | Partial | Product-led garden guide exists, broad category guide does not |
+| 18 | Best Home Decor Products To Refresh A Room | Not started | Needs a category-level guide |
+| 19 | Best Home Improvement Products Worth Buying Online | Not started | Needs a category-level guide |
+| 20 | Best Hardware And Utility Products For Everyday Fixes | Not started | Needs a category-level guide |
+| 21 | Best Power And Hand Tools For Home Projects | Not started | Needs a category-level guide |
+| 22 | Best Health Care Products For Everyday Wellness | Not started | Separate from Health & Beauty cluster |
+| 23 | Best Accessories To Keep At Home, Work, And Travel | Not started | Broad support page for `/categories/accessories` |
+| 24 | Best Food And Snack Products To Keep At Home | Not started | Useful commercial-intent category page support |
+| 25 | Best Chocolate Gift Options For Small Surprises | Not started | Good gifting-intent category guide |
+| 26 | Best Utility Products That Make Daily Life Easier | Not started | Strong homepage/shop support content |
+| 27 | What To Check Before Buying A Body Spray Online | Published | Live in `BLOG_POSTS` |
+| 28 | What To Check Before Buying A Kitchen Tool Online | Partial | `Best Kitchen Tools To Make Daily Cooking Easier` covers similar intent |
+| 29 | What Makes An Online Store Feel Trustworthy Before Checkout | Published | Live as a close variant |
+| 30 | How To Choose Better Everyday Products Without Overspending | Partial | Similar intent exists, but not the exact title |
+
+## Priority Queue
+
+Publish these next because they fill the biggest category gaps with clean commercial intent:
+
+| Priority | Target Title | Primary Keyword | Main Link Target |
+|---|---|---|---|
+| 1 | Best Automotive Accessories For Daily Convenience | best automotive accessories online India | `/categories/automotive` |
+| 2 | Best Face And Body Care Products For Everyday Self Care | best face and body care products | `/categories/face-and-body-care` |
+| 3 | Best Baby Care Products For New Parents | best baby care products online India | `/categories/baby-care` |
+| 4 | Best Toys For Everyday Play And Gifting | best toys online India | `/categories/toys` |
+| 5 | Best Kids Products For Daily Use And School Time | best kids products online India | `/categories/kids` |
+| 6 | Best Sports Products For Home Fitness And Activity | best sports products online India | `/categories/sports` |
+| 7 | Best Garden Utility Products For Home Use | best garden tools online India | `/categories/garden` |
+| 8 | Best Home Decor Products To Refresh A Room | best home decor products online India | `/categories/home-decor` |
+| 9 | Best Home Improvement Products Worth Buying Online | best home improvement products online | `/categories/home-improvement` |
+| 10 | Best Utility Products That Make Daily Life Easier | best utility products for home use | `/categories/utilities` |
+
+## Secondary Queue
+
+These are strong follow-ups once the category gaps above are filled:
+
+- Best Hardware And Utility Products For Everyday Fixes
+- Best Power And Hand Tools For Home Projects
+- Best Health Care Products For Everyday Wellness
+- Best Accessories To Keep At Home, Work, And Travel
+- Best Food And Snack Products To Keep At Home
+- Best Chocolate Gift Options For Small Surprises
+
+## Product-Led Content Lane
+
+The repo already supports product-led articles well. Keep shipping these alongside category guides.
+
+Best current product-led patterns:
+- `[Product Name]: A Practical [Use Case] Guide`
+- `[Product Name] Review`
+- `What To Check Before You Buy [Product Name]`
+
+Good current examples already in `BLOG_POSTS`:
+- `Car Dashboard Scratch Remover Tissue (80 Pcs Set): A Practical Car Cleaning Guide`
+- `Mens Deodorant Body Spray 150ml ... : A Practical Daily Fragrance Guide`
+- `Portable Car Air Mattress Bed Set ... : A Practical Road Trip Sleep Guide`
+- `Premium Women Travel Hygiene Essentials Combo (1 Set): A Practical Travel Utility Guide`
 
 ## Internal Linking Rules
 
-For every new blog:
-- Link once near the top to the matching category page.
-- Link once in the middle to `/shop`.
-- Link 2 to 4 times to relevant product pages.
-- Add 2 related blog links at the bottom.
+Match the current app structure when publishing each article:
 
-For every category page:
-- Link to 2 to 3 category-matched blogs.
-- Keep one link to `/shop`.
-- Link product cards naturally through existing catalog UI.
+- Add 1 early link to the matching category page.
+- Add 1 link to `/shop`.
+- Add 1 direct product link when the post is product-led.
+- Add 2 to 3 related blog links at the bottom.
+- Make sure the blog `category` matches the storefront category title closely enough for `getBlogPostsByCategory(...)` to connect it.
 
-For every product page:
-- Link to the parent category.
-- Link to 2 to 3 relevant blogs.
-- Link to related products.
+For category pages:
+- Keep at least 2 to 3 related blog posts available per major category.
+- Use the category guide section already rendered on `/categories/[slug]` as support copy, not as a replacement for blog content.
 
-## First 10 To Publish
+## Publishing Workflow
 
-Start with these first because they match broad intent and existing high-utility catalog areas:
-- Best Mobile Accessories For Everyday Use In India
-- Best Home And Kitchen Products For Small Indian Homes
-- Best Electronics Products For Daily Use And Gifting
-- Best Health And Beauty Products For Daily Routine
-- Best Office Accessories For A More Productive Desk Setup
-- What To Check Before Buying A Body Spray Online
-- Best Kitchen Tools To Make Daily Cooking Easier
-- Best Travel Accessories For Smarter Packing
-- Best Fashion Accessories To Upgrade Daily Outfits
-- How To Choose Better Everyday Products Without Overspending
+For each new post:
+
+1. Add a new object to `BLOG_POSTS` in `lib/content.js`.
+2. Set `slug`, `title`, `seoTitle`, `metaDescription`, `keywords`, `canonicalPath`, `excerpt`, `category`, `readingTime`, `publishedAt`, and `body`.
+3. Add `productSource` when the article should feature a specific product page.
+4. Keep the blog `canonicalPath` in `/blogs/[slug]` format.
+5. Reuse a category title that maps cleanly to `/categories/[slug]`.
+
+## Weekly Cadence
+
+- Publish 2 category-level guides per week.
+- Publish 2 product-led review guides per week.
+- Prefer one broad category guide plus one tightly matched product guide in the same cluster.
+
+Suggested short cycle:
+- Week 1: Automotive + one automotive product review
+- Week 2: Face And Body Care + one body-care product review
+- Week 3: Baby Care + one baby-care product review
+- Week 4: Toys or Kids + one matching product review
 
 ## Measurement Checklist
 
-Track these in Google Search Console after publishing:
-- Impressions by page
-- Queries by page
-- CTR on category pages
-- Indexing status for new blogs
-- Internal link growth from blogs to products/categories
+Track these after each batch goes live:
+
+- Indexed blog URL count
+- Impressions by blog page
+- Queries by blog page
+- CTR for linked category pages
+- Growth in internal links from blogs to categories and products
+- Whether each major category has at least 2 supporting guides

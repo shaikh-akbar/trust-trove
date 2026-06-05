@@ -156,6 +156,8 @@ export function ShopExperience({
   products,
   categories = [],
   initialQuery = "",
+  activeCategorySlug = "",
+  activeCategoryTitle = "",
   currentPage = 1,
   totalPages = 1,
 }) {
@@ -165,6 +167,8 @@ export function ShopExperience({
         products={products}
         categories={categories}
         initialQuery={initialQuery}
+        activeCategorySlug={activeCategorySlug}
+        activeCategoryTitle={activeCategoryTitle}
         eyebrow="Shop"
         title="A more magnetic storefront for thoughtful browsing."
         description="Search products instantly, slide through price ranges, and refine by category, color, and size in a cleaner shopping experience built to convert."

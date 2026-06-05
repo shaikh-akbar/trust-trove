@@ -30,10 +30,15 @@ export async function generateMetadata({ searchParams }) {
 export default async function ShopPage({ searchParams }) {
   const params = await searchParams;
   const page = getPageNumber(params?.page);
-  const [{ products, totalPages }, categories] = await Promise.all([
-    getProductsPage({ page, pageSize: CATALOG_PAGE_SIZE }),
-    getCategorySummaries(),
-  ]);
+  const categorySlug = getQueryValue(params?.category);
+  const categories = await getCategorySummaries();
+  const activeCategory =
+    categories.find((category) => category.slug === categorySlug) || null;
+  const { products, totalPages } = await getProductsPage({
+    page,
+    pageSize: CATALOG_PAGE_SIZE,
+    categoryTitle: activeCategory?.title || null,
+  });
   const initialQuery = getQueryValue(params?.q);
 
   return (
@@ -70,6 +75,8 @@ export default async function ShopPage({ searchParams }) {
         products={products}
         categories={categories}
         initialQuery={initialQuery}
+        activeCategorySlug={activeCategory?.slug || ""}
+        activeCategoryTitle={activeCategory?.title || ""}
         currentPage={page}
         totalPages={totalPages}
       />
