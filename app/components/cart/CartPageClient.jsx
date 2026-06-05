@@ -238,6 +238,18 @@ function formatPrice(value) {
   }).format(amount);
 }
 
+function getCartItemHref(item) {
+  if (item?.productPath) {
+    return item.productPath;
+  }
+
+  if (item?.productSlug) {
+    return `/product/${item.productSlug}`;
+  }
+
+  return item?.productId ? `/product/${item.productId}` : "/shop";
+}
+
 function getItemSavings(item) {
   const selling = Number(item.price_selling || 0);
   const compare = Number(item.price_compare || 0);
@@ -524,6 +536,7 @@ export default function CartPageClient() {
                 Number(item.price_selling || 0) * Number(item.quantity || 1);
               const itemSaving = getItemSavings(item);
               const productTitle = item.title || "Product";
+              const productHref = getCartItemHref(item);
               const itemAction = getItemAction(item.cartId);
               const itemBusy = isItemPending(item.cartId);
               const quantityBusy = itemAction === "update";
@@ -536,7 +549,7 @@ export default function CartPageClient() {
                 >
                   <div className="grid gap-0 md:grid-cols-[190px_minmax(0,1fr)]">
                     <Link
-                      href={`/product/${item.productId}`}
+                      href={productHref}
                       className="relative block overflow-hidden bg-slate-100 md:min-h-[230px]"
                     >
                       {discountPercent ? (
@@ -573,7 +586,7 @@ export default function CartPageClient() {
                             ) : null}
                           </div>
 
-                          <Link href={`/product/${item.productId}`}>
+                          <Link href={productHref}>
                             <h2 className="mt-4 font-display line-clamp-2 text-lg font-semibold tracking-[-0.02em] text-slate-950 transition hover:text-[#161f66] sm:text-xl">
                               {productTitle}
                             </h2>

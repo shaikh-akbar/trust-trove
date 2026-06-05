@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { getProductHref, getProductSlug } from "../../../lib/product-route";
 
 const STORAGE_KEY = "trusttrove_cart";
 
@@ -62,6 +63,8 @@ export function buildCartItem(product, variant, quantity = 1) {
     cartId,
     cartIdKey: cartId,
     productId: product?.id,
+    productSlug: getProductSlug(product),
+    productPath: getProductHref(product),
     variantId: safeVariant?.id || null,
     variantSku: safeVariant?.sku || null,
     title: product?.title || product?.name || "Untitled Product",
