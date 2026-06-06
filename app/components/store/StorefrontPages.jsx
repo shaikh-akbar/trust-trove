@@ -1,6 +1,27 @@
 import Link from "next/link";
-import { ArrowRight, Gem, Layers3, Sparkles, TrendingUp } from "lucide-react";
+import {
+  ArrowRight,
+  BadgePercent,
+  Briefcase,
+  CarFront,
+  Gem,
+  Headset,
+  Heart,
+  Layers3,
+  LampDesk,
+  MonitorSmartphone,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Sprout,
+  TrendingUp,
+  Truck,
+  Utensils,
+  Wrench,
+} from "lucide-react";
 import CatalogExperienceClient from "./CatalogExperienceClient";
+import CategoryPopularProductsExplorer from "./CategoryPopularProductsExplorer";
+import CategoryInlineProductCard from "./CategoryInlineProductCard";
 import ProductCard from "../home/ProductCard";
 import { getProductHref } from "../../../lib/product-route";
 import {
@@ -79,6 +100,55 @@ function getBrandBannerImage(title) {
   }
 
   return "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80";
+}
+
+function getCategoryWireframeIcon(title) {
+  const normalized = String(title || "").toLowerCase();
+
+  if (normalized.includes("beauty") || normalized.includes("care")) {
+    return Heart;
+  }
+
+  if (normalized.includes("elect") || normalized.includes("mobile")) {
+    return MonitorSmartphone;
+  }
+
+  if (normalized.includes("auto")) {
+    return CarFront;
+  }
+
+  if (normalized.includes("travel") || normalized.includes("bags")) {
+    return Briefcase;
+  }
+
+  if (normalized.includes("kitchen") || normalized.includes("home")) {
+    return Utensils;
+  }
+
+  if (normalized.includes("garden")) {
+    return Sprout;
+  }
+
+  if (normalized.includes("decor")) {
+    return LampDesk;
+  }
+
+  if (normalized.includes("improvement") || normalized.includes("tool") || normalized.includes("hardware")) {
+    return Wrench;
+  }
+
+  return ShoppingBag;
+}
+
+function getCategoryWireframeTint(index) {
+  const tints = [
+    "from-[#ffe3ec] to-[#fff4f8]",
+    "from-[#e4efff] to-[#f5f9ff]",
+    "from-[#fff1e1] to-[#fff9f2]",
+    "from-[#e8f7e8] to-[#f7fff7]",
+  ];
+
+  return tints[index % tints.length];
 }
 
 function EditorialStrip({ items }) {
@@ -386,251 +456,639 @@ export function BrandsExperience({ brands = [] }) {
 }
 
 export function CategoriesExperience({ categories = [] }) {
-  const featuredCategories = categories.filter((category) => Array.isArray(category.products) && category.products.length > 0);
-  const leadingCategories = [...categories].sort((left, right) => Number(right.count || 0) - Number(left.count || 0)).slice(0, 6);
+  const popularCategoryPriority = [
+    "health-and-beauty",
+    "electronics",
+    "automotive",
+    "travel",
+    "home-and-kitchen",
+    "mobile-accessories",
+    "office",
+    "foods",
+    "sports",
+  ];
+  const featuredCategories = [...categories]
+    .filter((category) => Array.isArray(category.products) && category.products.length > 0)
+    .sort((left, right) => Number(right.count || 0) - Number(left.count || 0));
+  const leadingCategories = [
+    ...popularCategoryPriority
+      .map((slug) => categories.find((category) => category.slug === slug))
+      .filter(Boolean),
+    ...categories
+      .filter(
+        (category) =>
+          !popularCategoryPriority.includes(category.slug) &&
+          category.slug !== "bracelets"
+      )
+      .sort((left, right) => Number(right.count || 0) - Number(left.count || 0)),
+  ].slice(0, 8);
+  const topCategoryNewArrivals = featuredCategories
+    .slice(0, 8)
+    .flatMap((category) =>
+      (category.products || [])
+        .filter((product) => Boolean(product?.new_arrivals))
+        .slice(0, 1)
+        .map((product) => ({
+          ...product,
+          categoryLabel: category.title,
+        }))
+    )
+    .slice(0, 5);
+  const topPopularCategoryProducts = featuredCategories
+    .slice(0, 6)
+    .flatMap((category) =>
+      (category.products || []).slice(0, 12).map((product) => ({
+        ...product,
+        categoryLabel: category.title,
+      }))
+    );
 
   return (
     <div className="bg-[var(--surface-soft)] pb-16">
-      <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
-        <picture className="absolute inset-0">
-          <source media="(max-width: 639px)" srcSet={CATEGORIES_BANNER_MOBILE_IMAGE} />
-          <img src={CATEGORIES_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        </picture>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.88)_0%,rgba(20,29,96,0.76)_42%,rgba(20,29,96,0.62)_100%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">Categories</p>
-          <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.98] tracking-[-0.03em] sm:text-5xl">
-            Every category in one place, with real products ready to browse.
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-slate-200">
-            Jump into health care, fashion, accessories, home-kitchen, and more, then preview available products before opening the full category page.
-          </p>
-        </div>
+      <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--brand-navy)]">
+        <img
+          src={CATEGORIES_BANNER_MOBILE_IMAGE}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center sm:hidden"
+        />
+        <img
+          src={CATEGORIES_BANNER_IMAGE}
+          alt=""
+          className="absolute inset-0 hidden h-full w-full object-cover object-center sm:block"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.16)_0%,rgba(20,29,96,0.1)_42%,rgba(20,29,96,0.08)_100%)]" />
+        <div className="relative h-[180px] sm:h-[250px] lg:h-[320px]" />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] border border-[var(--line)] bg-white p-5 shadow-[0_24px_70px_-52px_rgba(8,15,43,0.28)] sm:p-6">
-          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
-            <div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <section className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+        <div className="rounded-[1.6rem] border border-[var(--line)] bg-white p-4 shadow-[0_24px_70px_-52px_rgba(8,15,43,0.28)] sm:rounded-[2rem] sm:p-6">
+          <div className="grid gap-5 xl:grid-cols-[18rem_minmax(0,1fr)]">
+            <details className="rounded-[1.7rem] border border-[var(--line)] bg-[linear-gradient(180deg,#ffffff_0%,#fbfcff_100%)] p-4 shadow-[0_24px_56px_-46px_rgba(8,15,43,0.28)] xl:hidden">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 [&::-webkit-details-marker]:hidden">
                 <div>
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
-                    Category index
-                  </p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)] sm:text-3xl">
-                    Browse all categories
-                  </h2>
-                </div>
-                <p className="max-w-xl text-sm leading-7 text-slate-500">
-                  Open any category directly, then scroll below to preview a faster edit of the most product-rich categories.
-                </p>
-              </div>
-
-              {leadingCategories.length > 0 ? (
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  {leadingCategories.map((category, index) => (
-                    <Link
-                      key={category.slug}
-                      href={`/categories/${category.slug}`}
-                      className={`inline-flex items-center rounded-full border px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.18em] transition ${
-                        index === 0
-                          ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white"
-                          : "border-[var(--line)] bg-[var(--surface-soft)] text-[var(--brand-navy)] hover:border-[var(--brand-navy)]/30 hover:bg-white"
-                      }`}
-                    >
-                      {category.title}
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-
-            <details className="group rounded-[1.6rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f7f1e7_100%)] p-4 shadow-[0_20px_50px_-42px_rgba(8,15,43,0.28)]">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
-                <div>
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
                     Quick jump
                   </p>
-                  <p className="mt-1 font-display text-xl font-semibold text-[var(--brand-navy)]">
+                  <h2 className="mt-2 text-[1.4rem] font-semibold leading-tight text-[var(--brand-navy)]">
                     Open from dropdown
-                  </p>
+                  </h2>
                 </div>
-                <span className="inline-flex rounded-full bg-white px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)] shadow-[0_12px_28px_-22px_rgba(8,15,43,0.35)] transition group-open:rotate-45">
-                  +
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--line)] bg-white text-[var(--brand-navy)] transition details-open:rotate-90">
+                  <ArrowRight size={16} />
                 </span>
               </summary>
 
-              <div className="mt-4 grid max-h-72 gap-2 overflow-y-auto pr-1">
-                {categories.map((category) => (
-                  <Link
-                    key={category.slug}
-                    href={`/categories/${category.slug}`}
-                    className="flex items-center justify-between rounded-[1rem] border border-[var(--line)] bg-white px-3 py-2.5 text-sm text-[var(--brand-navy)] transition hover:border-[var(--brand-navy)]/25 hover:bg-[var(--surface-soft)]"
-                  >
-                    <span className="truncate pr-3 font-medium">{category.title}</span>
-                    <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-400">
-                      {category.count}
-                    </span>
-                  </Link>
-                ))}
+              <div className="mt-4 max-h-[26rem] space-y-1 overflow-y-auto pr-1">
+                {categories.map((category, index) => {
+                  const Icon = getCategoryWireframeIcon(category.title);
+                  return (
+                    <Link
+                      key={category.slug}
+                      href={`/categories/${category.slug}`}
+                      className={`flex items-center justify-between rounded-[1rem] px-3 py-2.5 text-sm transition ${
+                        index === 0
+                          ? "bg-[#edf4ff] text-[var(--brand-navy)]"
+                          : "text-slate-700 hover:bg-[var(--surface-soft)]"
+                      }`}
+                    >
+                      <span className="flex min-w-0 items-center gap-3">
+                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[var(--brand-navy)] shadow-[0_10px_20px_-16px_rgba(8,15,43,0.32)]">
+                          <Icon size={16} />
+                        </span>
+                        <span className="truncate font-medium">{category.title}</span>
+                      </span>
+                      <span className="ml-3 inline-flex shrink-0 items-center gap-2">
+                        <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-slate-500">
+                          {category.count}
+                        </span>
+                        <ArrowRight size={14} className={index === 0 ? "text-[var(--brand-navy)]" : "text-slate-400"} />
+                      </span>
+                    </Link>
+                  );
+                })}
               </div>
             </details>
-          </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {categories.map((category) => (
-              <Link
-                key={category.slug}
-                href={`/categories/${category.slug}`}
-                className="group flex min-h-[6.75rem] items-center justify-between rounded-[1.35rem] border border-[var(--line)] bg-[linear-gradient(180deg,#fffdfa_0%,#f8f2e8_100%)] px-4 py-3.5 transition hover:-translate-y-0.5 hover:border-[var(--brand-navy)]/24 hover:bg-white"
-              >
-                <div className="min-w-0">
-                  <p className="line-clamp-2 text-balance font-display text-lg font-semibold leading-[1.08] text-[var(--brand-navy)]">
-                    {category.title}
+            <aside className="hidden rounded-[1.7rem] border border-[var(--line)] bg-[linear-gradient(180deg,#ffffff_0%,#fbfcff_100%)] p-4 shadow-[0_24px_56px_-46px_rgba(8,15,43,0.28)] xl:block">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+                    Quick jump
                   </p>
-                  <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                    {category.count} products
-                  </p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-[var(--brand-navy)]">
+                    Open from dropdown
+                  </h2>
                 </div>
-                <span className="ml-3 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--brand-navy)]/10 bg-white text-[var(--brand-navy)] shadow-[0_10px_24px_-20px_rgba(8,15,43,0.35)] transition group-hover:translate-x-1">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--line)] bg-white text-[var(--brand-navy)]">
                   <ArrowRight size={16} />
                 </span>
-              </Link>
-            ))}
+              </div>
+
+              <div className="mt-4 max-h-[54rem] space-y-1 overflow-y-auto pr-1">
+                {categories.map((category, index) => {
+                  const Icon = getCategoryWireframeIcon(category.title);
+                  return (
+                    <Link
+                      key={category.slug}
+                      href={`/categories/${category.slug}`}
+                      className={`flex items-center justify-between rounded-[1rem] px-3 py-2.5 text-sm transition ${
+                        index === 0
+                          ? "bg-[#edf4ff] text-[var(--brand-navy)]"
+                          : "text-slate-700 hover:bg-[var(--surface-soft)]"
+                      }`}
+                    >
+                      <span className="flex min-w-0 items-center gap-3">
+                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[var(--brand-navy)] shadow-[0_10px_20px_-16px_rgba(8,15,43,0.32)]">
+                          <Icon size={16} />
+                        </span>
+                        <span className="truncate font-medium">{category.title}</span>
+                      </span>
+                      <span className="ml-3 inline-flex shrink-0 items-center gap-2">
+                        <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-slate-500">
+                          {category.count}
+                        </span>
+                        <ArrowRight size={14} className={index === 0 ? "text-[var(--brand-navy)]" : "text-slate-400"} />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </aside>
+
+            <div className="space-y-6 min-w-0">
+              <div>
+                <h2 className="text-[1.45rem] font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                  Popular Categories
+                </h2>
+                <div className="mt-4 flex gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-5 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 xl:grid-cols-4">
+                  {leadingCategories.slice(0, 8).map((category, index) => {
+                    const Icon = getCategoryWireframeIcon(category.title);
+                    return (
+                      <Link
+                        key={category.slug}
+                        href={`/categories/${category.slug}`}
+                        className="group min-w-[154px] shrink-0 rounded-[1.2rem] border border-[var(--line)] bg-white px-3.5 py-3.5 text-left shadow-[0_18px_42px_-36px_rgba(8,15,43,0.22)] transition hover:-translate-y-1 sm:min-w-0 sm:rounded-[1.3rem] sm:p-5 sm:text-center sm:shadow-[0_22px_54px_-44px_rgba(8,15,43,0.24)]"
+                      >
+                        <span className={`inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br ${getCategoryWireframeTint(index)} text-[var(--brand-navy)] sm:mx-auto sm:h-20 sm:w-20`}>
+                          <Icon size={22} className="sm:hidden" />
+                          <Icon size={32} className="hidden sm:block" />
+                        </span>
+                        <h3 className="mt-3 text-[0.95rem] font-semibold leading-5 text-[var(--brand-navy)] sm:mt-5 sm:text-xl">
+                          {category.title}
+                        </h3>
+                        <p className="mt-1 text-[11px] font-medium text-slate-500 sm:mt-2 sm:text-sm">
+                          {category.count} products
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {topPopularCategoryProducts.length > 0 ? (
+                <CategoryPopularProductsExplorer products={topPopularCategoryProducts} />
+              ) : null}
+
+              {topCategoryNewArrivals.length > 0 ? (
+                <div>
+                  <div className="mb-4 flex items-center justify-between gap-4">
+                    <h2 className="text-[1.45rem] font-semibold text-[var(--brand-navy)] sm:text-3xl">
+                      New Arrivals in Top Categories
+                    </h2>
+                    <Link
+                      href="/new-arrivals"
+                      className="text-sm font-extrabold text-[#2563eb]"
+                    >
+                      View All
+                    </Link>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+                    {topCategoryNewArrivals.map((product) => (
+                      <CategoryInlineProductCard
+                        key={product.id}
+                        product={product}
+                        showNewBadge
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       </section>
 
-      {featuredCategories.length > 0 ? (
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-slate-400">Preview lane</p>
-            <h2 className="mt-2 text-2xl font-normal text-[var(--brand-navy)] sm:text-3xl">
-              Popular categories with a quick product preview
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-slate-500">
-            Faster initial load, with the full product depth available after opening each category page.
-          </p>
-        </div>
-
-        <div className="space-y-8">
-          {featuredCategories.map((category) => (
+      <section className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+          {[
+            {
+              icon: Layers3,
+              title: "Wide Range",
+              text: "Thousands of products across categories",
+            },
+            {
+              icon: ShieldCheck,
+              title: "Best Quality",
+              text: "Quality products you can trust",
+            },
+            {
+              icon: BadgePercent,
+              title: "Great Prices",
+              text: "Competitive prices everyday",
+            },
+            {
+              icon: ShoppingBag,
+              title: "Easy Shopping",
+              text: "Smooth and secure shopping experience",
+            },
+          ].map(({ icon: Icon, title, text }) => (
             <div
-              key={category.slug}
-              className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_24px_70px_-52px_rgba(8,15,43,0.24)]"
+              key={title}
+              className="rounded-[1.25rem] border border-[var(--line)] bg-white px-4 py-4 shadow-[0_20px_48px_-40px_rgba(8,15,43,0.18)] sm:rounded-[1.5rem] sm:px-5 sm:py-5"
             >
-              <div className="border-b border-[var(--line)] bg-[linear-gradient(135deg,#141d60_0%,#2b377f_100%)] px-5 py-5 text-white sm:px-6">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/68">
-                      Shop By Category
-                    </p>
-                    <h2 className="mt-2 text-2xl font-normal sm:text-3xl">
-                      {category.title}
-                    </h2>
-                    <p className="mt-2 text-sm text-slate-200">
-                      {category.count} products available in this category
-                    </p>
-                  </div>
-                  <Link
-                    href={`/categories/${category.slug}`}
-                    className="inline-flex items-center rounded-full bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--brand-navy)]"
-                  >
-                    Open Category
-                    <ArrowRight size={14} className="ml-2" />
-                  </Link>
-                </div>
-              </div>
-
-              <div className="p-4 sm:p-5">
-                {category.products.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                    {category.products.map((product) => (
-                      <ProductCard key={product.id} product={product} compact />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="rounded-[1.5rem] border border-dashed border-[var(--line)] bg-[var(--surface-soft)] px-5 py-10 text-center">
-                    <p className="font-medium text-slate-500">No products available in this category right now.</p>
-                  </div>
-                )}
-              </div>
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-soft)] text-[var(--brand-navy)] sm:h-12 sm:w-12">
+                <Icon size={22} />
+              </span>
+              <h3 className="mt-3 text-base font-bold text-slate-900 sm:mt-4 sm:text-lg">{title}</h3>
+              <p className="mt-1.5 text-xs leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">{text}</p>
             </div>
           ))}
         </div>
       </section>
-      ) : null}
+
+      <section className="mx-auto max-w-7xl px-3 pt-5 sm:px-6 sm:pt-6 lg:px-8">
+        <div className="rounded-[1.35rem] border border-[var(--line)] bg-[linear-gradient(90deg,#eef4ff_0%,#f8fbff_38%,#eef4ff_100%)] px-4 py-5 shadow-[0_22px_48px_-40px_rgba(8,15,43,0.18)] sm:rounded-[1.75rem] sm:px-6 sm:py-6">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-start gap-4">
+              <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--brand-navy)] text-white sm:h-16 sm:w-16">
+                <Sparkles size={26} />
+              </span>
+              <div>
+                <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                  Can&apos;t find what you&apos;re looking for?
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+                  Explore more categories or contact us for help.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/contact-us"
+              className="inline-flex items-center justify-center rounded-xl bg-[#2563eb] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.14em] text-white"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
 
-export function NewArrivalsExperience({ products, initialQuery = "" }) {
-  const arrivals = products.slice(0, 12);
-  const spotlightProduct = arrivals[0];
-  const arrivalLane = arrivals.slice(1, 5);
-  const editorialLane = arrivals.slice(5, 8);
+function NewArrivalsReferenceLayout({
+  arrivals,
+  initialQuery = "",
+  spotlightProduct = null,
+  currentPage = 1,
+  totalPages = 1,
+}) {
+  const trustNotes = [
+    {
+      icon: Truck,
+      title: "Fast Delivery",
+      text: "Quick delivery at your doorstep",
+    },
+    {
+      icon: ArrowRight,
+      title: "Easy Returns",
+      text: "7 days easy return policy",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Secure Payment",
+      text: "100% secure payment options",
+    },
+    {
+      icon: Headset,
+      title: "24/7 Support",
+      text: "We're here to help you anytime",
+    },
+  ];
 
   return (
     <>
-      <div className="bg-[linear-gradient(180deg,#e9edf9_0%,#f8f9ff_32%,#ffffff_100%)] pb-16">
-        <section className="relative overflow-hidden border-b border-[#141d60]/12 bg-[#141d60] text-white">
+      <div className="bg-[linear-gradient(180deg,#f6f8ff_0%,#ffffff_26%,#ffffff_100%)] pb-16">
+        <section className="relative overflow-hidden border-b border-[#dfe7ff]">
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,#f5f8ff_0%,#edf4ff_100%)]" />
+          <div className="relative py-0">
+            <div className="overflow-hidden border-y border-[#dce5ff] bg-white shadow-[0_26px_60px_-44px_rgba(20,29,96,0.2)]">
+              <picture>
+                <source media="(max-width: 639px)" srcSet={NEW_ARRIVALS_BANNER_MOBILE_IMAGE} />
+                <img
+                  src={NEW_ARRIVALS_BANNER_IMAGE}
+                  alt="New arrivals banner"
+                  className="h-[280px] w-full object-cover sm:h-[400px] lg:h-[500px]"
+                />
+              </picture>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
+          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-[#141d60]/40">New arrivals</p>
+              <h2 className="mt-2 text-3xl font-semibold text-[var(--brand-navy)] sm:text-[2.2rem]">
+                Fresh products worth seeing first
+              </h2>
+            </div>
+            {totalPages > 1 ? (
+              <div className="flex items-center gap-3">
+                {currentPage > 1 ? (
+                  <Link
+                    href={`/new-arrivals?page=${currentPage - 1}`}
+                    className="rounded-full border border-[#dce5ff] bg-white px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--brand-navy)]"
+                  >
+                    Prev
+                  </Link>
+                ) : (
+                  <span className="pointer-events-none rounded-full border border-[#e5e7eb] bg-[#f8fafc] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-slate-400">
+                    Prev
+                  </span>
+                )}
+                <p className="text-sm font-semibold text-slate-500">
+                  Page {currentPage} of {totalPages}
+                </p>
+                {currentPage < totalPages ? (
+                  <Link
+                    href={`/new-arrivals?page=${currentPage + 1}`}
+                    className="rounded-full border border-[#dce5ff] bg-white px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--brand-navy)]"
+                  >
+                    Next
+                  </Link>
+                ) : (
+                  <span className="pointer-events-none rounded-full border border-[#e5e7eb] bg-[#f8fafc] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-slate-400">
+                    Next
+                  </span>
+                )}
+              </div>
+            ) : (
+              <Link
+                href={initialQuery ? `/shop?q=${encodeURIComponent(initialQuery)}` : "/shop"}
+                className="inline-flex items-center rounded-full border border-[#dce5ff] bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.14em] text-[var(--brand-navy)] shadow-[0_22px_44px_-34px_rgba(20,29,96,0.24)]"
+              >
+                View All <ArrowRight size={16} className="ml-2" />
+              </Link>
+            )}
+          </div>
+
+          {arrivals.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-4">
+              {arrivals.map((product) => (
+                <Link
+                  key={product.id}
+                  href={getProductHref(product)}
+                  className="group overflow-hidden rounded-[1.6rem] border border-[#dce5ff] bg-white p-3 shadow-[0_26px_54px_-42px_rgba(20,29,96,0.28)] transition hover:-translate-y-1 hover:shadow-[0_32px_66px_-42px_rgba(20,29,96,0.34)]"
+                >
+                  <div className="relative overflow-hidden rounded-[1.15rem] bg-[var(--surface-soft)]">
+                    <span className="absolute left-3 top-3 z-10 inline-flex rounded-md bg-[#ff4d6d] px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white">
+                      New
+                    </span>
+                    <img
+                      src={product?.main_image || product?.image_url || FRESH_DROP_PANEL_IMAGE}
+                      alt={product?.title || product?.name || "New arrival product"}
+                      className="aspect-[1/1.02] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+
+                  <div className="px-2 pb-2 pt-4">
+                    <h3 className="line-clamp-3 min-h-[4.9rem] text-lg font-semibold leading-[1.18] text-slate-900 sm:min-h-[5.3rem] sm:text-[1.38rem]">
+                      {product?.name || product?.title}
+                    </h3>
+                    <p className="mt-4 text-[1.35rem] font-black tracking-tight text-[#ff4d4f] sm:text-[1.55rem]">
+                      {formatPrice(product?.price_selling)}
+                    </p>
+                    <p className="mt-2 text-xs font-semibold text-emerald-700 sm:text-sm">
+                      {Number(product?.inventory_quantity || 0) > 0
+                        ? `${Number(product?.inventory_quantity || 0)} pcs left`
+                        : "Out of stock"}
+                    </p>
+                    <div className="mt-4">
+                      <span className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-3 py-3 text-xs font-extrabold text-white transition group-hover:bg-[#0f174b] sm:px-4 sm:text-sm">
+                        Shop Now <ShoppingBag size={16} />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-[2rem] border border-[#141d60]/10 bg-white px-6 py-16 text-center shadow-[0_30px_90px_-58px_rgba(20,29,96,0.35)]">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[var(--brand-navy)] text-[var(--surface-cream)]">
+                <Sparkles size={20} />
+              </div>
+              <h3 className="mt-6 text-3xl font-normal text-[var(--brand-navy)]">No recent arrivals found</h3>
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-500">
+                As soon as new products are added to the catalog, this page will surface them here in the same cleaner layout.
+              </p>
+              <Link
+                href="/shop"
+                className="mt-8 inline-flex rounded-full bg-[var(--brand-navy)] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-white"
+              >
+                Explore full catalog
+              </Link>
+            </div>
+          )}
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {trustNotes.map(({ icon: Icon, title, text }) => (
+              <div
+                key={title}
+                className="rounded-[1.5rem] border border-[#e4ebff] bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-5 py-5 shadow-[0_20px_48px_-40px_rgba(20,29,96,0.2)]"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--surface-soft)] text-[var(--brand-navy)]">
+                  <Icon size={22} />
+                </span>
+                <h3 className="mt-4 text-lg font-bold text-slate-900">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+          <div className="rounded-[2rem] border border-[#dce5ff] bg-[linear-gradient(90deg,#eef4ff_0%,#f8fbff_38%,#eef4ff_100%)] px-6 py-6 shadow-[0_24px_58px_-44px_rgba(20,29,96,0.24)] sm:px-8">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-4">
+                <span className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[var(--brand-navy)] text-white shadow-[0_24px_48px_-30px_rgba(20,29,96,0.5)]">
+                  <Gem size={26} />
+                </span>
+                <div>
+                  <h2 className="text-2xl font-semibold leading-tight text-slate-950 sm:text-[2rem]">
+                    New Products. New Choices. Better Living.
+                  </h2>
+                  <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+                    Stay tuned for more useful, trend-aware, and everyday-friendly products added to the GoModexa catalog.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href={spotlightProduct ? getProductHref(spotlightProduct) : "/shop"}
+                className="inline-flex items-center justify-center rounded-xl bg-[#2563eb] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.14em] text-white shadow-[0_22px_44px_-30px_rgba(37,99,235,0.55)] transition hover:bg-[#1f56d8]"
+              >
+                Explore More
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}
+
+export function NewArrivalsExperience({
+  products,
+  initialQuery = "",
+  currentPage = 1,
+  totalPages = 1,
+}) {
+  const arrivals = products.slice(0, 12);
+  const spotlightProduct = arrivals[0];
+  return (
+    <NewArrivalsReferenceLayout
+      arrivals={arrivals}
+      initialQuery={initialQuery}
+      spotlightProduct={spotlightProduct}
+      currentPage={currentPage}
+      totalPages={totalPages}
+    />
+  );
+
+  const arrivalLane = arrivals.slice(1, 5);
+  const editorialLane = arrivals.slice(5, 8);
+  const categoryHighlights = [...new Set(
+    arrivals
+      .map((product) => formatCategoryLabel(product?.category || product?.product_type))
+      .filter(Boolean)
+  )].slice(0, 4);
+  const inStockCount = arrivals.filter(
+    (product) => Number(product?.inventory_quantity || 0) > 0
+  ).length;
+  const entryPrice = arrivals.reduce((lowest, product) => {
+    const price = Number(product?.price_selling || 0);
+    if (price <= 0) {
+      return lowest;
+    }
+
+    if (lowest <= 0) {
+      return price;
+    }
+
+    return Math.min(lowest, price);
+  }, 0);
+  const heroCards = [...arrivalLane.slice(0, 2), ...editorialLane.slice(0, 1)];
+  const launchDeck = arrivals.slice(1, 7);
+
+  return (
+    <>
+      <div className="bg-[linear-gradient(180deg,#f2eee7_0%,#eef2ff_24%,#ffffff_70%)] pb-16">
+        <section className="relative overflow-hidden border-b border-[#141d60]/10 bg-[#101950] text-white">
           <picture className="absolute inset-0">
             <source media="(max-width: 639px)" srcSet={NEW_ARRIVALS_BANNER_MOBILE_IMAGE} />
             <img src={NEW_ARRIVALS_BANNER_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
           </picture>
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.88)_0%,rgba(20,29,96,0.72)_42%,rgba(20,29,96,0.58)_100%)]" />
-          <div className="absolute left-[-10%] top-[58%] h-56 w-56 rounded-full border border-white/10 bg-white/5 blur-2xl" />
-          <div className="absolute right-[-6%] top-[8%] h-72 w-72 rounded-full border border-white/10 bg-white/5 blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+          <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(16,25,80,0.96)_0%,rgba(20,29,96,0.88)_38%,rgba(20,29,96,0.7)_68%,rgba(16,25,80,0.82)_100%)]" />
+          <div className="absolute left-[-8%] top-[16%] h-56 w-56 rounded-full border border-[#d5b26f]/20 bg-[#d5b26f]/10 blur-3xl" />
+          <div className="absolute right-[-9%] top-[52%] h-72 w-72 rounded-full border border-white/10 bg-white/5 blur-3xl" />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(16,25,80,0)_0%,rgba(16,25,80,0.72)_100%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
+            <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
               <div>
-                <span className="inline-flex rounded-full border border-white/14 bg-white/10 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.32em] text-white/88">
+                <span className="inline-flex rounded-full border border-white/14 bg-white/8 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.32em] text-white/88">
                   New Arrivals
                 </span>
-                <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.04em] text-white sm:text-5xl lg:text-[3.8rem]">
-                  Fresh drops, staged like a feature instead of a leftover grid.
+                <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.93] tracking-[-0.045em] text-white sm:text-5xl lg:text-[4.2rem]">
+                  A first-look arrival page that feels launched, not listed.
                 </h1>
                 <p className="mt-5 max-w-2xl text-sm leading-7 text-white/78 sm:text-base sm:leading-8">
-                  This page now pushes the newest products forward with stronger storytelling, a cleaner hierarchy,
-                  and a more premium first scroll while staying rooted in the GoModexa navy.
+                  Recent additions deserve more atmosphere than a leftover feed. This edit turns the route into a
+                  feature-led landing page with richer hierarchy, cleaner merchandising, and a stronger first impression.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
                     href={spotlightProduct ? getProductHref(spotlightProduct) : "/shop"}
-                    className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[#141d60]"
+                    className="inline-flex items-center rounded-full bg-[#f3ebdd] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[#141d60] shadow-[0_26px_60px_-34px_rgba(0,0,0,0.45)]"
                   >
                     View featured drop <ArrowRight size={16} className="ml-2" />
                   </Link>
                   <Link
                     href={initialQuery ? `/shop?q=${encodeURIComponent(initialQuery)}` : "/shop"}
-                    className="inline-flex items-center rounded-full border border-white/16 bg-white/8 px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-white"
+                    className="inline-flex items-center rounded-full border border-white/16 bg-white/8 px-6 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur"
                   >
                     Browse all arrivals
                   </Link>
                 </div>
+
+                <div className="mt-10 grid gap-3 sm:grid-cols-3">
+                  {[
+                    { value: `${arrivals.length}`, label: "Fresh picks" },
+                    { value: `${inStockCount}`, label: "Ready now" },
+                    { value: entryPrice > 0 ? formatPrice(entryPrice) : "Curated", label: "Entry price" },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[1.45rem] border border-white/12 bg-white/8 px-5 py-5 backdrop-blur"
+                    >
+                      <p className="text-3xl font-black tracking-tight text-white">{item.value}</p>
+                      <p className="mt-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-white/68">
+                        {item.label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                {[
-                  { value: `${arrivals.length}`, label: "Fresh picks" },
-                  { value: "Curated", label: "Arrival edit" },
-                  { value: "Premium", label: "First look" },
-                ].map((item, index) => (
-                  <div
-                    key={item.label}
-                    className={`rounded-[1.7rem] border px-5 py-5 backdrop-blur ${
-                      index === 1 ? "border-white/20 bg-white/14" : "border-white/10 bg-white/8"
-                    }`}
-                  >
-                    <p className="text-3xl font-black tracking-tight text-white">{item.value}</p>
-                    <p className="mt-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-white/68">
-                      {item.label}
-                    </p>
+              <div className="relative">
+                <div className="rounded-[2.35rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.05)_100%)] p-4 shadow-[0_36px_100px_-64px_rgba(0,0,0,0.58)] backdrop-blur md:p-5">
+                  <div className="grid gap-4">
+                    {heroCards.map((product, index) => (
+                      <Link
+                        key={product.id}
+                        href={getProductHref(product)}
+                        className={`group rounded-[1.8rem] border p-5 transition hover:-translate-y-1 ${
+                          index === 0
+                            ? "border-[#d5b26f]/26 bg-[linear-gradient(135deg,rgba(212,178,111,0.18)_0%,rgba(255,255,255,0.08)_100%)]"
+                            : "border-white/10 bg-white/7"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="min-w-0">
+                            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/58">
+                              Arrival card {String(index + 1).padStart(2, "0")}
+                            </p>
+                            <h2 className="mt-3 line-clamp-2 font-display text-2xl font-semibold leading-[1] tracking-[-0.025em] text-white">
+                              {product.name || product.title}
+                            </h2>
+                          </div>
+                          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white/84 transition group-hover:translate-x-1">
+                            <ArrowRight size={16} />
+                          </span>
+                        </div>
+                        <div className="mt-5 flex items-end justify-between gap-3">
+                          <p className="text-base font-black tracking-tight text-[#f4ede2]">
+                            {formatPrice(product.price_selling)}
+                          </p>
+                          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-white/52">
+                            {formatCategoryLabel(product?.category || product?.product_type)}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
@@ -638,33 +1096,41 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
 
         {spotlightProduct ? (
           <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-            <div className="grid gap-5 lg:grid-cols-[1.18fr_0.82fr]">
+            <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
               <Link
                 href={getProductHref(spotlightProduct)}
-                className="group overflow-hidden rounded-[2rem] border border-[#141d60]/10 bg-white shadow-[0_32px_90px_-58px_rgba(20,29,96,0.4)]"
+                className="group overflow-hidden rounded-[2.25rem] border border-[#141d60]/10 bg-white shadow-[0_38px_100px_-62px_rgba(20,29,96,0.34)]"
               >
-                <div className="grid h-full gap-0 lg:grid-cols-[0.95fr_1.05fr]">
-                  <div className="relative min-h-[18rem] overflow-hidden bg-[linear-gradient(135deg,rgba(20,29,96,0.08),rgba(20,29,96,0.18))]">
+                <div className="grid h-full gap-0 lg:grid-cols-[1fr_1fr]">
+                  <div className="relative min-h-[19rem] overflow-hidden bg-[linear-gradient(135deg,rgba(20,29,96,0.08),rgba(20,29,96,0.18))]">
                     <img
                       src={FRESH_DROP_PANEL_IMAGE}
                       alt="Fresh new arrivals banner"
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,29,96,0.12)_0%,rgba(20,29,96,0.58)_100%)]" />
-                    <div className="absolute left-5 top-5 inline-flex rounded-full bg-white/90 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#141d60]">
+                    <div className="absolute left-5 top-5 inline-flex rounded-full bg-[#f3ebdd] px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#141d60]">
                       Fresh drop
+                    </div>
+                    <div className="absolute inset-x-5 bottom-5 rounded-[1.5rem] border border-white/12 bg-white/10 p-4 text-white backdrop-blur">
+                      <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-white/64">
+                        Arrival category
+                      </p>
+                      <p className="mt-2 text-lg font-semibold">
+                        {formatCategoryLabel(spotlightProduct?.category || spotlightProduct?.product_type)}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex flex-col justify-between p-6 sm:p-8">
                     <div>
                       <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#141d60]/60">
-                        Just landed
+                        Lead arrival
                       </p>
                       <h2 className="mt-4 max-w-xl font-display text-3xl font-semibold leading-tight tracking-[-0.03em] text-[#141d60] sm:text-[2.35rem]">
                         {spotlightProduct.name || spotlightProduct.title}
                       </h2>
-                      <p className="mt-4 text-lg font-black tracking-tight text-slate-950">
+                      <p className="mt-4 text-xl font-black tracking-tight text-slate-950">
                         {formatPrice(spotlightProduct.price_selling)}
                       </p>
                       <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[15px]">
@@ -674,52 +1140,66 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
                       </p>
                     </div>
 
-                    <div className="mt-8 flex flex-wrap gap-3">
+                    <div className="mt-8 grid gap-3 sm:grid-cols-3">
                       {[
-                        "New in catalog",
-                        "Fresh arrival",
-                        "Ready to discover",
-                      ].map((point) => (
-                        <span
-                          key={point}
-                          className="inline-flex rounded-full border border-[#141d60]/10 bg-[#141d60]/[0.04] px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#141d60]"
+                        { label: "Catalog status", value: "New in rotation" },
+                        { label: "Price posture", value: entryPrice > 0 ? "Fresh-value edit" : "Curated arrival" },
+                        { label: "Use case", value: "Built for discovery" },
+                      ].map((item) => (
+                        <div
+                          key={item.label}
+                          className="rounded-[1.25rem] border border-[#141d60]/10 bg-[#141d60]/[0.035] px-4 py-4"
                         >
-                          {point}
-                        </span>
+                          <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#141d60]/52">
+                            {item.label}
+                          </p>
+                          <p className="mt-2 text-sm font-semibold leading-6 text-[#141d60]">
+                            {item.value}
+                          </p>
+                        </div>
                       ))}
                     </div>
                   </div>
                 </div>
               </Link>
 
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                {arrivalLane.map((product, index) => (
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+                {launchDeck.slice(0, 3).map((product, index) => (
                   <Link
                     key={product.id}
                     href={getProductHref(product)}
-                    className={`group rounded-[1.7rem] border p-5 shadow-[0_24px_72px_-56px_rgba(20,29,96,0.35)] transition hover:-translate-y-1 ${
-                      index === 0
-                        ? "border-[#141d60]/12 bg-[#141d60] text-white"
+                    className={`group rounded-[1.75rem] border p-5 shadow-[0_24px_72px_-56px_rgba(20,29,96,0.3)] transition hover:-translate-y-1 ${
+                      index === 1
+                        ? "border-[#d5b26f]/26 bg-[linear-gradient(135deg,#1a2366_0%,#2c387d_100%)] text-white"
                         : "border-[#141d60]/10 bg-white text-[#141d60]"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
-                        <p className={`text-[10px] font-extrabold uppercase tracking-[0.22em] ${index === 0 ? "text-white/65" : "text-[#141d60]/48"}`}>
-                          Drop {String(index + 2).padStart(2, "0")}
+                        <p className={`text-[10px] font-extrabold uppercase tracking-[0.22em] ${index === 1 ? "text-white/62" : "text-[#141d60]/48"}`}>
+                          Launch tile {String(index + 1).padStart(2, "0")}
                         </p>
                         <h3 className="mt-3 line-clamp-2 font-display text-xl font-semibold leading-tight">
                           {product.name || product.title}
                         </h3>
+                        <p className={`mt-3 line-clamp-2 text-sm leading-6 ${index === 1 ? "text-white/76" : "text-slate-600"}`}>
+                          {product.short_description ||
+                            "Freshly surfaced in the latest arrival rotation for faster shopper discovery."}
+                        </p>
                       </div>
                       <ArrowRight
                         size={18}
-                        className={`shrink-0 transition group-hover:translate-x-1 ${index === 0 ? "text-white/78" : "text-[#141d60]"}`}
+                        className={`shrink-0 transition group-hover:translate-x-1 ${index === 1 ? "text-white/78" : "text-[#141d60]"}`}
                       />
                     </div>
-                    <p className={`mt-4 text-sm font-black tracking-tight ${index === 0 ? "text-white" : "text-slate-950"}`}>
-                      {formatPrice(product.price_selling)}
-                    </p>
+                    <div className="mt-5 flex items-end justify-between gap-3">
+                      <p className={`text-sm font-black tracking-tight ${index === 1 ? "text-white" : "text-slate-950"}`}>
+                        {formatPrice(product.price_selling)}
+                      </p>
+                      <p className={`text-[10px] font-extrabold uppercase tracking-[0.16em] ${index === 1 ? "text-white/58" : "text-slate-400"}`}>
+                        {formatCategoryLabel(product?.category || product?.product_type)}
+                      </p>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -727,13 +1207,128 @@ export function NewArrivalsExperience({ products, initialQuery = "" }) {
           </section>
         ) : null}
 
-        
+        {editorialLane.length > 0 ? (
+          <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+            <div className="grid gap-5 xl:grid-cols-[0.9fr_1.1fr]">
+              <div className="rounded-[2rem] border border-[#141d60]/10 bg-[linear-gradient(145deg,#ffffff_0%,#eef1ff_100%)] p-6 shadow-[0_32px_90px_-58px_rgba(20,29,96,0.38)] sm:p-8">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#141d60]/50">
+                  Arrival brief
+                </p>
+                <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-[#141d60] sm:text-[2.3rem]">
+                  The page now behaves more like an arrival editorial than a utility listing.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-[15px]">
+                  New arrivals works best when it gives recent products atmosphere, structure, and visual momentum.
+                  This route now helps shoppers understand what just landed, which categories are moving, and where to
+                  click next without feeling dropped into a generic archive.
+                </p>
+
+                {categoryHighlights.length > 0 ? (
+                  <div className="mt-6 flex flex-wrap gap-2.5">
+                    {categoryHighlights.map((category) => (
+                      <span
+                        key={category}
+                        className="inline-flex rounded-full border border-[#141d60]/10 bg-white px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#141d60]"
+                      >
+                        {category}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+
+                  <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                    {[
+                      {
+                        title: "Stronger hierarchy",
+                        text: "Lead products and supporting tiles now feel intentionally staged.",
+                      },
+                      {
+                        title: "Better context",
+                        text: "Category cues and price anchors make the page easier to read at a glance.",
+                      },
+                      {
+                        title: "More indexable",
+                        text: "The route now feels more destination-like for both shoppers and Google.",
+                      },
+                    ].map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-[1.4rem] border border-[#141d60]/10 bg-white p-4"
+                    >
+                      <h3 className="text-sm font-extrabold uppercase tracking-[0.16em] text-[#141d60]">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                {editorialLane.map((product, index) => (
+                  <Link
+                    key={product.id}
+                    href={getProductHref(product)}
+                    className={`group overflow-hidden rounded-[1.8rem] border shadow-[0_28px_84px_-60px_rgba(20,29,96,0.38)] transition hover:-translate-y-1 ${
+                      index === 1
+                        ? "border-[#141d60] bg-[linear-gradient(180deg,#141d60_0%,#263374_100%)] text-white"
+                        : "border-[#141d60]/10 bg-white text-[#141d60]"
+                    }`}
+                  >
+                    <div className="flex h-full flex-col justify-between p-5">
+                      <div>
+                        <p className={`text-[10px] font-extrabold uppercase tracking-[0.22em] ${
+                          index === 1 ? "text-white/65" : "text-[#141d60]/48"
+                        }`}>
+                          Arrival note {String(index + 1).padStart(2, "0")}
+                        </p>
+                        <h3 className="mt-4 line-clamp-3 font-display text-2xl font-semibold leading-[1.02] tracking-[-0.02em]">
+                          {product.name || product.title}
+                        </h3>
+                        <p className={`mt-4 text-sm leading-7 ${
+                          index === 1 ? "text-white/78" : "text-slate-600"
+                        }`}>
+                          {product.short_description ||
+                            "Freshly added to the catalog and positioned for quick discovery through a more editorial layout."}
+                        </p>
+                      </div>
+
+                      <div className="mt-6 flex items-end justify-between gap-3">
+                        <div>
+                          <p className={`text-[10px] font-extrabold uppercase tracking-[0.18em] ${
+                            index === 1 ? "text-white/55" : "text-slate-400"
+                          }`}>
+                            New arrival price
+                          </p>
+                          <p className={`mt-2 text-lg font-black tracking-tight ${
+                            index === 1 ? "text-white" : "text-slate-950"
+                          }`}>
+                            {formatPrice(product.price_selling)}
+                          </p>
+                        </div>
+                        <span
+                          className={`inline-flex h-11 w-11 items-center justify-center rounded-full border transition group-hover:translate-x-1 ${
+                            index === 1
+                              ? "border-white/14 bg-white/10 text-white"
+                              : "border-[#141d60]/10 bg-[#141d60]/[0.04] text-[#141d60]"
+                          }`}
+                        >
+                          <ArrowRight size={16} />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-[#141d60]/40">Fresh grid</p>
-              <h2 className="mt-2 text-2xl font-normal text-[#141d60] sm:text-3xl">More recent arrivals</h2>
+              <p className="text-xs font-extrabold uppercase tracking-[0.26em] text-[#141d60]/40">Arrival catalog</p>
+              <h2 className="mt-2 text-2xl font-normal text-[#141d60] sm:text-3xl">Keep scanning the latest additions</h2>
             </div>
             <Link
               href={initialQuery ? `/shop?q=${encodeURIComponent(initialQuery)}` : "/shop"}

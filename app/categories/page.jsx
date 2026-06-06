@@ -14,7 +14,10 @@ export const metadata = buildMetadata({
 });
 
 export default async function CategoriesPage() {
-  const categories = await getCategoriesPageData({ previewCategoryLimit: 0 });
+  const categories = await getCategoriesPageData({
+    previewSize: 12,
+    previewCategoryLimit: 6,
+  });
 
   return (
     <>

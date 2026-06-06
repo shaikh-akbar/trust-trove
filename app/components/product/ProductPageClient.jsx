@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -116,6 +116,7 @@ export default function ProductPageClient({
   faqs = [],
 }) {
   const router = useRouter();
+  const canonicalProductUrl = getSiteUrl(getProductHref(product));
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [mainImage, setMainImage] = useState(
     product?.main_image || product?.image_url || ""
@@ -124,10 +125,7 @@ export default function ProductPageClient({
   const [showFullSummary, setShowFullSummary] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [wishlistFeedback, setWishlistFeedback] = useState("");
-  const productUrl =
-    typeof window === "undefined"
-      ? getSiteUrl(getProductHref(product))
-      : window.location.href;
+  const [productUrl, setProductUrl] = useState(canonicalProductUrl);
   const { addItem, getItemAction, isItemPending } = useCart();
   const {
     isLoggedIn,
@@ -138,6 +136,11 @@ export default function ProductPageClient({
 
   const currentVariant =
     product?.variants?.[selectedVariantIndex] || product?.variants?.[0];
+
+  useEffect(() => {
+    setProductUrl(window.location.href);
+  }, []);
+
   const plainDescription = useMemo(
     () => stripHtml(product?.description),
     [product?.description]

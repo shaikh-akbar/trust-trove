@@ -27,7 +27,8 @@ const CATALOG_PAGE_SIZE = 24;
 
 export async function generateMetadata({ params, searchParams }) {
   const { slug } = await params;
-  const category = (await getCategorySummaries()).find((item) => item.slug === slug);
+  const categories = await getCategorySummaries();
+  const category = categories.find((item) => item.slug === slug) || null;
 
   if (!category) {
     return buildMetadata({
@@ -60,7 +61,7 @@ export default async function CategoryDetailPage({ params, searchParams }) {
   const currentSearchParams = await searchParams;
   const page = getPageNumber(currentSearchParams?.page);
   const categories = await getCategorySummaries();
-  const category = categories.find((item) => item.slug === slug);
+  const category = categories.find((item) => item.slug === slug) || null;
 
   if (!category) {
     notFound();
@@ -75,6 +76,7 @@ export default async function CategoryDetailPage({ params, searchParams }) {
   const categoryGuide = getCategoryGuideCopy(category);
   const categoryFaqs = getCategoryFaqs(category);
   const faqSchema = buildFaqSchema(categoryFaqs);
+  const categoryMetaDescription = buildCategoryMetaDescription(category, { page });
 
   return (
     <>
@@ -96,9 +98,7 @@ export default async function CategoryDetailPage({ params, searchParams }) {
           __html: JSON.stringify(
             buildCollectionPageSchema({
               name: category.title,
-              description:
-                category.description ||
-                `Browse ${category.title} products on GoModexa.`,
+              description: categoryMetaDescription,
               path: `/categories/${slug}`,
               items: products.map((product) => ({
                 name: product.title || product.name,

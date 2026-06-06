@@ -339,6 +339,7 @@ export default function AdminProductsClient({
           slug: draft.slug,
           status: draft.status,
           is_featured: draft.is_featured,
+          new_arrivals: draft.new_arrivals,
           short_description: draft.short_description,
           seo_title: draft.seo_title,
           seo_description: draft.seo_description,
@@ -501,6 +502,11 @@ export default function AdminProductsClient({
                             Featured
                           </span>
                         ) : null}
+                        {product.new_arrivals ? (
+                          <span className="rounded-full bg-[#2563eb] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+                            New Arrival
+                          </span>
+                        ) : null}
                       </div>
 
                       <h3 className="mt-3 line-clamp-2 text-lg font-black tracking-tight text-slate-950">
@@ -612,6 +618,12 @@ export default function AdminProductsClient({
                   <span className="hidden items-center gap-2 rounded-full bg-[var(--brand-navy)] px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white sm:inline-flex">
                     <Sparkles size={12} />
                     Featured
+                  </span>
+                ) : null}
+                {draft.new_arrivals ? (
+                  <span className="hidden items-center gap-2 rounded-full bg-[#2563eb] px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white sm:inline-flex">
+                    <Sparkles size={12} />
+                    New Arrival
                   </span>
                 ) : null}
                 <button
@@ -759,20 +771,33 @@ export default function AdminProductsClient({
                     />
                   </label>
 
-                  <label className="flex items-center justify-between gap-3 rounded-[1.2rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-4 sm:col-span-2">
-                    <div>
-                      <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Homepage featured</span>
-                      <span className="mt-1 block text-sm font-semibold text-slate-700">Show this product in the featured products section on home.</span>
-                    </div>
+                    <label className="flex items-center justify-between gap-3 rounded-[1.2rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-4 sm:col-span-2">
+                      <div>
+                        <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Homepage featured</span>
+                        <span className="mt-1 block text-sm font-semibold text-slate-700">Show this product in the featured products section on home.</span>
+                      </div>
                     <input
                       type="checkbox"
                       checked={Boolean(draft.is_featured)}
                       onChange={(event) => updateDraft("is_featured", event.target.checked)}
-                      className="h-5 w-5 accent-[var(--brand-navy)]"
-                    />
-                  </label>
+                        className="h-5 w-5 accent-[var(--brand-navy)]"
+                      />
+                    </label>
 
-                  <label className="block sm:col-span-2">
+                    <label className="flex items-center justify-between gap-3 rounded-[1.2rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-4 sm:col-span-2">
+                      <div>
+                        <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">New arrivals</span>
+                        <span className="mt-1 block text-sm font-semibold text-slate-700">Turn this on to include the product on the new arrivals page.</span>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={Boolean(draft.new_arrivals)}
+                        onChange={(event) => updateDraft("new_arrivals", event.target.checked)}
+                        className="h-5 w-5 accent-[#2563eb]"
+                      />
+                    </label>
+
+                    <label className="block sm:col-span-2">
                     <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Short description</span>
                     <textarea
                       value={draft.short_description || ""}
