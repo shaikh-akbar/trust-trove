@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getProductByIdentifier } from "../../../lib/product";
 import {
+  BLOG_POSTS,
   getBlogPostBySlug,
   getBlogPostsByCategory,
   getCategoryPathFromTitle,
@@ -12,6 +13,8 @@ import {
   buildBreadcrumbSchema,
   buildMetadata,
 } from "../../../lib/seo";
+
+export const dynamicParams = false;
 
 function formatPrice(value) {
   return `Rs ${Number(value || 0)}`;
@@ -25,6 +28,12 @@ function getProductIdentifierFromPath(path) {
   }
 
   return normalizedPath.replace("/product/", "").trim();
+}
+
+export function generateStaticParams() {
+  return BLOG_POSTS.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({ params }) {

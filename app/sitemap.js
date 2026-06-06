@@ -108,7 +108,7 @@ export default async function sitemap() {
 
   const blogRoutes = BLOG_POSTS.map((post) => ({
     url: getSiteUrl(`/blogs/${post.slug}`),
-    lastModified: toDate(post.publishedAt),
+    lastModified: toDate(post.updatedAt || post.publishedAt),
     changeFrequency: "monthly",
     priority: 0.65,
   }));
