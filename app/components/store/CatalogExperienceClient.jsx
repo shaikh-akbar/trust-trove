@@ -70,6 +70,7 @@ export default function CatalogExperienceClient({
   const [showFilters, setShowFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_PRODUCTS);
   const loadMoreRef = useRef(null);
+  const hasHeroCopy = Boolean(eyebrow || title || description || spotlight);
 
   useEffect(() => {
     setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
@@ -219,29 +220,43 @@ export default function CatalogExperienceClient({
           }`}
         />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.08))]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-          <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-slate-200">{eyebrow}</p>
-          <div className="mt-5 grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-            <div>
-              <h1 className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.03em] sm:text-4xl">{title}</h1>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">{description}</p>
-            </div>
-            <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur">
-              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-slate-300">Spotlight</p>
-              <h2 className="mt-3 font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">{spotlight.title}</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-200">{spotlight.text}</p>
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                {spotlight.points.map((point) => (
-                  <span
-                    key={point}
-                    className="inline-flex rounded-full border border-white/[0.12] bg-white/[0.08] px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-100"
-                  >
-                    {point}
-                  </span>
-                ))}
+        <div className={`relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${hasHeroCopy ? "py-12 lg:py-16" : "py-24 sm:py-32 lg:py-40"}`}>
+          {hasHeroCopy ? (
+            <>
+              {eyebrow ? (
+                <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-slate-200">{eyebrow}</p>
+              ) : null}
+              <div className={`grid gap-6 ${spotlight ? "mt-5 lg:grid-cols-[1.1fr_0.9fr] lg:items-end" : "mt-0"}`}>
+                <div>
+                  {title ? (
+                    <h1 className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.03em] sm:text-4xl">{title}</h1>
+                  ) : null}
+                  {description ? (
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">{description}</p>
+                  ) : null}
+                </div>
+                {spotlight ? (
+                  <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur">
+                    <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-slate-300">Spotlight</p>
+                    <h2 className="mt-3 font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">
+                      {spotlight.title}
+                    </h2>
+                    <p className="mt-3 text-sm leading-6 text-slate-200">{spotlight.text}</p>
+                    <div className="mt-5 flex flex-wrap gap-2.5">
+                      {spotlight.points.map((point) => (
+                        <span
+                          key={point}
+                          className="inline-flex rounded-full border border-white/[0.12] bg-white/[0.08] px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-100"
+                        >
+                          {point}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
-            </div>
-          </div>
+            </>
+          ) : null}
         </div>
       </section>
 
@@ -259,7 +274,7 @@ export default function CatalogExperienceClient({
           <aside
             className={`space-y-5 ${
               showFilters
-                ? "fixed inset-x-3 bottom-3 top-3 z-50 overflow-y-auto rounded-[2rem] bg-[var(--surface-soft)] p-4 shadow-[0_32px_90px_-45px_rgba(8,15,43,0.52)]"
+                ? "fixed inset-x-3 top-4 bottom-24 z-50 overflow-y-auto rounded-[2rem] bg-[var(--surface-soft)] p-4 shadow-[0_32px_90px_-45px_rgba(8,15,43,0.52)] sm:inset-x-6 sm:bottom-6 sm:top-6"
                 : "hidden"
             } lg:static lg:block lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none`}
           >
@@ -378,31 +393,33 @@ export default function CatalogExperienceClient({
                   />
                 </div>
                 {filteredCategoryLabels.length > 0 ? (
-                  filteredCategoryLabels.map((category) => (
-                    <Link
-                      key={category.slug}
-                      href={
-                        activeCategorySlug === category.slug
-                          ? buildShopHref({ page: 1, categorySlug: "", queryValue: initialQuery })
-                          : buildShopHref({
-                              page: 1,
-                              categorySlug: category.slug,
-                              queryValue: initialQuery,
-                            })
-                      }
-                      onClick={() => setShowFilters(false)}
-                      className={`flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm transition ${
-                        activeCategorySlug === category.slug
-                          ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white"
-                          : "border-[var(--line-soft)] bg-[var(--surface-soft)] text-slate-700 hover:border-[var(--line)]"
-                      }`}
-                    >
-                      <span className="font-medium">{category.title}</span>
-                      <span className="text-[10px] font-extrabold uppercase tracking-[0.16em]">
-                        {activeCategorySlug === category.slug ? "Active" : "Open"}
-                      </span>
-                    </Link>
-                  ))
+                  <div className="max-h-[16.5rem] space-y-3 overflow-y-auto pr-1 lg:max-h-[22rem]">
+                    {filteredCategoryLabels.map((category) => (
+                      <Link
+                        key={category.slug}
+                        href={
+                          activeCategorySlug === category.slug
+                            ? buildShopHref({ page: 1, categorySlug: "", queryValue: initialQuery })
+                            : buildShopHref({
+                                page: 1,
+                                categorySlug: category.slug,
+                                queryValue: initialQuery,
+                              })
+                        }
+                        onClick={() => setShowFilters(false)}
+                        className={`flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm transition ${
+                          activeCategorySlug === category.slug
+                            ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white"
+                            : "border-[var(--line-soft)] bg-[var(--surface-soft)] text-slate-700 hover:border-[var(--line)]"
+                        }`}
+                      >
+                        <span className="font-medium">{category.title}</span>
+                        <span className="text-[10px] font-extrabold uppercase tracking-[0.16em]">
+                          {activeCategorySlug === category.slug ? "Active" : "Open"}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
                 ) : (
                   <div className="rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface-soft)] px-4 py-5 text-sm text-slate-500">
                     No categories matched your search.

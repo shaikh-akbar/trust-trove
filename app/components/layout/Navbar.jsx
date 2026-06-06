@@ -565,7 +565,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
               key={item.href}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              className="block font-display text-[1.9rem] font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-[2.2rem]"
+              className="block font-display text-[1rem] font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-[1.8rem]"
             >
               {item.label}
             </Link>

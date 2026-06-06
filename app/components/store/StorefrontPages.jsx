@@ -239,18 +239,10 @@ export function ShopExperience({
         initialQuery={initialQuery}
         activeCategorySlug={activeCategorySlug}
         activeCategoryTitle={activeCategoryTitle}
-        eyebrow="Shop"
-        title="A more magnetic storefront for thoughtful browsing."
-        description="Search products instantly, slide through price ranges, and refine by category, color, and size in a cleaner shopping experience built to convert."
         heroBackgroundImage={SHOP_BANNER_IMAGE}
         heroMobileBackgroundImage={SHOP_BANNER_MOBILE_IMAGE}
         currentPage={currentPage}
         totalPages={totalPages}
-        spotlight={{
-          title: "Designed for discovery",
-          text: "The catalog now behaves like a modern retail experience, with faster scanning, richer merchandising, and better route-level structure for SEO.",
-          points: ["Smart search", "Filter by size", "Color sorting"],
-        }}
         emptyTitle="No products matched this edit"
         emptyText="Try widening your price range, clearing a few filters, or searching with shorter terms to uncover more products."
       />
