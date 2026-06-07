@@ -26,6 +26,7 @@ export default function CategoryInlineProductCard({ product, showNewBadge = fals
       product?.primary_variant?.inventory_quantity ??
       0
   );
+  const isOutOfStock = inventory <= 1;
 
   async function handleAddToCart() {
     await addItem(buildCartItem(product, variant, 1));
@@ -68,20 +69,26 @@ export default function CategoryInlineProductCard({ product, showNewBadge = fals
         ) : null}
       </div>
       {Number.isFinite(inventory) ? (
-        <p className="mt-1.5 text-xs font-medium text-emerald-700">
-          {inventory} pcs left
+        <p className={`mt-1.5 text-xs font-medium ${isOutOfStock ? "text-rose-600" : "text-emerald-700"}`}>
+          {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
         </p>
       ) : null}
       <div className="mt-4">
-        <button
-          type="button"
-          onClick={() => void handleAddToCart()}
-          disabled={cartBusy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-3 py-2.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-white disabled:cursor-wait disabled:opacity-70"
-        >
-          {cartBusy ? "Adding" : added ? "Added" : "Add to Bag"}
-          <ShoppingBag size={14} />
-        </button>
+        {isOutOfStock ? (
+          <span className="inline-flex w-full items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-rose-700">
+            Out of stock
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={() => void handleAddToCart()}
+            disabled={cartBusy}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-3 py-2.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-white disabled:cursor-wait disabled:opacity-70"
+          >
+            {cartBusy ? "Adding" : added ? "Added" : "Add to Bag"}
+            <ShoppingBag size={14} />
+          </button>
+        )}
       </div>
     </article>
   );

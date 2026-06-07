@@ -860,8 +860,12 @@ function NewArrivalsReferenceLayout({
                     <p className="mt-4 text-[1.35rem] font-black tracking-tight text-[#ff4d4f] sm:text-[1.55rem]">
                       {formatPrice(product?.price_selling)}
                     </p>
-                    <p className="mt-2 text-xs font-semibold text-emerald-700 sm:text-sm">
-                      {Number(product?.inventory_quantity || 0) > 0
+                    <p className={`mt-2 text-xs font-semibold sm:text-sm ${
+                      Number(product?.inventory_quantity || 0) <= 1
+                        ? "text-rose-600"
+                        : "text-emerald-700"
+                    }`}>
+                      {Number(product?.inventory_quantity || 0) > 1
                         ? `${Number(product?.inventory_quantity || 0)} pcs left`
                         : "Out of stock"}
                     </p>

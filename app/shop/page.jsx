@@ -15,12 +15,14 @@ export async function generateMetadata({ searchParams }) {
   const params = await searchParams;
   const page = getPageNumber(params?.page);
   const query = getQueryValue(params?.q);
+  const categorySlug = getQueryValue(params?.category);
 
   return buildCollectionMetadata({
     title: "Shop",
     path: "/shop",
     page,
     query,
+    hasFilters: Boolean(categorySlug),
     description:
       "Browse the full GoModexa catalog with product search, price filtering, and modern collection browsing.",
     keywords: ["shop GoModexa", "product filters", "search products online"],

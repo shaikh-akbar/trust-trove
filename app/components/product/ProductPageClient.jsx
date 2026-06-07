@@ -238,6 +238,8 @@ export default function ProductPageClient({
   const cartItemKey = getCartItemKey(product, currentVariant);
   const cartAction = getItemAction(cartItemKey);
   const cartBusy = isItemPending(cartItemKey);
+  const currentInventory = Number(currentVariant?.inventory_quantity || 0);
+  const isOutOfStock = currentInventory <= 1;
   const addToCartLabel =
     cartAction === "add"
       ? "Adding..."
@@ -556,7 +558,7 @@ export default function ProductPageClient({
                 </p>
                 <div className="mt-3">
                   <p className="text-sm font-semibold">
-                    {Number(currentVariant?.inventory_quantity || 0) > 0 ? (
+                    {!isOutOfStock ? (
                       <span className="text-emerald-700">In stock — {Number(currentVariant.inventory_quantity || 0)} pcs</span>
                     ) : (
                       <span className="text-rose-600">Out of stock</span>
@@ -624,16 +626,22 @@ export default function ProductPageClient({
               ) : null}
 
               <div className="mt-6 space-y-3">
-                <button
-                  type="button"
-                  onClick={() => void handleAddToCart()}
-                  disabled={cartBusy}
-                  className={`hidden h-14 w-full items-center justify-center gap-3 rounded-xl bg-[var(--brand-navy)] text-base font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-navy)] md:flex ${
-                    cartBusy ? "cursor-wait opacity-70" : "hover:bg-slate-800"
-                  }`}
-                >
-                  <ShoppingBag size={20} /> {addToCartLabel}
-                </button>
+                {!isOutOfStock ? (
+                  <button
+                    type="button"
+                    onClick={() => void handleAddToCart()}
+                    disabled={cartBusy}
+                    className={`hidden h-14 w-full items-center justify-center gap-3 rounded-xl bg-[var(--brand-navy)] text-base font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-navy)] md:flex ${
+                      cartBusy ? "cursor-wait opacity-70" : "hover:bg-slate-800"
+                    }`}
+                  >
+                    <ShoppingBag size={20} /> {addToCartLabel}
+                  </button>
+                ) : (
+                  <div className="hidden h-14 w-full items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-base font-semibold text-rose-700 md:flex">
+                    Out of stock
+                  </div>
+                )}
 
                 <button
                   type="button"
@@ -827,17 +835,23 @@ export default function ProductPageClient({
 
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/96 px-4 py-3 shadow-[0_-12px_30px_-18px_rgba(15,23,42,0.24)] backdrop-blur md:hidden">
         <div className="mx-auto flex max-w-7xl gap-3">
-          <button
-            type="button"
-            onClick={() => void handleAddToCart()}
-            disabled={cartBusy}
-            className={`flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-4 text-sm font-semibold text-white transition ${
-              cartBusy ? "cursor-wait opacity-70" : "hover:bg-slate-800"
-            }`}
-          >
-            <ShoppingBag size={18} />
-            {addToCartLabel}
-          </button>
+          {!isOutOfStock ? (
+            <button
+              type="button"
+              onClick={() => void handleAddToCart()}
+              disabled={cartBusy}
+              className={`flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-4 text-sm font-semibold text-white transition ${
+                cartBusy ? "cursor-wait opacity-70" : "hover:bg-slate-800"
+              }`}
+            >
+              <ShoppingBag size={18} />
+              {addToCartLabel}
+            </button>
+          ) : (
+            <div className="flex h-12 flex-1 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700">
+              Out of stock
+            </div>
+          )}
           <button
             type="button"
             onClick={() => void handleWishlistToggle()}

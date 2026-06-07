@@ -93,10 +93,10 @@ export async function generateMetadata({ params }) {
         }
       : {
           index: false,
-          follow: true,
+          follow: false,
           googleBot: {
             index: false,
-            follow: true,
+            follow: false,
             noimageindex: true,
           },
         },

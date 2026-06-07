@@ -23,6 +23,7 @@ export default function ProductCard({ product, compact = false }) {
   const inventory = Number(
     product?.inventory_quantity || product?.variants?.[0]?.inventory_quantity || product?.primary_variant?.inventory_quantity || 0
   );
+  const isOutOfStock = inventory <= 1;
 
   const cartItemKey = getCartItemKey(product, product?.variants?.[0]);
   const cartBusy = isItemPending(cartItemKey);
@@ -133,27 +134,33 @@ export default function ProductCard({ product, compact = false }) {
               ) : null}
             </div>
             <div>
-              <span className="text-xs font-semibold text-slate-500">
-                {inventory > 0 ? `${inventory} pcs left` : "Out of stock"}
+              <span className={`text-xs font-semibold ${isOutOfStock ? "text-rose-600" : "text-slate-500"}`}>
+                {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
               </span>
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => void handleAddToCart()}
-            disabled={cartBusy}
-            className={`${cartButtonClassName} ${cartBusy ? "cursor-wait opacity-70 hover:scale-100" : ""}`}
-            aria-label={`Add ${title} to cart`}
-          >
-            {cartBusy ? (
-              <span className="text-[10px] font-black uppercase tracking-[0.16em]">Adding</span>
-            ) : added ? (
-              <span className="text-[10px] font-black uppercase tracking-[0.16em]">Added</span>
-            ) : (
-              <ShoppingCart size={18} />
-            )}
-          </button>
+          {isOutOfStock ? (
+            <span className="inline-flex items-center justify-center rounded-full border border-rose-200 bg-rose-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-rose-700">
+              Out of stock
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => void handleAddToCart()}
+              disabled={cartBusy}
+              className={`${cartButtonClassName} ${cartBusy ? "cursor-wait opacity-70 hover:scale-100" : ""}`}
+              aria-label={`Add ${title} to cart`}
+            >
+              {cartBusy ? (
+                <span className="text-[10px] font-black uppercase tracking-[0.16em]">Adding</span>
+              ) : added ? (
+                <span className="text-[10px] font-black uppercase tracking-[0.16em]">Added</span>
+              ) : (
+                <ShoppingCart size={18} />
+              )}
+            </button>
+          )}
         </div>
       </div>
     </article>
