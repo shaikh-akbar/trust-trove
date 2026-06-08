@@ -4,6 +4,8 @@ import { getProductHref } from "../lib/product-route";
 import { getSupabaseAdmin } from "../lib/supabase-admin";
 import { getSiteUrl, hasIndexableProductPageSignals } from "../lib/seo";
 
+const STOREFRONT_SUPPLIER_NAMES = ["wukusy", "gomodexa"];
+
 function toDate(value) {
   const parsed = new Date(value || Date.now());
   return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
@@ -39,7 +41,7 @@ async function getAllIndexedProducts() {
       )
     `)
     .eq("status", "active")
-    .eq("variants.supplier_name", "wukusy")
+    .in("variants.supplier_name", STOREFRONT_SUPPLIER_NAMES)
     .eq("variants.status", "active")
     .order("updated_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false, nullsFirst: false });

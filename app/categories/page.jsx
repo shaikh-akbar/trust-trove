@@ -17,6 +17,7 @@ export default async function CategoriesPage() {
   const categories = await getCategoriesPageData({
     previewSize: 12,
     previewCategoryLimit: 6,
+    forceFresh: true,
   });
 
   return (

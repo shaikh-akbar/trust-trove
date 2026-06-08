@@ -47,6 +47,26 @@ function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
 }
 
+function isLadiesBagCategory(product) {
+  const categorySignals = [
+    product?.category,
+    product?.categoryLabel,
+    product?.product_type,
+    product?.slug,
+  ]
+    .map((value) =>
+      String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "")
+    )
+    .filter(Boolean);
+
+  return categorySignals.some(
+    (value) => value === "ladiesbag" || value.includes("ladiesbag")
+  );
+}
+
 function getCategoryBannerImage(title) {
   const normalized = String(title || "").toLowerCase();
 
@@ -860,15 +880,32 @@ function NewArrivalsReferenceLayout({
                     <p className="mt-4 text-[1.35rem] font-black tracking-tight text-[#ff4d4f] sm:text-[1.55rem]">
                       {formatPrice(product?.price_selling)}
                     </p>
-                    <p className={`mt-2 text-xs font-semibold sm:text-sm ${
-                      Number(product?.inventory_quantity || 0) <= 1
-                        ? "text-rose-600"
-                        : "text-emerald-700"
-                    }`}>
-                      {Number(product?.inventory_quantity || 0) > 1
-                        ? `${Number(product?.inventory_quantity || 0)} pcs left`
-                        : "Out of stock"}
-                    </p>
+                    {!isLadiesBagCategory(product) ? (
+                      <p className={`mt-2 text-xs font-semibold sm:text-sm ${
+                        Number(
+                          product?.variants?.[0]?.inventory_quantity ??
+                            product?.primary_variant?.inventory_quantity ??
+                            product?.inventory_quantity ??
+                            0
+                        ) <= 1
+                          ? "text-rose-600"
+                          : "text-emerald-700"
+                      }`}>
+                        {Number(
+                          product?.variants?.[0]?.inventory_quantity ??
+                            product?.primary_variant?.inventory_quantity ??
+                            product?.inventory_quantity ??
+                            0
+                        ) > 1
+                          ? `${Number(
+                              product?.variants?.[0]?.inventory_quantity ??
+                                product?.primary_variant?.inventory_quantity ??
+                                product?.inventory_quantity ??
+                                0
+                            )} pcs left`
+                          : "Out of stock"}
+                      </p>
+                    ) : null}
                     <div className="mt-4">
                       <span className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--brand-navy)] px-3 py-3 text-xs font-extrabold text-white transition group-hover:bg-[#0f174b] sm:px-4 sm:text-sm">
                         Shop Now <ShoppingBag size={16} />

@@ -13,6 +13,26 @@ function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
 }
 
+function isLadiesBagCategory(product) {
+  const categorySignals = [
+    product?.category,
+    product?.categoryLabel,
+    product?.product_type,
+    product?.slug,
+  ]
+    .map((value) =>
+      String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "")
+    )
+    .filter(Boolean);
+
+  return categorySignals.some(
+    (value) => value === "ladiesbag" || value.includes("ladiesbag")
+  );
+}
+
 export default function CategoryInlineProductCard({ product, showNewBadge = false }) {
   const { addItem, isItemPending } = useCart();
   const [added, setAdded] = useState(false);
@@ -27,6 +47,7 @@ export default function CategoryInlineProductCard({ product, showNewBadge = fals
       0
   );
   const isOutOfStock = inventory <= 1;
+  const hideInventoryForCategory = isLadiesBagCategory(product);
 
   async function handleAddToCart() {
     await addItem(buildCartItem(product, variant, 1));
@@ -68,7 +89,7 @@ export default function CategoryInlineProductCard({ product, showNewBadge = fals
           </p>
         ) : null}
       </div>
-      {Number.isFinite(inventory) ? (
+      {Number.isFinite(inventory) && !hideInventoryForCategory ? (
         <p className={`mt-1.5 text-xs font-medium ${isOutOfStock ? "text-rose-600" : "text-emerald-700"}`}>
           {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
         </p>

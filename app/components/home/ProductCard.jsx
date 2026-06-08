@@ -7,6 +7,26 @@ import Image from 'next/image';
 import { buildCartItem, getCartItemKey, useCart } from '../cart/CartProvider';
 import { getProductHref } from '../../../lib/product-route';
 
+function isLadiesBagCategory(product) {
+  const categorySignals = [
+    product?.category,
+    product?.categoryLabel,
+    product?.product_type,
+    product?.slug,
+  ]
+    .map((value) =>
+      String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '')
+    )
+    .filter(Boolean);
+
+  return categorySignals.some(
+    (value) => value === 'ladiesbag' || value.includes('ladiesbag')
+  );
+}
+
 export default function ProductCard({ product, compact = false }) {
   const { addItem, isItemPending } = useCart();
   const [added, setAdded] = useState(false);
@@ -24,6 +44,7 @@ export default function ProductCard({ product, compact = false }) {
     product?.inventory_quantity || product?.variants?.[0]?.inventory_quantity || product?.primary_variant?.inventory_quantity || 0
   );
   const isOutOfStock = inventory <= 1;
+  const hideInventoryForCategory = isLadiesBagCategory(product);
 
   const cartItemKey = getCartItemKey(product, product?.variants?.[0]);
   const cartBusy = isItemPending(cartItemKey);
@@ -133,11 +154,13 @@ export default function ProductCard({ product, compact = false }) {
                 </span>
               ) : null}
             </div>
-            <div>
-              <span className={`text-xs font-semibold ${isOutOfStock ? "text-rose-600" : "text-slate-500"}`}>
-                {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
-              </span>
-            </div>
+            {!hideInventoryForCategory ? (
+              <div>
+                <span className={`text-xs font-semibold ${isOutOfStock ? "text-rose-600" : "text-slate-500"}`}>
+                  {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
+                </span>
+              </div>
+            ) : null}
           </div>
 
           {isOutOfStock ? (

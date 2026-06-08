@@ -27,7 +27,7 @@ function SectionHeading({ eyebrow, title, href, actionLabel }) {
 
 export default async function HomeDeferredSections() {
   const [categories, customerReviews, reviewSummary] = await Promise.all([
-    getCategorySummaries(),
+    getCategorySummaries({ forceFresh: true }),
     getApprovedCustomerReviews(6),
     getApprovedCustomerReviewSummary(),
   ]);
