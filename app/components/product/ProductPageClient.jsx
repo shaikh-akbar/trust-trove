@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -128,7 +128,6 @@ export default function ProductPageClient({
   const [showFullSummary, setShowFullSummary] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [wishlistFeedback, setWishlistFeedback] = useState("");
-  const [productUrl, setProductUrl] = useState(canonicalProductUrl);
   const { addItem, getItemAction, isItemPending } = useCart();
   const {
     isLoggedIn,
@@ -139,10 +138,6 @@ export default function ProductPageClient({
 
   const currentVariant =
     product?.variants?.[selectedVariantIndex] || product?.variants?.[0];
-
-  useEffect(() => {
-    setProductUrl(window.location.href);
-  }, []);
 
   const plainDescription = useMemo(
     () => stripHtml(product?.description),
@@ -173,9 +168,9 @@ export default function ProductPageClient({
     : "Check this out on GoModexa";
   const mailHref = `mailto:?subject=${encodeURIComponent(
     shareText
-  )}&body=${encodeURIComponent(`${shareText}\n\n${productUrl}`)}`;
+  )}&body=${encodeURIComponent(`${shareText}\n\n${canonicalProductUrl}`)}`;
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(
-    `${shareText} ${productUrl}`
+    `${shareText} ${canonicalProductUrl}`
   )}`;
   const shouldShowReadMore = shortSummary.length > 140;
 
@@ -184,7 +179,7 @@ export default function ProductPageClient({
       return;
     }
 
-    await navigator.clipboard.writeText(productUrl);
+    await navigator.clipboard.writeText(canonicalProductUrl);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
   }
@@ -277,7 +272,6 @@ export default function ProductPageClient({
                   alt={product.title}
                   fill
                   preload
-                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 46vw"
                   className="object-cover"
                 />
@@ -305,7 +299,6 @@ export default function ProductPageClient({
                       alt={img.alt || `${product.title} view ${index + 1}`}
                       width={160}
                       height={160}
-                      unoptimized
                       sizes="(max-width: 640px) 20vw, 10vw"
                       className="aspect-square w-full object-cover"
                     />
