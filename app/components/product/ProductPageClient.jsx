@@ -117,9 +117,12 @@ export default function ProductPageClient({
 }) {
   const router = useRouter();
   const canonicalProductUrl = getSiteUrl(getProductHref(product));
+  const galleryImages = Array.isArray(product?.product_images)
+    ? product.product_images.filter((image) => String(image?.src || "").trim())
+    : [];
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [mainImage, setMainImage] = useState(
-    product?.main_image || product?.image_url || ""
+    product?.main_image || galleryImages[0]?.src || product?.image_url || ""
   );
   const [copied, setCopied] = useState(false);
   const [showFullSummary, setShowFullSummary] = useState(false);
@@ -284,9 +287,9 @@ export default function ProductPageClient({
               </div>
             </div>
 
-            {product.product_images?.length > 1 ? (
+            {galleryImages.length > 1 ? (
               <div className="mx-auto grid max-w-2xl grid-cols-4 gap-2 rounded-3xl border border-slate-200 bg-white p-3 sm:grid-cols-5 sm:gap-3 sm:p-4">
-                {product.product_images.map((img, index) => (
+                {galleryImages.map((img, index) => (
                   <button
                     key={img.id || index}
                     type="button"

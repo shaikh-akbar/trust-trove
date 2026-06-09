@@ -24,8 +24,54 @@ function stripHtml(value) {
   return (value || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+const LADIES_BAG_GALLERY_LIMIT = 4;
+
+function normalizeCategoryValue(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ");
+}
+
+function isLadiesBagProduct(product) {
+  const candidates = [
+    product?.category,
+    product?.product_type,
+    ...(Array.isArray(product?.rawCategories) ? product.rawCategories : []),
+    ...(Array.isArray(product?.rawProductTypes) ? product.rawProductTypes : []),
+  ]
+    .map((value) => normalizeCategoryValue(value))
+    .filter(Boolean);
+
+  return candidates.some(
+    (value) =>
+      value.includes("ladies bag") ||
+      value.includes("ladies bags") ||
+      value.includes("lady bag") ||
+      value.includes("women bag") ||
+      value.includes("womens bag")
+  );
+}
+
+function limitProductGalleryImages(product) {
+  if (!product || !isLadiesBagProduct(product)) {
+    return product;
+  }
+
+  const limitedImages = Array.isArray(product.product_images)
+    ? product.product_images.slice(0, LADIES_BAG_GALLERY_LIMIT)
+    : [];
+
+  return {
+    ...product,
+    main_image: product.main_image || limitedImages[0]?.src || "",
+    product_images: limitedImages,
+  };
+}
+
 async function getProductPagePayload(identifier) {
-  const product = await getProductByIdentifier(identifier);
+  const rawProduct = await getProductByIdentifier(identifier);
+  const product = limitProductGalleryImages(rawProduct);
 
   if (!product) {
     return { product: null, relatedProducts: [] };

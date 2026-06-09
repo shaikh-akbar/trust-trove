@@ -11,6 +11,7 @@ import {
 import {
   buildArticleSchema,
   buildBreadcrumbSchema,
+  buildFaqSchema,
   buildMetadata,
 } from "../../../lib/seo";
 
@@ -28,6 +29,21 @@ function getProductIdentifierFromPath(path) {
   }
 
   return normalizedPath.replace("/product/", "").trim();
+}
+
+function countWords(value) {
+  return String(value || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+function toAnchorId(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
 }
 
 export function generateStaticParams() {
@@ -55,6 +71,23 @@ export async function generateMetadata({ params }) {
     image: post.image || "/assets/gomodexa.png",
     keywords: post.keywords || [post.category, post.title, "GoModexa article"],
     includeDefaultKeywords: false,
+    openGraphType: "article",
+    publishedTime: post.publishedAt,
+    modifiedTime: post.updatedAt || post.publishedAt,
+    section: post.category,
+    tags: [...(post.keywords || []), ...(post.topicTags || []), post.category],
+    authors: [post.authorName || "GoModexa"],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
   });
 }
 
@@ -85,6 +118,21 @@ export default async function BlogDetailPage({ params }) {
     post?.productSource?.categoryTitle || post.category,
     { excludeSlug: post.slug, limit: 3 }
   );
+  const keyTakeaways = Array.isArray(post.keyTakeaways) ? post.keyTakeaways.filter(Boolean) : [];
+  const articleSections = Array.isArray(post.sections) ? post.sections.filter(Boolean) : [];
+  const faqItems = Array.isArray(post.faq) ? post.faq.filter(Boolean) : [];
+  const relatedLinks = Array.isArray(post.relatedLinks) ? post.relatedLinks.filter(Boolean) : [];
+  const topicTags = Array.isArray(post.topicTags)
+    ? Array.from(new Set(post.topicTags.filter(Boolean)))
+    : [];
+  const articleTextSegments = [
+    ...(Array.isArray(post.body) ? post.body : []),
+    ...articleSections.flatMap((section) => [
+      section?.heading || "",
+      ...(Array.isArray(section?.paragraphs) ? section.paragraphs : []),
+    ]),
+    ...faqItems.flatMap((item) => [item?.question || "", item?.answer || ""]),
+  ].filter(Boolean);
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", path: "/" },
     { name: "Blogs", path: "/blogs" },
@@ -97,9 +145,12 @@ export default async function BlogDetailPage({ params }) {
     publishedAt: post.publishedAt,
     modifiedAt: post.updatedAt || post.publishedAt,
     image: post.image || "/assets/gomodexa.png",
-    keywords: post.keywords || [],
+    keywords: [...(post.keywords || []), ...topicTags],
     section: post.category,
+    articleBody: articleTextSegments.join(" "),
+    wordCount: articleTextSegments.reduce((total, segment) => total + countWords(segment), 0),
   });
+  const faqSchema = buildFaqSchema(faqItems);
 
   return (
     <>
@@ -111,6 +162,12 @@ export default async function BlogDetailPage({ params }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+      ) : null}
+      {faqSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       ) : null}
       <div className="bg-[var(--surface-soft)]">
@@ -138,10 +195,67 @@ export default async function BlogDetailPage({ params }) {
                 year: "numeric",
               })}
             </p>
+            {post.updatedAt ? (
+              <p>
+                Updated{" "}
+                {new Date(post.updatedAt).toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+            ) : null}
           </div>
           <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600">
             {post.metaDescription || post.excerpt}
           </p>
+          {topicTags.length > 0 ? (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {topicTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-[var(--line)] bg-white px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-500"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          ) : null}
+          {articleSections.length > 1 ? (
+            <nav className="mt-8 rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                In this article
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {articleSections.map((section) => (
+                  <a
+                    key={section.heading}
+                    href={`#${toAnchorId(section.heading)}`}
+                    className="rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm font-semibold text-[var(--brand-navy)] transition hover:border-[var(--brand-navy)]/20 hover:bg-white"
+                  >
+                    {section.heading}
+                  </a>
+                ))}
+              </div>
+            </nav>
+          ) : null}
+          {keyTakeaways.length > 0 ? (
+            <section className="mt-8 rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                Key takeaways
+              </p>
+              <ul className="mt-4 grid gap-3">
+                {keyTakeaways.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-4 text-sm leading-7 text-slate-700"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
           {post.productSource ? (
             <div className="mt-8 rounded-[2rem] border border-[var(--line)] bg-[var(--surface-soft)] p-6">
               <p className="text-[11px] font-extrabold uppercase tracking-[0.24em] text-slate-400">
@@ -181,6 +295,74 @@ export default async function BlogDetailPage({ params }) {
               </p>
             ))}
           </div>
+          {articleSections.length > 0 ? (
+            <div className="mt-10 space-y-6">
+              {articleSections.map((section) => (
+                <section
+                  key={section.heading}
+                  id={toAnchorId(section.heading)}
+                  className="rounded-[2rem] border border-[var(--line)] bg-white p-8 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)]"
+                >
+                  <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-3xl">
+                    {section.heading}
+                  </h2>
+                  <div className="mt-5 space-y-5">
+                    {(section.paragraphs || []).map((paragraph) => (
+                      <p key={paragraph} className="text-base leading-8 text-slate-700">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          ) : null}
+          {faqItems.length > 0 ? (
+            <section className="mt-10 rounded-[2rem] border border-[var(--line)] bg-white p-8 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                FAQ
+              </p>
+              <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-3xl">
+                Questions shoppers usually ask
+              </h2>
+              <div className="mt-6 space-y-4">
+                {faqItems.map((item) => (
+                  <div
+                    key={item.question}
+                    className="rounded-[1.35rem] border border-[var(--line)] bg-[var(--surface-soft)] px-5 py-5"
+                  >
+                    <h3 className="text-base font-semibold text-[var(--brand-navy)]">
+                      {item.question}
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                      {item.answer}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+          {relatedLinks.length > 0 ? (
+            <section className="mt-10 rounded-[2rem] border border-[var(--line)] bg-white p-8 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                Keep exploring
+              </p>
+              <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-3xl">
+                More helpful reading
+              </h2>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {relatedLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-[1.35rem] border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-4 text-sm font-semibold leading-6 text-[var(--brand-navy)] transition hover:border-[var(--brand-navy)]/20 hover:bg-white"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
           <section className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)]">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
