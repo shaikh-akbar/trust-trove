@@ -11,6 +11,16 @@ function toDate(value) {
   return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
 }
 
+function getSitemapImageUrls(product) {
+  const imageUrl = String(product?.main_image || "").trim();
+
+  if (!/^https?:\/\//i.test(imageUrl)) {
+    return [];
+  }
+
+  return [imageUrl];
+}
+
 async function getAllIndexedProducts() {
   const supabase = getSupabaseAdmin();
   const { data: products, error } = await supabase
@@ -120,7 +130,7 @@ export default async function sitemap() {
     lastModified: toDate(product.updated_at || product.created_at),
     changeFrequency: "weekly",
     priority: 0.7,
-    images: product.main_image ? [product.main_image] : [],
+    images: getSitemapImageUrls(product),
   }));
 
   return [...staticRoutes, ...categoryRoutes, ...brandRoutes, ...blogRoutes, ...productRoutes];
