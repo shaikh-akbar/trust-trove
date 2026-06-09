@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import ProductPageClient from "../../components/product/ProductPageClient";
 import { getProductByIdentifier, getProductsPage } from "../../../lib/product";
 import {
@@ -74,10 +74,12 @@ export async function generateMetadata({ params }) {
   }
 
   const shouldIndex = hasIndexableProductPageSignals(product);
+  const canonicalPath = getProductHref(product);
+  const isCanonicalRequest = canonicalPath === `/product/${slug}`;
 
   return buildMetadata({
     title: buildProductMetaTitle(product),
-    path: getProductHref(product),
+    path: canonicalPath,
     description: buildProductMetaDescription({
       ...product,
       description:
@@ -86,7 +88,17 @@ export async function generateMetadata({ params }) {
     image: product.main_image || "/assets/gomodexa.png",
     keywords: buildProductKeywords(product),
     includeDefaultKeywords: false,
-    robots: shouldIndex
+    robots: !isCanonicalRequest
+      ? {
+          index: false,
+          follow: true,
+          googleBot: {
+            index: false,
+            follow: true,
+            noimageindex: true,
+          },
+        }
+      : shouldIndex
       ? {
           index: true,
           follow: true,
@@ -113,7 +125,7 @@ export default async function ProductPage({ params }) {
 
   const canonicalPath = getProductHref(product);
   if (canonicalPath !== `/product/${slug}`) {
-    redirect(canonicalPath);
+    permanentRedirect(canonicalPath);
   }
 
   const breadcrumbSchema = buildBreadcrumbSchema([
