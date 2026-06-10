@@ -213,6 +213,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
     { href: "/shop", label: "Shop" },
     { href: "/categories", label: "Categories" },
     { href: "/new-arrivals", label: "New Arrivals" },
+    { href: "/best-deals", label: "Best Deals" },
   ];
   const profileItems = [
     { href: "/profile", label: "My Profile" },
@@ -322,7 +323,7 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
                 <span className="text-sm font-semibold whitespace-nowrap text-white/70">/</span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/95">Order Before It&apos;s Gone</span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/70">/</span>
-                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Trending Picks Are Selling Fast</span>
+                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Picks Are Selling Fast</span>
               </div>
             ))}
           </div>

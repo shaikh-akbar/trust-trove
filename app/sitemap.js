@@ -1,4 +1,5 @@
 import { BLOG_POSTS } from "../lib/content";
+import { getBestDealsChildPageDefinitions } from "../lib/product-deals";
 import { getBrandSummaries, getCategorySummaries } from "../lib/product";
 import { getProductHref } from "../lib/product-route";
 import { getSupabaseAdmin } from "../lib/supabase-admin";
@@ -78,6 +79,7 @@ export default async function sitemap() {
     { path: "/", priority: 1, changeFrequency: "daily" },
     { path: "/shop", priority: 0.95, changeFrequency: "daily" },
     { path: "/new-arrivals", priority: 0.9, changeFrequency: "daily" },
+    { path: "/best-deals", priority: 0.9, changeFrequency: "daily" },
     { path: "/categories", priority: 0.85, changeFrequency: "weekly" },
     { path: "/blogs", priority: 0.75, changeFrequency: "weekly" },
     { path: "/about-us", priority: 0.6, changeFrequency: "monthly" },
@@ -125,6 +127,13 @@ export default async function sitemap() {
     priority: 0.65,
   }));
 
+  const bestDealsRoutes = getBestDealsChildPageDefinitions().map((deal) => ({
+    url: getSiteUrl(deal.path),
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 0.78,
+  }));
+
   const productRoutes = (products || []).map((product) => ({
     url: getSiteUrl(getProductHref(product)),
     lastModified: toDate(product.updated_at || product.created_at),
@@ -133,5 +142,5 @@ export default async function sitemap() {
     images: getSitemapImageUrls(product),
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...brandRoutes, ...blogRoutes, ...productRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...brandRoutes, ...blogRoutes, ...bestDealsRoutes, ...productRoutes];
 }

@@ -3,6 +3,10 @@
 import Image from "next/image";
 import { useDeferredValue, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, PackageCheck, Save, Search, Sparkles, X } from "lucide-react";
+import {
+  getActiveDealIdsFromProduct,
+  getDealCollectionDefinitions,
+} from "../../../lib/product-deals";
 import { generateProductSeoDraft } from "../../../lib/product-seo-drafts";
 import { hasIndexableProductPageSignals } from "../../../lib/seo";
 
@@ -27,6 +31,8 @@ function formatDate(value) {
 function formatPrice(value) {
   return `Rs. ${Number(value || 0)}`;
 }
+
+const DEAL_COLLECTIONS = getDealCollectionDefinitions();
 
 function normalizeText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
@@ -268,7 +274,10 @@ export default function AdminProductsClient({
 
   function openProduct(product) {
     setSelectedId(product.id);
-    setDraft(product);
+    setDraft({
+      ...product,
+      active_deal_ids: product.active_deal_ids || getActiveDealIdsFromProduct(product),
+    });
     setFormMessage("");
   }
 
@@ -297,6 +306,23 @@ export default function AdminProductsClient({
         inventory_quantity: numeric,
       },
     }));
+  }
+
+  function toggleDealAssignment(dealId, checked) {
+    setDraft((current) => {
+      const existingDealIds = new Set(current?.active_deal_ids || []);
+
+      if (checked) {
+        existingDealIds.add(dealId);
+      } else {
+        existingDealIds.delete(dealId);
+      }
+
+      return {
+        ...(current || {}),
+        active_deal_ids: Array.from(existingDealIds),
+      };
+    });
   }
 
   function handleGenerateSeoDraft() {
@@ -340,6 +366,8 @@ export default function AdminProductsClient({
           status: draft.status,
           is_featured: draft.is_featured,
           new_arrivals: draft.new_arrivals,
+          tags: draft.tags,
+          active_deal_ids: draft.active_deal_ids,
           short_description: draft.short_description,
           seo_title: draft.seo_title,
           seo_description: draft.seo_description,
@@ -456,6 +484,7 @@ export default function AdminProductsClient({
             products.map((product) => {
               const isActiveCard = product.id === (draft?.id || selectedProduct?.id);
               const productSeoReport = buildSeoQualityReport(product);
+              const productDealIds = getActiveDealIdsFromProduct(product);
 
               return (
                 <button
@@ -507,6 +536,22 @@ export default function AdminProductsClient({
                             New Arrival
                           </span>
                         ) : null}
+                        {productDealIds.map((dealId) => {
+                          const deal = DEAL_COLLECTIONS.find((item) => item.id === dealId);
+
+                          if (!deal) {
+                            return null;
+                          }
+
+                          return (
+                            <span
+                              key={deal.id}
+                              className="rounded-full bg-amber-50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-amber-700"
+                            >
+                              {deal.shortLabel}
+                            </span>
+                          );
+                        })}
                       </div>
 
                       <h3 className="mt-3 line-clamp-2 text-lg font-black tracking-tight text-slate-950">
@@ -796,6 +841,55 @@ export default function AdminProductsClient({
                         className="h-5 w-5 accent-[#2563eb]"
                       />
                     </label>
+
+                    <div className="rounded-[1.2rem] border border-[var(--line)] bg-[linear-gradient(145deg,#fff9ef_0%,#f7f8ff_100%)] p-4 sm:col-span-2">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                          <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Deal buckets</span>
+                          <span className="mt-1 block text-sm font-semibold text-slate-700">
+                            Add or remove this product from the Best Deals storefront buckets like under 99, 499, 999, 1499, and 1999.
+                          </span>
+                        </div>
+                        <span className="text-xs font-semibold text-slate-500">
+                          Current selling price: {formatPrice(draft.primary_variant?.price_selling || 0)}
+                        </span>
+                      </div>
+
+                      <div className="mt-4 grid gap-3">
+                        {DEAL_COLLECTIONS.map((deal) => {
+                          const isAssigned = (draft.active_deal_ids || []).includes(deal.id);
+
+                          return (
+                            <label
+                              key={deal.id}
+                              className="flex items-start justify-between gap-4 rounded-[1rem] border border-[#141d60]/10 bg-white px-4 py-4"
+                            >
+                              <div>
+                                <span className="block text-sm font-black text-[#141d60]">{deal.title}</span>
+                                <span className="mt-1 block text-sm leading-6 text-slate-600">
+                                  {deal.description}
+                                </span>
+                                <span
+                                  className={`mt-3 inline-flex rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] ${
+                                    isAssigned
+                                      ? "bg-emerald-50 text-emerald-700"
+                                      : "bg-slate-100 text-slate-600"
+                                  }`}
+                                >
+                                  {isAssigned ? "Ready for storefront" : "Not assigned"}
+                                </span>
+                              </div>
+                              <input
+                                type="checkbox"
+                                checked={isAssigned}
+                                onChange={(event) => toggleDealAssignment(deal.id, event.target.checked)}
+                                className="mt-1 h-5 w-5 shrink-0 accent-[#d6a84f]"
+                              />
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
 
                     <label className="block sm:col-span-2">
                     <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Short description</span>

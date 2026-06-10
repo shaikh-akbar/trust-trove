@@ -24,8 +24,15 @@ export async function generateMetadata({ searchParams }) {
     query,
     hasFilters: Boolean(categorySlug),
     description:
-      "Browse the full GoModexa catalog with product search, price filtering, and modern collection browsing.",
-    keywords: ["shop GoModexa", "product filters", "search products online"],
+      "Browse the full GoModexa catalog with product search, price filtering, category discovery, and best deals under 499, 999, and 1999.",
+    keywords: [
+      "shop GoModexa",
+      "product filters",
+      "search products online",
+      "best deals under 499",
+      "best deals under 999",
+      "best deals under 1999",
+    ],
   });
 }
 

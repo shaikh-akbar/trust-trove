@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { BadgeCheck, Link2, Megaphone, Send, Store } from "lucide-react";
-import { buildMetadata } from "../../lib/seo";
+import { buildMetadata, getSiteUrl } from "../../lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Brand Resources",
+  title: "Official Brand Resources",
   path: "/brand-resources",
   description:
-    "Official GoModexa brand resources for directories, collaborations, media references, and business profile citations.",
+    "Official GoModexa brand resources page with gomodexa.com business details, citations, collaborations, media references, and profile listing information.",
   keywords: [
+    "GoModexa official brand page",
     "GoModexa brand resources",
+    "gomodexa.com brand details",
     "GoModexa media kit",
     "GoModexa business information",
     "GoModexa press page",
@@ -43,8 +45,24 @@ const listingTargets = [
 ];
 
 export default function BrandResourcesPage() {
+  const brandResourcesSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "GoModexa Official Brand Resources",
+    url: getSiteUrl("/brand-resources"),
+    about: {
+      "@id": getSiteUrl("/#organization"),
+    },
+    description:
+      "Official GoModexa brand resources page for citations, listings, collaborations, and business references.",
+  };
+
   return (
     <div className="bg-[var(--surface-soft)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(brandResourcesSchema) }}
+      />
       <section className="border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">

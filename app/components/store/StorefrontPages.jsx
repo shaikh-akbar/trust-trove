@@ -242,6 +242,135 @@ function CategoryShowcase({ categories }) {
   );
 }
 
+function DealProductPreview({ product }) {
+  return (
+    <Link
+      href={getProductHref(product)}
+      className="group flex items-center gap-3 rounded-[1.25rem] border border-white/12 bg-white/10 px-3 py-3 backdrop-blur transition hover:bg-white/16"
+    >
+      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[1rem] border border-white/12 bg-white/10">
+        {product?.main_image || product?.image_url ? (
+          <img
+            src={product.main_image || product.image_url}
+            alt={product.title || product.name}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-white/70">
+            <ShoppingBag size={16} />
+          </div>
+        )}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="line-clamp-2 text-sm font-semibold leading-5 text-white">
+          {product.title || product.name}
+        </p>
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <p className="text-sm font-black tracking-tight text-[#ffe5a8]">
+            {formatPrice(product.price_selling)}
+          </p>
+          <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-white/58">
+            {formatCategoryLabel(product?.category || product?.product_type)}
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function DealsShowcase({ dealCollections = [] }) {
+  if (!Array.isArray(dealCollections) || dealCollections.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="border-t border-[var(--line)] bg-[linear-gradient(180deg,#fff9ef_0%,#f4f6ff_100%)]">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-[#141d60]/45">
+              Deal discovery
+            </p>
+            <h2 className="mt-3 text-3xl font-normal text-[var(--brand-navy)] sm:text-[2rem]">
+              Best deals under 499, 999, and 1999 in one scan-friendly row
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
+              These curated price edits help shoppers compare affordable products faster while giving search engines
+              stronger signals around best deals under 499, best deals under 999, and best deals under 1999.
+            </p>
+          </div>
+          <Link
+            href="/shop"
+            className="inline-flex items-center text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--brand-navy)]"
+          >
+            Explore full shop <ArrowRight size={16} className="ml-2" />
+          </Link>
+        </div>
+
+        <div className="grid gap-5 xl:grid-cols-3">
+          {dealCollections.map((deal, index) => (
+            <div
+              key={deal.id}
+              className={`overflow-hidden rounded-[2rem] border shadow-[0_30px_90px_-58px_rgba(20,29,96,0.35)] ${
+                index === 1
+                  ? "border-[#d8b87a]/30 bg-[linear-gradient(145deg,#111b59_0%,#263374_100%)] text-white"
+                  : "border-[var(--line)] bg-white text-[var(--brand-navy)]"
+              }`}
+            >
+              <div className="border-b border-current/10 px-6 py-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.22em] ${
+                        index === 1
+                          ? "bg-white/10 text-[#ffe5a8]"
+                          : "bg-[#141d60]/[0.06] text-[#141d60]"
+                      }`}
+                    >
+                      <BadgePercent size={13} className="mr-2" />
+                      Price-led edit
+                    </span>
+                    <h3 className="mt-4 text-2xl font-normal leading-tight">{deal.title}</h3>
+                    <p className={`mt-3 text-sm leading-7 ${index === 1 ? "text-white/74" : "text-slate-600"}`}>
+                      {deal.description}
+                    </p>
+                  </div>
+                  <div
+                    className={`rounded-[1.3rem] border px-4 py-3 text-right ${
+                      index === 1 ? "border-white/12 bg-white/10" : "border-[#141d60]/10 bg-[#141d60]/[0.04]"
+                    }`}
+                  >
+                    <p className={`text-[10px] font-extrabold uppercase tracking-[0.18em] ${index === 1 ? "text-white/55" : "text-[#141d60]/45"}`}>
+                      Assigned products
+                    </p>
+                    <p className="mt-2 text-2xl font-black tracking-tight">{deal.count || 0}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3 p-4 sm:p-5">
+                {Array.isArray(deal.products) && deal.products.length > 0 ? (
+                  deal.products.slice(0, 3).map((product) => (
+                    <DealProductPreview key={product.id} product={product} />
+                  ))
+                ) : (
+                  <div
+                    className={`rounded-[1.5rem] border px-4 py-8 text-center ${
+                      index === 1 ? "border-white/12 bg-white/6 text-white/74" : "border-dashed border-[#141d60]/14 bg-[#141d60]/[0.03] text-slate-500"
+                    }`}
+                  >
+                    No products are assigned here yet. Use the admin product editor to add this deal bucket.
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ShopExperience({
   products,
   categories = [],

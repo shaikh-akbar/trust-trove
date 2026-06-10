@@ -5,10 +5,17 @@ import { getFeaturedCategoryTabs, getFeaturedProductsPage } from "../lib/product
 import { buildMetadata, getSiteUrl } from "../lib/seo";
 
 export const metadata = buildMetadata({
+  title: "Official Site",
   path: "/",
   description:
-    "Explore a redesigned GoModexa homepage with premium product cards, editorial collections, blog content, and stronger SEO foundations.",
-  keywords: ["GoModexa homepage", "premium ecommerce homepage", "curated products India"],
+    "GoModexa official site for shopping curated lifestyle products online in India across fashion, travel, beauty, home, gadgets, and everyday essentials.",
+  keywords: [
+    "GoModexa official site",
+    "gomodexa.com",
+    "GoModexa India",
+    "shop GoModexa online",
+    "curated products India",
+  ],
 });
 
 export default async function Home() {
@@ -26,7 +33,10 @@ export default async function Home() {
     name: "GoModexa Homepage",
     url: getSiteUrl("/"),
     description:
-      "A premium GoModexa storefront featuring curated products, category edits, blog highlights, and new arrivals.",
+      "The official GoModexa homepage featuring curated products, category discovery, blog highlights, and new arrivals.",
+    isPartOf: {
+      "@id": getSiteUrl("/#website"),
+    },
   };
 
   return (
