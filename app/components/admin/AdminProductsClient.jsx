@@ -181,13 +181,14 @@ export default function AdminProductsClient({
   initialCategory = "all",
   statusOptions = [],
 }) {
+  const initialPageSize = Number(initialData?.pageSize || 100);
   const [products, setProducts] = useState(initialData?.items || []);
   const [query, setQuery] = useState(initialQuery);
   const [filter, setFilter] = useState(initialFilter);
   const [categoryFilter, setCategoryFilter] = useState(initialCategory);
   const [categories, setCategories] = useState(initialData?.categories || []);
   const [currentPage, setCurrentPage] = useState(Number(initialData?.page || 1));
-  const [currentPageSize, setCurrentPageSize] = useState(Number(initialData?.pageSize || 100));
+  const [currentPageSize, setCurrentPageSize] = useState(initialPageSize);
   const [totalPages, setTotalPages] = useState(Number(initialData?.totalPages || 1));
   const [totalProducts, setTotalProducts] = useState(Number(initialData?.total || 0));
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
@@ -234,7 +235,7 @@ export default function AdminProductsClient({
         setCategories(payload.categories || []);
         setTotalProducts(Number(payload.total || 0));
         setTotalPages(Number(payload.totalPages || 1));
-        setCurrentPageSize(Number(payload.pageSize || initialData?.pageSize || 100));
+        setCurrentPageSize(Number(payload.pageSize || initialPageSize));
         setCurrentPage(Number(payload.page || 1));
       } catch (error) {
         if (!isCancelled) {
@@ -252,7 +253,7 @@ export default function AdminProductsClient({
     return () => {
       isCancelled = true;
     };
-  }, [currentPage, deferredQuery, filter, categoryFilter]);
+  }, [currentPage, deferredQuery, filter, categoryFilter, initialPageSize]);
 
   useEffect(() => {
     if (!draft) {
