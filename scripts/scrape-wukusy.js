@@ -9,6 +9,22 @@ loadEnvConfig(process.cwd());
 const DEFAULT_OUTPUT_JSON = path.join(process.cwd(), "public", "wukusy-products.json");
 const DEFAULT_START_URL = "https://wukusy.app/dropshiper/index";
 const DEFAULT_DELAY_MS = 150;
+const BEAUTY_PARENT_CATEGORY_ID = "15";
+const BEAUTY_CATEGORY_TITLE = "Health & Beauty";
+const BEAUTY_CATEGORY_HANDLE = "health-and-beauty";
+
+function safeLog(message) {
+  try {
+    if (process.stdout?.destroyed || !process.stdout?.writable) {
+      return;
+    }
+    process.stdout.write(`${message}\n`);
+  } catch (error) {
+    if (error?.code !== "EPIPE") {
+      throw error;
+    }
+  }
+}
 
 function normalizeText(value) {
   return String(value ?? "").trim();
@@ -36,6 +52,8 @@ function parseArgs(argv) {
     limit: null,
     offset: 0,
     cookie: process.env.WUKUSY_COOKIE || "",
+    categoryQuery: "",
+    inStockOnly: false,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -77,6 +95,14 @@ function parseArgs(argv) {
         break;
       case "--crawl":
         args.crawl = true;
+        break;
+      case "--category":
+      case "--category-query":
+        args.categoryQuery = normalizeText(nextValue);
+        index += 1;
+        break;
+      case "--in-stock-only":
+        args.inStockOnly = true;
         break;
       default:
         break;
@@ -311,6 +337,80 @@ function normalizeCategoryTitle(value, fallback = "Uncategorized") {
   return normalized;
 }
 
+function extractCategoryIdFromUrl(url) {
+  return String(url || "").match(/\/category\/(\d+)/i)?.[1] || "";
+}
+
+function isBeautyParentCategoryUrl(url) {
+  return extractCategoryIdFromUrl(url) === BEAUTY_PARENT_CATEGORY_ID;
+}
+
+function resolveForcedCategory(category, context = {}) {
+  const sourceUrl = context.startUrl || context.categoryUrl || "";
+
+  if (isBeautyParentCategoryUrl(sourceUrl)) {
+    return {
+      title: BEAUTY_CATEGORY_TITLE,
+      handle: BEAUTY_CATEGORY_HANDLE,
+      url: sourceUrl,
+    };
+  }
+
+  return {
+    title: normalizeCategoryTitle(category?.title),
+    handle: category?.handle || "uncategorized",
+    url: category?.url || "",
+  };
+}
+
+function normalizeCategorySearchValue(value) {
+  return normalizeCategoryTitle(value, "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function matchesCategoryQuery(product, categoryQuery) {
+  if (!categoryQuery) {
+    return true;
+  }
+
+  const query = normalizeCategorySearchValue(categoryQuery);
+  if (!query) {
+    return true;
+  }
+
+  const haystacks = [
+    product?.category_title,
+    product?.category_handle,
+    product?.category_url,
+  ].map((value) => normalizeCategorySearchValue(value));
+
+  return haystacks.some((value) => value.includes(query));
+}
+
+function isProductInStock(product) {
+  return normalizeInteger(product?.stock_qty, 0) > 0 && normalizeText(product?.status) === "active";
+}
+
+function resolveExplicitStockQty(stockCandidates = []) {
+  for (const candidate of stockCandidates) {
+    const normalizedCandidate = normalizeText(candidate);
+
+    if (/out of stock|unavailable|0\s*pcs?\s*left/i.test(normalizedCandidate)) {
+      return 0;
+    }
+
+    const numericMatch = normalizedCandidate.match(/([0-9]+)\s*pcs?\s*left/i);
+    if (numericMatch) {
+      return normalizeInteger(numericMatch[1], 0);
+    }
+  }
+
+  return null;
+}
+
 function extractLinks(html, baseUrl) {
   const matches = Array.from(
     html.matchAll(/href=["']([^"'#?][^"']*|\/[^"']*|https?:\/\/[^"']*)["']/gi)
@@ -327,6 +427,29 @@ function extractProductLinks(html, baseUrl) {
   return extractLinks(html, baseUrl).filter((link) =>
     /\/merchant\/product-details\/\d+/i.test(link)
   );
+}
+
+function extractProductEntries(html, baseUrl) {
+  const entries = [];
+  const seen = new Set();
+  const pattern =
+    /href=["']([^"']*\/merchant\/product-details\/\d+)["'][\s\S]{0,4000}?>([0-9]+)\s*Pcs?\s*left</gi;
+
+  for (const match of html.matchAll(pattern)) {
+    const url = toAbsoluteUrl(decodeHtml(match[1]), baseUrl);
+    if (!url || seen.has(url)) {
+      continue;
+    }
+
+    seen.add(url);
+    entries.push({
+      url,
+      stockQty: normalizeInteger(match[2], 0),
+      stockText: `${normalizeInteger(match[2], 0)} Pcs left`,
+    });
+  }
+
+  return entries;
 }
 
 function extractCategoryEntries(html, baseUrl) {
@@ -406,7 +529,7 @@ function extractTextMatches(text, pattern, limit = 10) {
   return unique(Array.from(text.matchAll(pattern)).map((match) => normalizeText(match[0]))).slice(0, limit);
 }
 
-function extractDetailData(html, url) {
+function extractDetailData(html, url, options = {}) {
   const text = stripHtml(html);
   const productId = url.match(/\/merchant\/product-details\/(\d+)/i)?.[1] || "";
   const priceCandidates = extractTextMatches(
@@ -425,10 +548,14 @@ function extractDetailData(html, url) {
     text,
     /\b(?:sku|item code|product code)\b[:\s-]*[A-Z0-9\-_/]+/gi
   );
-  const stockCandidates = extractTextMatches(
+  const detailStockCandidates = extractTextMatches(
     text,
     /\b(?:in stock|out of stock|available|unavailable|0\s*pcs?\s*left|[0-9]+\s*pcs?\s*left)\b/gi
   );
+  const stockCandidates = unique([
+    ...(Array.isArray(options.stockCandidates) ? options.stockCandidates : []),
+    ...detailStockCandidates,
+  ]);
   const imageUrls = extractImageUrls(html, url);
   const resolvedTitle = extractTitle(html);
   const primaryPrice = normalizeNumber(priceCandidates[0]);
@@ -457,10 +584,7 @@ function extractDetailData(html, url) {
         .map((entry) => entry.split(/[:\s-]+/).slice(-1)[0])
         .find(Boolean)
     ).toUpperCase() || `WUKUSY-${productId}`;
-  const stockText = stockCandidates[0] || "";
-  const stockQty = /out of stock|unavailable|0\s*pcs?/i.test(stockText)
-    ? 0
-    : normalizeInteger(stockText.match(/[0-9]+/)?.[0], 100);
+  const stockQty = resolveExplicitStockQty(stockCandidates);
 
   return {
     wukusy_product_id: productId || sku,
@@ -469,8 +593,8 @@ function extractDetailData(html, url) {
     cost_price: primaryPrice,
     gst_percent: gstPercent || 18,
     weight_grams: weightGrams,
-    stock_qty: stockQty,
-    status: stockQty > 0 ? "active" : "out_of_stock",
+    stock_qty: stockQty ?? 0,
+    status: typeof stockQty === "number" && stockQty > 0 ? "active" : "out_of_stock",
     product_url: url,
     image_urls: imageUrls,
     debug_extract: {
@@ -479,6 +603,7 @@ function extractDetailData(html, url) {
       weightCandidates,
       skuCandidates,
       stockCandidates,
+      detailStockCandidates,
     },
     raw_payload: {
       source: "html-scrape",
@@ -500,6 +625,7 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
   ];
   const discoveredProductLinks = new Set();
   const productCategoryMap = new Map();
+  const productListingStockMap = new Map();
   const discoveredCategories = new Map();
   const products = [];
   const targetProductCount =
@@ -531,8 +657,21 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
         slugify(normalizeCategoryTitle(nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl))),
       url: nextCategoryUrl,
     });
-    console.log(`Crawling category page: ${nextCategoryUrl}`);
+    safeLog(`Crawling category page: ${nextCategoryUrl}`);
     const html = await fetchHtml(nextCategoryUrl, cookie, startUrl);
+
+    extractProductEntries(html, nextCategoryUrl).forEach((entry) => {
+      if (!productCategoryMap.has(entry.url)) {
+        productCategoryMap.set(entry.url, discoveredCategories.get(nextCategoryUrl));
+      }
+      if (typeof entry.stockQty === "number" && entry.stockQty > 0) {
+        productListingStockMap.set(entry.url, {
+          stockQty: entry.stockQty,
+          stockText: entry.stockText,
+        });
+      }
+      discoveredProductLinks.add(entry.url);
+    });
 
     extractProductLinks(html, nextCategoryUrl).forEach((link) => {
       if (!productCategoryMap.has(link)) {
@@ -561,14 +700,21 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
       : productLinks.slice(offset);
 
   for (const productUrl of selectedProductLinks) {
-    console.log(`Scraping product detail: ${productUrl}`);
+    safeLog(`Scraping product detail: ${productUrl}`);
     const html = await fetchHtml(productUrl, cookie, startUrl);
     const category = productCategoryMap.get(productUrl) || null;
+    const listingStock = productListingStockMap.get(productUrl) || null;
+    const resolvedCategory = resolveForcedCategory(category, {
+      startUrl,
+      categoryUrl: category?.url || "",
+    });
     products.push({
-      ...extractDetailData(html, productUrl),
-      category_title: normalizeCategoryTitle(category?.title),
-      category_handle: category?.handle || "uncategorized",
-      category_url: category?.url || "",
+      ...extractDetailData(html, productUrl, {
+        stockCandidates: listingStock?.stockText ? [listingStock.stockText] : [],
+      }),
+      category_title: resolvedCategory.title,
+      category_handle: resolvedCategory.handle,
+      category_url: resolvedCategory.url,
     });
 
     if (delayMs > 0) {
@@ -621,6 +767,16 @@ async function main() {
     };
   }
 
+  if (args.categoryQuery) {
+    products = products.filter((product) => matchesCategoryQuery(product, args.categoryQuery));
+    metadata.categoryQuery = args.categoryQuery;
+  }
+
+  if (args.inStockOnly) {
+    products = products.filter(isProductInStock);
+    metadata.inStockOnly = true;
+  }
+
   fs.mkdirSync(path.dirname(args.jsonOut), { recursive: true });
   fs.writeFileSync(
     args.jsonOut,
@@ -638,7 +794,7 @@ async function main() {
     "utf8"
   );
 
-  console.log(`Saved ${products.length} Wukusy products to ${args.jsonOut}`);
+  safeLog(`Saved ${products.length} Wukusy products to ${args.jsonOut}`);
 }
 
 main().catch((error) => {

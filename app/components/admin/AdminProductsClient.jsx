@@ -187,6 +187,7 @@ export default function AdminProductsClient({
   const [categoryFilter, setCategoryFilter] = useState(initialCategory);
   const [categories, setCategories] = useState(initialData?.categories || []);
   const [currentPage, setCurrentPage] = useState(Number(initialData?.page || 1));
+  const [currentPageSize, setCurrentPageSize] = useState(Number(initialData?.pageSize || 100));
   const [totalPages, setTotalPages] = useState(Number(initialData?.totalPages || 1));
   const [totalProducts, setTotalProducts] = useState(Number(initialData?.total || 0));
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
@@ -195,6 +196,8 @@ export default function AdminProductsClient({
   const [isSaving, setIsSaving] = useState(false);
   const [formMessage, setFormMessage] = useState("");
   const deferredQuery = useDeferredValue(query);
+  const pageStart = totalProducts === 0 ? 0 : (currentPage - 1) * currentPageSize + 1;
+  const pageEnd = totalProducts === 0 ? 0 : Math.min(totalProducts, pageStart + products.length - 1);
   const selectedProduct =
     products.find((product) => product.id === selectedId) ||
     products[0] ||
@@ -231,6 +234,8 @@ export default function AdminProductsClient({
         setCategories(payload.categories || []);
         setTotalProducts(Number(payload.total || 0));
         setTotalPages(Number(payload.totalPages || 1));
+        setCurrentPageSize(Number(payload.pageSize || initialData?.pageSize || 100));
+        setCurrentPage(Number(payload.page || 1));
       } catch (error) {
         if (!isCancelled) {
           setFormMessage(error.message || "Unable to load products.");
@@ -614,7 +619,7 @@ export default function AdminProductsClient({
               Page {currentPage} of {Math.max(1, totalPages)}
             </p>
             <p className="mt-1 text-sm font-semibold text-slate-700">
-              Showing up to 100 products per page with overall search and category filters.
+              Showing {pageStart}-{pageEnd} of {totalProducts} matching products across the full catalog.
             </p>
           </div>
           <div className="flex items-center gap-3">

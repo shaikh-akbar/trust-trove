@@ -7,6 +7,9 @@ const DEFAULT_SUPABASE_BATCH_SIZE = 25;
 const DEFAULT_SUPABASE_DELAY_MS = 350;
 const DEFAULT_SUPABASE_RETRY_COUNT = 6;
 const DEFAULT_MARGIN_AMOUNT = 40;
+const BEAUTY_PARENT_CATEGORY_ID = "15";
+const BEAUTY_CATEGORY_TITLE = "Health & Beauty";
+const BEAUTY_CATEGORY_HANDLE = "health-and-beauty";
 
 function parseArgs(argv) {
   const args = {
@@ -14,6 +17,8 @@ function parseArgs(argv) {
     supabaseBatchSize: DEFAULT_SUPABASE_BATCH_SIZE,
     supabaseDelayMs: DEFAULT_SUPABASE_DELAY_MS,
     marginAmount: DEFAULT_MARGIN_AMOUNT,
+    categoryQuery: "",
+    inStockOnly: false,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -42,6 +47,14 @@ function parseArgs(argv) {
         args.marginAmount = toNumber(nextValue, args.marginAmount);
         index += 1;
         break;
+      case "--category":
+      case "--category-query":
+        args.categoryQuery = String(nextValue || "").trim();
+        index += 1;
+        break;
+      case "--in-stock-only":
+        args.inStockOnly = true;
+        break;
       default:
         break;
     }
@@ -60,11 +73,14 @@ Options:
   --supabase-batch-size <n>   Batch size for Supabase upsert/insert/delete
   --supabase-delay-ms <n>     Delay between Supabase batches
   --margin-amount <n>         Margin amount used for final selling price
+  --category <value>          Import only products matching a category query
+  --in-stock-only             Import only active products with stock > 0
   --help                      Show this help
 
 Examples:
   node scripts/import-wukusy-json.js
   node scripts/import-wukusy-json.js --input public/wukusy-products.json
+  node scripts/import-wukusy-json.js --category "Beauty & Personal Care" --in-stock-only
   node scripts/import-wukusy-json.js --margin-amount 50
 `);
 }
@@ -170,8 +186,72 @@ function normalizeCategoryTitle(value, fallback = "Uncategorized") {
   return normalized;
 }
 
+function extractCategoryIdFromUrl(url) {
+  return String(url || "").match(/\/category\/(\d+)/i)?.[1] || "";
+}
+
+function resolveCanonicalCategory(product) {
+  if (extractCategoryIdFromUrl(product?.category_url) === BEAUTY_PARENT_CATEGORY_ID) {
+    return {
+      title: BEAUTY_CATEGORY_TITLE,
+      handle: BEAUTY_CATEGORY_HANDLE,
+    };
+  }
+
+  const categoryTitle = normalizeCategoryTitle(product.category_title);
+  const categoryHandle = slugify(product.category_handle || categoryTitle);
+
+  return {
+    title: categoryTitle,
+    handle: categoryHandle,
+  };
+}
+
 function unique(values) {
   return Array.from(new Set((values || []).filter(Boolean)));
+}
+
+function buildSeoTitle(title, categoryTitle) {
+  return safeTruncate(`${title} | ${categoryTitle} by Wukusy`, 255);
+}
+
+function buildSeoDescription(title, categoryTitle, stockQty) {
+  const stockText =
+    typeof stockQty === "number" && stockQty > 0
+      ? `${stockQty} pcs left`
+      : "limited stock";
+
+  return safeTruncate(
+    `Buy ${title} from the Wukusy ${categoryTitle} collection. Current supplier availability: ${stockText}. View pricing, images, and product details online.`,
+    320
+  );
+}
+
+function normalizeCategorySearchValue(value) {
+  return normalizeCategoryTitle(value, "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function matchesCategoryQuery(product, categoryQuery) {
+  if (!categoryQuery) {
+    return true;
+  }
+
+  const query = normalizeCategorySearchValue(categoryQuery);
+  if (!query) {
+    return true;
+  }
+
+  const haystacks = [
+    product?.category_title,
+    product?.category_handle,
+    product?.category_url,
+  ].map((value) => normalizeCategorySearchValue(value));
+
+  return haystacks.some((value) => value.includes(query));
 }
 
 function pickPrimaryImage(imageUrls = []) {
@@ -233,7 +313,6 @@ function calculateSupplierDisplayPrice({ costPrice, gstPercent, weightGrams, mar
 }
 
 function resolveImportedStockQty(product) {
-  const fallbackStockQty = Math.max(0, toInteger(product.stock_qty) || 0);
   const stockCandidates = [
     ...(Array.isArray(product?.stockCandidates) ? product.stockCandidates : []),
     ...(Array.isArray(product?.debug_extract?.stockCandidates) ? product.debug_extract.stockCandidates : []),
@@ -256,7 +335,11 @@ function resolveImportedStockQty(product) {
     }
   }
 
-  return fallbackStockQty;
+  return 0;
+}
+
+function isProductInStock(product) {
+  return resolveImportedStockQty(product) > 0 && String(product?.status || "").trim() === "active";
 }
 
 function buildSupabaseProducts(products) {
@@ -264,16 +347,20 @@ function buildSupabaseProducts(products) {
     const title = safeTruncate(product.title || `Wukusy Product ${product.wukusy_product_id}`, 255);
     const slugBase = slugify(`${title}-${product.wukusy_product_id}`);
     const primaryImage = pickPrimaryImage(product.image_urls);
-    const shortDescription = safeTruncate(title, 220);
-    const categoryTitle = normalizeCategoryTitle(product.category_title);
-    const categoryHandle = slugify(product.category_handle || categoryTitle);
-    const productTags = unique(["wukusy", categoryHandle]).map((tag) => safeTruncate(tag, 255));
+    const canonicalCategory = resolveCanonicalCategory(product);
+    const categoryTitle = canonicalCategory.title;
+    const categoryHandle = canonicalCategory.handle;
+    const stockQty = resolveImportedStockQty(product);
+    const shortDescription = buildSeoDescription(title, categoryTitle, stockQty);
+    const productTags = unique(["wukusy", categoryHandle, "in-stock", "health-beauty"]).map((tag) =>
+      safeTruncate(tag, 255)
+    );
 
     return {
       handle: slugBase,
       slug: slugBase,
       title,
-      description: title,
+      description: shortDescription,
       short_description: shortDescription,
       vendor: "Wukusy",
       brand: "Wukusy",
@@ -284,7 +371,7 @@ function buildSupabaseProducts(products) {
       status: product.status === "active" ? "active" : "inactive",
       supplier_name: "wukusy",
       supplier_product_code: safeTruncate(product.sku || product.wukusy_product_id, 255),
-      seo_title: title,
+      seo_title: buildSeoTitle(title, categoryTitle),
       seo_description: shortDescription,
       is_featured: false,
       is_cod_available: true,
@@ -626,10 +713,22 @@ async function main() {
   }
 
   const payload = JSON.parse(fs.readFileSync(options.input, "utf8"));
-  const products = normalizeProductsPayload(payload);
+  let products = normalizeProductsPayload(payload);
 
   if (!Array.isArray(products) || !products.length) {
     throw new Error("Expected a Wukusy products JSON payload with a non-empty products array.");
+  }
+
+  if (options.categoryQuery) {
+    products = products.filter((product) => matchesCategoryQuery(product, options.categoryQuery));
+  }
+
+  if (options.inStockOnly) {
+    products = products.filter(isProductInStock);
+  }
+
+  if (!products.length) {
+    throw new Error("No Wukusy products matched the requested filters.");
   }
 
   await importToSupabase(products, options);
