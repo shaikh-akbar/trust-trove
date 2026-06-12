@@ -72,7 +72,7 @@ export default async function CategoryDetailPage({ params, searchParams }) {
     pageSize: CATALOG_PAGE_SIZE,
     categoryTitle: category.title,
   });
-  const matchingPosts = getBlogPostsByCategory(category.title, { limit: 3 });
+  const matchingPosts = getBlogPostsByCategory(category.title, { limit: 4 });
   const categoryGuide = getCategoryGuideCopy(category);
   const categoryFaqs = getCategoryFaqs(category);
   const faqSchema = buildFaqSchema(categoryFaqs);
@@ -118,6 +118,8 @@ export default async function CategoryDetailPage({ params, searchParams }) {
         products={products}
         category={category}
         initialQuery={getQueryValue(currentSearchParams?.q)}
+        currentPage={page}
+        totalPages={totalPages}
       />
       <section className="border-t border-[var(--line)] bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -138,11 +140,14 @@ export default async function CategoryDetailPage({ params, searchParams }) {
             </div>
             <div className="rounded-[2rem] border border-[var(--line)] bg-white p-6 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)]">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
-                Related Guides
+                SEO Support Guides
               </p>
               <h2 className="mt-3 font-display text-2xl font-semibold text-[var(--brand-navy)]">
                 Read before you buy
               </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                These category-linked articles help shoppers compare products better and also strengthen internal topical relevance for search.
+              </p>
               <div className="mt-5 grid gap-3">
                 {matchingPosts.length > 0 ? (
                   matchingPosts.map((post) => (

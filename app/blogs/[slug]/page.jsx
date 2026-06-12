@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
-import { getProductByIdentifier } from "../../../lib/product";
+import { getProductByIdentifier, getProductsPage } from "../../../lib/product";
 import {
   BLOG_POSTS,
   getBlogPostBySlug,
@@ -38,12 +39,27 @@ function countWords(value) {
     .filter(Boolean).length;
 }
 
+function formatComparePrice(value) {
+  const price = Number(value || 0);
+  return price > 0 ? `Rs ${price}` : "";
+}
+
 function toAnchorId(value) {
   return String(value || "")
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-");
+}
+
+function getProductIdentifiersFromLinks(items = []) {
+  return Array.from(
+    new Set(
+      items
+        .map((item) => getProductIdentifierFromPath(item?.href))
+        .filter(Boolean)
+    )
+  );
 }
 
 export function generateStaticParams() {
@@ -122,6 +138,41 @@ export default async function BlogDetailPage({ params }) {
   const articleSections = Array.isArray(post.sections) ? post.sections.filter(Boolean) : [];
   const faqItems = Array.isArray(post.faq) ? post.faq.filter(Boolean) : [];
   const relatedLinks = Array.isArray(post.relatedLinks) ? post.relatedLinks.filter(Boolean) : [];
+  const relatedProductIdentifiers = Array.from(
+    new Set(
+      [
+        getProductIdentifierFromPath(productPath),
+        ...getProductIdentifiersFromLinks(relatedLinks),
+      ].filter(Boolean)
+    )
+  ).slice(0, 4);
+  const linkedRelatedProducts = (
+    await Promise.all(relatedProductIdentifiers.map((identifier) => getProductByIdentifier(identifier)))
+  ).filter(Boolean);
+  const categoryFallbackPage =
+    linkedRelatedProducts.length > 0
+      ? { products: [] }
+      : await getProductsPage({
+          categoryTitle: post?.productSource?.categoryTitle || post.category,
+          page: 1,
+          pageSize: 4,
+        });
+  const genericFallbackPage =
+    linkedRelatedProducts.length > 0 || (categoryFallbackPage?.products || []).length > 0
+      ? { products: [] }
+      : await getProductsPage({
+          page: 1,
+          pageSize: 4,
+        });
+  const fallbackRelatedProducts = [
+    ...((categoryFallbackPage?.products || []).filter(Boolean)),
+    ...((genericFallbackPage?.products || []).filter(Boolean)),
+  ];
+  const relatedProducts = Array.from(
+    new Map(
+      [...linkedRelatedProducts, ...fallbackRelatedProducts].map((product) => [product.id, product])
+    ).values()
+  ).slice(0, 4);
   const topicTags = Array.isArray(post.topicTags)
     ? Array.from(new Set(post.topicTags.filter(Boolean)))
     : [];
@@ -139,6 +190,7 @@ export default async function BlogDetailPage({ params }) {
     { name: post.title, path: canonicalPath },
   ]);
   const articleSchema = buildArticleSchema({
+    schemaType: "Article",
     title: post.seoTitle || post.title,
     description: post.metaDescription || post.excerpt,
     path: canonicalPath,
@@ -316,6 +368,83 @@ export default async function BlogDetailPage({ params }) {
                 </section>
               ))}
             </div>
+          ) : null}
+          {relatedProducts.length > 0 ? (
+            <section className="mt-10 rounded-[2rem] border border-[var(--line)] bg-white p-8 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400">
+                Related products
+              </p>
+              <h2 className="mt-3 font-display text-2xl font-semibold tracking-[-0.02em] text-[var(--brand-navy)] sm:text-3xl">
+                Shop the exact products mentioned in this guide
+              </h2>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {relatedProducts.map((product) => {
+                  const productHref = `/product/${product.slug || product.handle}`;
+                  const imageUrl =
+                    product?.main_image || product?.product_images?.[0]?.src || "";
+                  const productTitle = product?.title || product?.name || "Untitled product";
+                  const sellingPrice = Number(
+                    product?.price_selling || product?.variants?.[0]?.price_selling || 0
+                  );
+                  const comparePrice = Number(
+                    product?.price_compare ||
+                      product?.variants?.[0]?.price_compare ||
+                      (sellingPrice > 0 ? Math.round(sellingPrice * 1.35) : 0)
+                  );
+                  const inventory = Number(
+                    product?.inventory_quantity ||
+                      product?.variants?.[0]?.inventory_quantity ||
+                      0
+                  );
+
+                  return (
+                    <Link
+                      key={product.id || productHref}
+                      href={productHref}
+                      className="group overflow-hidden rounded-[1.45rem] border border-[var(--line)] bg-[var(--surface-soft)] transition hover:-translate-y-1 hover:border-[var(--brand-navy)]/20 hover:bg-white"
+                    >
+                      <div className="relative aspect-[4/3.8] overflow-hidden bg-white">
+                        {imageUrl ? (
+                          <Image
+                            src={imageUrl}
+                            alt={productTitle}
+                            fill
+                            unoptimized
+                            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs font-black uppercase tracking-[0.22em] text-slate-400">
+                            No image
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">
+                          {product?.category || product?.product_type || post.category}
+                        </p>
+                        <h3 className="mt-2 line-clamp-2 text-sm font-semibold leading-6 text-[var(--brand-navy)]">
+                          {productTitle}
+                        </h3>
+                        <div className="mt-4 flex flex-wrap items-center gap-2">
+                          <span className="text-base font-black tracking-tight text-[var(--brand-navy)]">
+                            {formatPrice(sellingPrice)}
+                          </span>
+                          {comparePrice > sellingPrice ? (
+                            <span className="text-xs font-semibold text-slate-400 line-through">
+                              {formatComparePrice(comparePrice)}
+                            </span>
+                          ) : null}
+                        </div>
+                        <p className="mt-2 text-xs font-semibold text-slate-500">
+                          {inventory > 0 ? `${inventory} pcs left` : "Check latest availability"}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
           ) : null}
           {faqItems.length > 0 ? (
             <section className="mt-10 rounded-[2rem] border border-[var(--line)] bg-white p-8 shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)]">

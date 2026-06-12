@@ -8,7 +8,14 @@ import {
   getProductSeoCopy,
 } from "../../../lib/content";
 import { getProductHref } from "../../../lib/product-route";
-import { getApprovedCustomerReviewSummary } from "../../../lib/product-social-server";
+import {
+  getApprovedCustomerReviewSummary,
+  getApprovedProductReviewSummary,
+} from "../../../lib/product-social-server";
+import {
+  getProductDisplayVendorName,
+  isLadiesBagProduct,
+} from "../../../lib/product-review-utils";
 import {
   buildBreadcrumbSchema,
   buildFaqSchema,
@@ -25,33 +32,6 @@ function stripHtml(value) {
 }
 
 const LADIES_BAG_GALLERY_LIMIT = 4;
-
-function normalizeCategoryValue(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ");
-}
-
-function isLadiesBagProduct(product) {
-  const candidates = [
-    product?.category,
-    product?.product_type,
-    ...(Array.isArray(product?.rawCategories) ? product.rawCategories : []),
-    ...(Array.isArray(product?.rawProductTypes) ? product.rawProductTypes : []),
-  ]
-    .map((value) => normalizeCategoryValue(value))
-    .filter(Boolean);
-
-  return candidates.some(
-    (value) =>
-      value.includes("ladies bag") ||
-      value.includes("ladies bags") ||
-      value.includes("lady bag") ||
-      value.includes("women bag") ||
-      value.includes("womens bag")
-  );
-}
 
 function limitProductGalleryImages(product) {
   if (!product || !isLadiesBagProduct(product)) {
@@ -183,7 +163,11 @@ export default async function ProductPage({ params }) {
     },
     { name: product.title, path: canonicalPath },
   ]);
-  const productSchema = buildProductSchema(product, { path: canonicalPath });
+  const productReviewSummary = await getApprovedProductReviewSummary(product);
+  const productSchema = buildProductSchema(product, {
+    path: canonicalPath,
+    reviewSummary: productReviewSummary?.isSampleFallback ? null : productReviewSummary,
+  });
   const relatedPosts = getBlogPostsForProduct(product, { limit: 3 });
   const reviewSummary = await getApprovedCustomerReviewSummary();
   const categoryPath = getCategoryPathFromTitle(
@@ -192,6 +176,7 @@ export default async function ProductPage({ params }) {
   const productSeoCopy = getProductSeoCopy(product);
   const productFaqs = getProductFaqs(product);
   const faqSchema = buildFaqSchema(productFaqs);
+  const productDisplayVendor = getProductDisplayVendorName(product);
 
   return (
     <>
@@ -216,6 +201,8 @@ export default async function ProductPage({ params }) {
         relatedProducts={relatedProducts}
         relatedPosts={relatedPosts}
         reviewSummary={reviewSummary}
+        productReviewSummary={productReviewSummary}
+        productDisplayVendor={productDisplayVendor}
         categoryPath={categoryPath}
         seoCopy={productSeoCopy}
         faqs={productFaqs}

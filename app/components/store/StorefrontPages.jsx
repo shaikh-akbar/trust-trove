@@ -386,6 +386,7 @@ export function ShopExperience({
         products={products}
         categories={categories}
         initialQuery={initialQuery}
+        basePath="/shop"
         activeCategorySlug={activeCategorySlug}
         activeCategoryTitle={activeCategoryTitle}
         heroBackgroundImage={SHOP_BANNER_IMAGE}
@@ -1537,7 +1538,13 @@ export function NewArrivalsExperience({
   );
 }
 
-export function CategoryDetailExperience({ products, category, initialQuery = "" }) {
+export function CategoryDetailExperience({
+  products,
+  category,
+  initialQuery = "",
+  currentPage = 1,
+  totalPages = 1,
+}) {
   const title = formatCategoryLabel(category?.title);
 
   return (
@@ -1545,10 +1552,16 @@ export function CategoryDetailExperience({ products, category, initialQuery = ""
       <CatalogExperienceClient
         products={products}
         initialQuery={initialQuery}
+        basePath={`/categories/${category?.slug || ""}`}
+        activeCategorySlug={category?.slug || ""}
+        activeCategoryTitle={category?.title || ""}
         eyebrow={title}
         title={`${title} edited into a cleaner collection page.`}
         description="This category route now works like a focused boutique page, helping visitors browse one product family with less noise and better momentum."
         heroBackgroundImage={getCategoryBannerImage(title)}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalCount={category?.count || products.length}
         spotlight={{
           title: `${category?.count || products.length} products in focus`,
           text: "Every category can now feel like its own destination, which helps both user experience and topical relevance for search engines.",
@@ -1583,10 +1596,13 @@ export function BrandDetailExperience({ products, brand, initialQuery = "" }) {
       <CatalogExperienceClient
         products={products}
         initialQuery={initialQuery}
+        basePath={`/brands/${brand?.slug || ""}`}
         eyebrow={title}
         title={`${title} products in a dedicated brand page.`}
         description="This brand route now behaves like a focused label page, so visitors can browse one brand story with less noise and clearer product scanning."
         heroBackgroundImage={getBrandBannerImage(title)}
+        currentPage={1}
+        totalPages={1}
         spotlight={{
           title: `${brand?.count || products.length} products in focus`,
           text: "Brand-led browsing gives visitors a cleaner way to stay inside one label while keeping pagination and filtering intact.",

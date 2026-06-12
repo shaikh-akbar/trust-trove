@@ -57,6 +57,37 @@ CREATE TRIGGER update_customer_reviews_updated_at
 
 ALTER TABLE public.customer_reviews DISABLE ROW LEVEL SECURITY;
 
+CREATE TABLE IF NOT EXISTS public.product_reviews (
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    product_id uuid NOT NULL REFERENCES public.products(id) ON DELETE CASCADE,
+    user_id uuid REFERENCES public.users(id) ON DELETE SET NULL,
+    display_name text NOT NULL,
+    city text,
+    rating integer NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    headline text,
+    review_text text NOT NULL,
+    is_approved boolean NOT NULL DEFAULT true,
+    is_sample boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone DEFAULT timezone('utc'::text, now()),
+    updated_at timestamp with time zone DEFAULT timezone('utc'::text, now())
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_reviews_product_approved_created
+ON public.product_reviews(product_id, is_approved, created_at DESC);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_product_reviews_user_product
+ON public.product_reviews(user_id, product_id)
+WHERE user_id IS NOT NULL;
+
+DROP TRIGGER IF EXISTS update_product_reviews_updated_at ON public.product_reviews;
+CREATE TRIGGER update_product_reviews_updated_at
+    BEFORE UPDATE ON public.product_reviews
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_updated_at_column();
+
+ALTER TABLE public.product_reviews DISABLE ROW LEVEL SECURITY;
+
 GRANT USAGE ON SCHEMA public TO service_role;
 GRANT ALL ON TABLE public.wishlist_items TO service_role;
 GRANT ALL ON TABLE public.customer_reviews TO service_role;
+GRANT ALL ON TABLE public.product_reviews TO service_role;

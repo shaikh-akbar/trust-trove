@@ -106,11 +106,28 @@ function extractDimensionPairs(html) {
     .filter(Boolean);
 }
 
+function ReviewStars({ rating = 0, size = 14 }) {
+  return (
+    <div className="flex items-center gap-1 text-amber-500">
+      {[...Array(5)].map((_, index) => (
+        <Star
+          key={index}
+          size={size}
+          fill="currentColor"
+          className={index < Math.round(rating) ? "opacity-100" : "opacity-25"}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function ProductPageClient({
   product,
   relatedProducts = [],
   relatedPosts = [],
   reviewSummary = null,
+  productReviewSummary = null,
+  productDisplayVendor = "GoModexa",
   categoryPath = "/categories",
   seoCopy = null,
   faqs = [],
@@ -246,6 +263,11 @@ export default function ProductPageClient({
         : "Add to Bag";
   const averageRating = Number(reviewSummary?.averageRating || 0);
   const reviewCount = Number(reviewSummary?.reviewCount || 0);
+  const productAverageRating = Number(productReviewSummary?.averageRating || 0);
+  const productReviewCount = Number(productReviewSummary?.reviewCount || 0);
+  const productReviews = Array.isArray(productReviewSummary?.reviews)
+    ? productReviewSummary.reviews
+    : [];
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -373,7 +395,7 @@ export default function ProductPageClient({
                         Vendor
                       </p>
                       <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {product.vendor || "GoModexa"}
+                        {productDisplayVendor}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-slate-200 bg-white p-4">
@@ -555,7 +577,9 @@ export default function ProductPageClient({
                 <div className="mt-3">
                   <p className="text-sm font-semibold">
                     {!isOutOfStock ? (
-                      <span className="text-emerald-700">In stock — {Number(currentVariant.inventory_quantity || 0)} pcs</span>
+                      <span className="text-emerald-700">
+                        In stock - {Number(currentVariant.inventory_quantity || 0)} pcs left
+                      </span>
                     ) : (
                       <span className="text-rose-600">Out of stock</span>
                     )}
@@ -693,6 +717,52 @@ export default function ProductPageClient({
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
+              {productReviewCount > 0 ? (
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:col-span-2">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Product reviews
+                      </p>
+                      <div className="mt-2 flex flex-wrap items-center gap-3">
+                        <p className="text-sm font-semibold text-slate-950">
+                          {productAverageRating}/5 from {productReviewCount} product review
+                          {productReviewCount === 1 ? "" : "s"}
+                        </p>
+                        <ReviewStars rating={productAverageRating} size={13} />
+                      </div>
+                      <p className="mt-1 text-xs leading-6 text-slate-500">
+                        Recent product-level feedback for {product.title}.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-3">
+                    {productReviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-slate-950">
+                              {review.headline || "Helpful product feedback"}
+                            </p>
+                            <p className="mt-1 text-xs text-slate-500">
+                              {review.displayName}
+                              {review.city ? `, ${review.city}` : ""}
+                            </p>
+                          </div>
+                          <ReviewStars rating={review.rating} size={12} />
+                        </div>
+                        <p className="mt-3 text-sm leading-7 text-slate-600">
+                          {review.reviewText}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               {averageRating > 0 && reviewCount > 0 ? (
                 <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:col-span-2">
                   <div className="flex items-start justify-between gap-4">

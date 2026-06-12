@@ -1,4 +1,4 @@
-import { BLOG_POSTS } from "../lib/content";
+import { BLOG_POSTS, BLOGS_PER_PAGE } from "../lib/content";
 import { getBestDealsChildPageDefinitions } from "../lib/product-deals";
 import { getBrandSummaries, getCategorySummaries } from "../lib/product";
 import { getProductHref } from "../lib/product-route";
@@ -126,6 +126,20 @@ export default async function sitemap() {
     changeFrequency: "monthly",
     priority: 0.65,
   }));
+  const blogIndexPageCount = Math.max(1, Math.ceil(BLOG_POSTS.length / BLOGS_PER_PAGE));
+  const latestBlogDate = BLOG_POSTS.reduce((latest, post) => {
+    const currentDate = toDate(post.updatedAt || post.publishedAt);
+    return currentDate.getTime() > latest.getTime() ? currentDate : latest;
+  }, now);
+  const blogIndexRoutes = Array.from({ length: blogIndexPageCount }, (_, index) => {
+    const pageNumber = index + 1;
+    return {
+      url: getSiteUrl(pageNumber > 1 ? `/blogs?page=${pageNumber}` : "/blogs"),
+      lastModified: latestBlogDate,
+      changeFrequency: "weekly",
+      priority: pageNumber === 1 ? 0.75 : 0.6,
+    };
+  });
 
   const bestDealsRoutes = getBestDealsChildPageDefinitions().map((deal) => ({
     url: getSiteUrl(deal.path),
@@ -142,5 +156,13 @@ export default async function sitemap() {
     images: getSitemapImageUrls(product),
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...brandRoutes, ...blogRoutes, ...bestDealsRoutes, ...productRoutes];
+  return [
+    ...staticRoutes,
+    ...categoryRoutes,
+    ...brandRoutes,
+    ...blogIndexRoutes,
+    ...blogRoutes,
+    ...bestDealsRoutes,
+    ...productRoutes,
+  ];
 }

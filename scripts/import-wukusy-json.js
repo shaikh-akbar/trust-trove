@@ -7,9 +7,12 @@ const DEFAULT_SUPABASE_BATCH_SIZE = 25;
 const DEFAULT_SUPABASE_DELAY_MS = 350;
 const DEFAULT_SUPABASE_RETRY_COUNT = 6;
 const DEFAULT_MARGIN_AMOUNT = 40;
-const BEAUTY_PARENT_CATEGORY_ID = "15";
-const BEAUTY_CATEGORY_TITLE = "Health & Beauty";
-const BEAUTY_CATEGORY_HANDLE = "health-and-beauty";
+const WUKUSY_CATEGORY_MAP = new Map([
+  ["1", { title: "Electronics", handle: "electronics" }],
+  ["7", { title: "Home Decor", handle: "home-decor" }],
+  ["15", { title: "Health & Beauty", handle: "health-and-beauty" }],
+  ["29", { title: "Travel", handle: "travel" }],
+]);
 
 function parseArgs(argv) {
   const args = {
@@ -191,11 +194,9 @@ function extractCategoryIdFromUrl(url) {
 }
 
 function resolveCanonicalCategory(product) {
-  if (extractCategoryIdFromUrl(product?.category_url) === BEAUTY_PARENT_CATEGORY_ID) {
-    return {
-      title: BEAUTY_CATEGORY_TITLE,
-      handle: BEAUTY_CATEGORY_HANDLE,
-    };
+  const mappedCategory = WUKUSY_CATEGORY_MAP.get(extractCategoryIdFromUrl(product?.category_url));
+  if (mappedCategory) {
+    return mappedCategory;
   }
 
   const categoryTitle = normalizeCategoryTitle(product.category_title);
@@ -342,6 +343,29 @@ function isProductInStock(product) {
   return resolveImportedStockQty(product) > 0 && String(product?.status || "").trim() === "active";
 }
 
+function resolveCanonicalSku(product) {
+  const productId = safeTruncate(product?.wukusy_product_id, 255);
+  if (productId) {
+    return `WUKUSY-${productId}`;
+  }
+
+  return safeTruncate(product?.sku || "WUKUSY-UNKNOWN", 255);
+}
+
+function dedupeImportedProducts(products) {
+  const deduped = new Map();
+
+  for (const product of products) {
+    const canonicalSku = resolveCanonicalSku(product);
+    deduped.set(canonicalSku, {
+      ...product,
+      sku: canonicalSku,
+    });
+  }
+
+  return Array.from(deduped.values());
+}
+
 function buildSupabaseProducts(products) {
   return products.map((product) => {
     const title = safeTruncate(product.title || `Wukusy Product ${product.wukusy_product_id}`, 255);
@@ -370,7 +394,7 @@ function buildSupabaseProducts(products) {
       main_image: primaryImage,
       status: product.status === "active" ? "active" : "inactive",
       supplier_name: "wukusy",
-      supplier_product_code: safeTruncate(product.sku || product.wukusy_product_id, 255),
+      supplier_product_code: resolveCanonicalSku(product),
       seo_title: buildSeoTitle(title, categoryTitle),
       seo_description: shortDescription,
       is_featured: false,
@@ -402,7 +426,7 @@ function buildSupabaseVariants(products, productIdMap, options) {
 
     variants.push({
       product_id: productId,
-      sku: safeTruncate(product.sku || `WUKUSY-${product.wukusy_product_id}`, 255),
+      sku: resolveCanonicalSku(product),
       option1_name: "Title",
       option1_value: "Default Title",
       price_selling: pricing.displayPriceFinal,
@@ -415,7 +439,7 @@ function buildSupabaseVariants(products, productIdMap, options) {
       gst_percent: pricing.gstPercent,
       cost_price: pricing.costPrice,
       supplier_name: "wukusy",
-      supplier_sku: safeTruncate(product.sku || `WUKUSY-${product.wukusy_product_id}`, 255),
+      supplier_sku: safeTruncate(product.sku || resolveCanonicalSku(product), 255),
       supplier_product_id: safeTruncate(product.wukusy_product_id, 255),
       supplier_cost_price: pricing.costPrice,
       supplier_gst_percent: pricing.gstPercent,
@@ -461,14 +485,19 @@ function buildWukusyProducts(products) {
 
     return {
       wukusy_product_id: safeTruncate(product.wukusy_product_id, 255),
-      sku: safeTruncate(product.sku || `WUKUSY-${product.wukusy_product_id}`, 255),
+      sku: resolveCanonicalSku(product),
       title: safeTruncate(product.title || `Wukusy Product ${product.wukusy_product_id}`, 255),
       cost_price: roundCurrency(product.cost_price),
       gst_percent: roundCurrency(product.gst_percent || 18),
       weight_grams: Math.max(0, toInteger(product.weight_grams) || 0),
       stock_qty: stockQty,
       status: stockQty > 0 && product.status === "active" ? "active" : "out_of_stock",
-      raw_payload: product.raw_payload || product,
+      raw_payload: {
+        ...(product.raw_payload || {}),
+        category_title: product.category_title || product.raw_payload?.category_title || "",
+        category_handle: product.category_handle || product.raw_payload?.category_handle || "",
+        category_url: product.category_url || product.raw_payload?.category_url || "",
+      },
       last_synced_at: new Date().toISOString(),
     };
   });
@@ -726,6 +755,8 @@ async function main() {
   if (options.inStockOnly) {
     products = products.filter(isProductInStock);
   }
+
+  products = dedupeImportedProducts(products);
 
   if (!products.length) {
     throw new Error("No Wukusy products matched the requested filters.");

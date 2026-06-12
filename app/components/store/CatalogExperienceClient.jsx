@@ -1,13 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import ProductCard from "../home/ProductCard";
 import { buildFilterOptions, filterProducts } from "../../../lib/storefront";
-
-const INITIAL_VISIBLE_PRODUCTS = 12;
-const LOAD_MORE_STEP = 8;
 
 function FilterSection({ title, children }) {
   return (
@@ -33,6 +30,7 @@ export default function CatalogExperienceClient({
   initialQuery = "",
   activeCategorySlug = "",
   activeCategoryTitle = "",
+  basePath = "/shop",
   eyebrow,
   title,
   description,
@@ -43,24 +41,13 @@ export default function CatalogExperienceClient({
   heroMobileBackgroundImage,
   currentPage = 1,
   totalPages = 1,
+  totalCount = 0,
 }) {
-  const catalogProducts = useMemo(
-    () =>
-      (products || []).filter((product) =>
-        Boolean(
-          product?.image_url ||
-            product?.main_image ||
-            product?.product_images?.[0]?.src
-        )
-      ),
-    [products]
-  );
+  const catalogProducts = useMemo(() => products || [], [products]);
   const filterOptions = useMemo(() => buildFilterOptions(catalogProducts), [catalogProducts]);
   const [query, setQuery] = useState(initialQuery);
   const deferredQuery = useDeferredValue(query);
-  const [selectedCategories, setSelectedCategories] = useState(
-    activeCategoryTitle ? [activeCategoryTitle] : []
-  );
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState("featured");
@@ -68,24 +55,20 @@ export default function CatalogExperienceClient({
   const [minPrice, setMinPrice] = useState(filterOptions.minPrice);
   const [maxPrice, setMaxPrice] = useState(filterOptions.maxPrice);
   const [showFilters, setShowFilters] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_PRODUCTS);
-  const loadMoreRef = useRef(null);
   const hasHeroCopy = Boolean(eyebrow || title || description || spotlight);
+  const hasServerPagination = totalPages > 1;
+  const hasServerScopedCategory =
+    Boolean(activeCategoryTitle) && basePath.startsWith("/categories/");
 
   useEffect(() => {
-    setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
-  }, [activeCategoryTitle]);
-
-  function resetVisibleProducts() {
-    setVisibleCount(INITIAL_VISIBLE_PRODUCTS);
-  }
+    setSelectedCategories([]);
+  }, [activeCategoryTitle, basePath]);
 
   function toggleValue(setter, value) {
-    resetVisibleProducts();
     setter((current) => (current.includes(value) ? current.filter((item) => item !== value) : [...current, value]));
   }
 
-  function buildShopHref({
+  function buildPageHref({
     page = 1,
     categorySlug = activeCategorySlug || "",
     queryValue = initialQuery,
@@ -105,7 +88,59 @@ export default function CatalogExperienceClient({
     }
 
     const search = params.toString();
-    return search ? `/shop?${search}` : "/shop";
+    return search ? `${basePath}?${search}` : basePath;
+  }
+
+  function renderPaginationControls() {
+    if (!(totalPages > 1 && !hasInteractiveFilters)) {
+      return null;
+    }
+
+    return (
+      <div className="flex items-center gap-2">
+        <Link
+          href={
+            currentPage > 1
+              ? buildPageHref({
+                  page: currentPage - 1,
+                  categorySlug: activeCategorySlug,
+                  queryValue: initialQuery,
+                })
+              : "#"
+          }
+          aria-disabled={currentPage <= 1}
+          className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
+            currentPage > 1
+              ? "border-[var(--line)] bg-white text-[var(--brand-navy)]"
+              : "pointer-events-none border-[var(--line)] bg-[var(--surface-soft)] text-slate-400"
+          }`}
+        >
+          Prev
+        </Link>
+        <span className="text-[11px] font-semibold text-slate-500">
+          {currentPage}/{totalPages}
+        </span>
+        <Link
+          href={
+            currentPage < totalPages
+              ? buildPageHref({
+                  page: currentPage + 1,
+                  categorySlug: activeCategorySlug,
+                  queryValue: initialQuery,
+                })
+              : "#"
+          }
+          aria-disabled={currentPage >= totalPages}
+          className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
+            currentPage < totalPages
+              ? "border-[var(--line)] bg-white text-[var(--brand-navy)]"
+              : "pointer-events-none border-[var(--line)] bg-[var(--surface-soft)] text-slate-400"
+          }`}
+        >
+          Next
+        </Link>
+      </div>
+    );
   }
 
   const filteredProducts = useMemo(() => {
@@ -113,7 +148,7 @@ export default function CatalogExperienceClient({
       query: deferredQuery,
       minPrice,
       maxPrice,
-      categories: selectedCategories,
+      categories: hasServerScopedCategory ? [] : selectedCategories,
       colors: selectedColors,
       sizes: selectedSizes,
     });
@@ -131,7 +166,7 @@ export default function CatalogExperienceClient({
     }
 
     return nextProducts;
-  }, [catalogProducts, deferredQuery, maxPrice, minPrice, selectedCategories, selectedColors, selectedSizes, sortBy]);
+  }, [catalogProducts, deferredQuery, hasServerScopedCategory, maxPrice, minPrice, selectedCategories, selectedColors, selectedSizes, sortBy]);
 
   const allCategoryLabels = useMemo(() => {
     const summaryTitles = (categories || [])
@@ -172,30 +207,24 @@ export default function CatalogExperienceClient({
   }, [allCategoryLabels, categorySearch]);
 
   const activeFilterCount =
-    selectedCategories.length + selectedColors.length + selectedSizes.length + (deferredQuery ? 1 : 0);
-  const visibleProducts = filteredProducts.slice(0, visibleCount);
-  const hasMoreProducts = visibleCount < filteredProducts.length;
-
-  useEffect(() => {
-    if (!hasMoreProducts || !loadMoreRef.current) {
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const firstEntry = entries[0];
-
-        if (firstEntry?.isIntersecting) {
-          setVisibleCount((current) => Math.min(current + LOAD_MORE_STEP, filteredProducts.length));
-        }
-      },
-      { rootMargin: "240px 0px" }
-    );
-
-    observer.observe(loadMoreRef.current);
-
-    return () => observer.disconnect();
-  }, [filteredProducts.length, hasMoreProducts]);
+    (hasServerScopedCategory ? 0 : selectedCategories.length) +
+    selectedColors.length +
+    selectedSizes.length +
+    (deferredQuery ? 1 : 0);
+  const visibleProducts = filteredProducts;
+  const hasInteractiveFilters =
+    selectedColors.length > 0 ||
+    selectedSizes.length > 0 ||
+    minPrice !== filterOptions.minPrice ||
+    maxPrice !== filterOptions.maxPrice ||
+    Boolean(deferredQuery);
+  const resultHeadlineCount =
+    hasServerPagination && !hasInteractiveFilters
+      ? Number(totalCount || filteredProducts.length)
+      : filteredProducts.length;
+  const visibleCategoryBadges = hasServerScopedCategory
+    ? [activeCategoryTitle].filter(Boolean)
+    : selectedCategories;
 
   return (
     <div className="bg-[var(--surface-soft)] pb-16">
@@ -341,7 +370,6 @@ export default function CatalogExperienceClient({
                 <input
                   value={query}
                   onChange={(event) => {
-                    resetVisibleProducts();
                     setQuery(event.target.value);
                   }}
                   placeholder="Search products, materials, styles..."
@@ -362,7 +390,6 @@ export default function CatalogExperienceClient({
                   max={filterOptions.maxPrice}
                   value={minPrice}
                   onChange={(event) => {
-                    resetVisibleProducts();
                     setMinPrice(Math.min(Number(event.target.value), maxPrice));
                   }}
                   className="mt-4 w-full accent-[var(--brand-navy)]"
@@ -373,7 +400,6 @@ export default function CatalogExperienceClient({
                   max={filterOptions.maxPrice}
                   value={maxPrice}
                   onChange={(event) => {
-                    resetVisibleProducts();
                     setMaxPrice(Math.max(Number(event.target.value), minPrice));
                   }}
                   className="mt-3 w-full accent-[var(--brand-navy)]"
@@ -399,8 +425,8 @@ export default function CatalogExperienceClient({
                         key={category.slug}
                         href={
                           activeCategorySlug === category.slug
-                            ? buildShopHref({ page: 1, categorySlug: "", queryValue: initialQuery })
-                            : buildShopHref({
+                            ? buildPageHref({ page: 1, categorySlug: "", queryValue: initialQuery })
+                            : buildPageHref({
                                 page: 1,
                                 categorySlug: category.slug,
                                 queryValue: initialQuery,
@@ -458,10 +484,9 @@ export default function CatalogExperienceClient({
               <button
                 type="button"
                 onClick={() => {
-                  resetVisibleProducts();
                   setQuery("");
                   setCategorySearch("");
-                  setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
+                  setSelectedCategories([]);
                   setSelectedColors([]);
                   setSelectedSizes([]);
                   setMinPrice(filterOptions.minPrice);
@@ -487,10 +512,13 @@ export default function CatalogExperienceClient({
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-slate-400">Live catalog</p>
                   <h2 className="mt-2 font-display text-xl font-semibold text-[var(--brand-navy)] sm:text-2xl">
-                    {filteredProducts.length} refined result{filteredProducts.length === 1 ? "" : "s"}
+                    {resultHeadlineCount} {hasServerPagination && !hasInteractiveFilters ? "products" : "refined result"}
+                    {resultHeadlineCount === 1 ? "" : "s"}
                   </h2>
                   <p className="mt-2 text-sm text-slate-500">
-                    Search, sort, and filter by category, color, size, and price without leaving the page.
+                    {hasServerPagination && !hasInteractiveFilters
+                      ? "Browse this category through paginated in-stock products. Use filters only when you want to narrow the current view."
+                      : "Search, sort, and filter by category, color, size, and price without leaving the page."}
                   </p>
                 </div>
 
@@ -507,7 +535,6 @@ export default function CatalogExperienceClient({
                   <select
                     value={sortBy}
                     onChange={(event) => {
-                      resetVisibleProducts();
                       setSortBy(event.target.value);
                     }}
                     className="rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-5 py-3 text-sm text-slate-700 outline-none"
@@ -517,6 +544,7 @@ export default function CatalogExperienceClient({
                     <option value="price-high">Price: High to Low</option>
                     <option value="name">Name</option>
                   </select>
+                  {renderPaginationControls()}
                 </div>
               </div>
 
@@ -525,9 +553,8 @@ export default function CatalogExperienceClient({
                   <button
                     type="button"
                     onClick={() => {
-                      resetVisibleProducts();
                       setQuery("");
-                      setSelectedCategories(activeCategoryTitle ? [activeCategoryTitle] : []);
+                      setSelectedCategories([]);
                       setSelectedColors([]);
                       setSelectedSizes([]);
                       setMinPrice(filterOptions.minPrice);
@@ -545,7 +572,7 @@ export default function CatalogExperienceClient({
                   </span>
                 ) : null}
 
-                {selectedCategories.map((category) => (
+                {visibleCategoryBadges.map((category) => (
                   <span
                     key={category}
                     className="inline-flex rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-slate-600"
@@ -564,59 +591,6 @@ export default function CatalogExperienceClient({
                   ))}
                 </div>
 
-                {hasMoreProducts ? (
-                  <div ref={loadMoreRef} className="flex items-center justify-center py-6">
-                    <span className="rounded-full border border-[var(--line)] bg-white px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-navy)] shadow-[0_12px_36px_-28px_rgba(8,15,43,0.35)]">
-                      Loading more products
-                    </span>
-                  </div>
-                ) : totalPages > 1 ? (
-                  <div className="flex justify-end pt-2">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={
-                          currentPage > 1
-                            ? buildShopHref({
-                                page: currentPage - 1,
-                                categorySlug: activeCategorySlug,
-                                queryValue: initialQuery,
-                              })
-                            : "#"
-                        }
-                        aria-disabled={currentPage <= 1}
-                        className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
-                          currentPage > 1
-                            ? "border-[var(--line)] bg-white text-[var(--brand-navy)]"
-                            : "pointer-events-none border-[var(--line)] bg-[var(--surface-soft)] text-slate-400"
-                        }`}
-                      >
-                        Prev
-                      </Link>
-                      <span className="text-[11px] font-semibold text-slate-500">
-                        {currentPage}/{totalPages}
-                      </span>
-                      <Link
-                        href={
-                          currentPage < totalPages
-                            ? buildShopHref({
-                                page: currentPage + 1,
-                                categorySlug: activeCategorySlug,
-                                queryValue: initialQuery,
-                              })
-                            : "#"
-                        }
-                        aria-disabled={currentPage >= totalPages}
-                        className={`inline-flex rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] ${
-                          currentPage < totalPages
-                            ? "border-[var(--line)] bg-white text-[var(--brand-navy)]"
-                            : "pointer-events-none border-[var(--line)] bg-[var(--surface-soft)] text-slate-400"
-                        }`}
-                      >
-                        Next
-                      </Link>
-                    </div>
-                  </div>
-                ) : null}
               </>
             ) : (
               <div className="rounded-[2rem] border border-[var(--line)] bg-white px-6 py-16 text-center shadow-[0_30px_90px_-58px_rgba(8,15,43,0.45)]">
