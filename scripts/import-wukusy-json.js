@@ -7,10 +7,14 @@ const DEFAULT_SUPABASE_BATCH_SIZE = 25;
 const DEFAULT_SUPABASE_DELAY_MS = 350;
 const DEFAULT_SUPABASE_RETRY_COUNT = 6;
 const DEFAULT_MARGIN_AMOUNT = 40;
+const STOREFRONT_BRAND_NAME = "GoModexa";
 const WUKUSY_CATEGORY_MAP = new Map([
   ["1", { title: "Electronics", handle: "electronics" }],
+  ["2", { title: "Mobile Accessories", handle: "mobile-accessories" }],
+  ["5", { title: "Home Improvement", handle: "home-improvement" }],
   ["7", { title: "Home Decor", handle: "home-decor" }],
   ["15", { title: "Health & Beauty", handle: "health-and-beauty" }],
+  ["28", { title: "Automotive", handle: "automotive" }],
   ["29", { title: "Travel", handle: "travel" }],
 ]);
 
@@ -213,7 +217,7 @@ function unique(values) {
 }
 
 function buildSeoTitle(title, categoryTitle) {
-  return safeTruncate(`${title} | ${categoryTitle} by Wukusy`, 255);
+  return safeTruncate(`${title} | ${categoryTitle} by ${STOREFRONT_BRAND_NAME}`, 255);
 }
 
 function buildSeoDescription(title, categoryTitle, stockQty) {
@@ -223,7 +227,7 @@ function buildSeoDescription(title, categoryTitle, stockQty) {
       : "limited stock";
 
   return safeTruncate(
-    `Buy ${title} from the Wukusy ${categoryTitle} collection. Current supplier availability: ${stockText}. View pricing, images, and product details online.`,
+    `Buy ${title} from the ${STOREFRONT_BRAND_NAME} ${categoryTitle} collection. Current supplier availability: ${stockText}. View pricing, images, and product details online.`,
     320
   );
 }
@@ -376,7 +380,7 @@ function buildSupabaseProducts(products) {
     const categoryHandle = canonicalCategory.handle;
     const stockQty = resolveImportedStockQty(product);
     const shortDescription = buildSeoDescription(title, categoryTitle, stockQty);
-    const productTags = unique(["wukusy", categoryHandle, "in-stock", "health-beauty"]).map((tag) =>
+    const productTags = unique(["wukusy", "gomodexa", categoryHandle, "in-stock"]).map((tag) =>
       safeTruncate(tag, 255)
     );
 
@@ -386,8 +390,8 @@ function buildSupabaseProducts(products) {
       title,
       description: shortDescription,
       short_description: shortDescription,
-      vendor: "Wukusy",
-      brand: "Wukusy",
+      vendor: STOREFRONT_BRAND_NAME,
+      brand: STOREFRONT_BRAND_NAME,
       category: categoryTitle,
       product_type: categoryTitle,
       tags: productTags,
@@ -471,7 +475,7 @@ function buildSupabaseImages(products, productIdMap) {
           product_id: productId,
           src: imageUrl,
           position: index + 1,
-          alt_text: safeTruncate(product.title || "Wukusy product image", 255),
+          alt_text: safeTruncate(product.title || `${STOREFRONT_BRAND_NAME} product image`, 255),
         });
       });
   }

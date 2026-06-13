@@ -9,9 +9,65 @@ loadEnvConfig(process.cwd());
 const DEFAULT_OUTPUT_JSON = path.join(process.cwd(), "public", "wukusy-products.json");
 const DEFAULT_START_URL = "https://wukusy.app/dropshiper/index";
 const DEFAULT_DELAY_MS = 150;
-const BEAUTY_PARENT_CATEGORY_ID = "15";
-const BEAUTY_CATEGORY_TITLE = "Health & Beauty";
-const BEAUTY_CATEGORY_HANDLE = "health-and-beauty";
+const STOREFRONT_BRAND_NAME = "GoModexa";
+const WUKUSY_CATEGORY_PRESETS = new Map([
+  [
+    "electronics",
+    {
+      id: "1",
+      title: "Electronics",
+      handle: "electronics",
+    },
+  ],
+  [
+    "mobile-accessories",
+    {
+      id: "2",
+      title: "Mobile Accessories",
+      handle: "mobile-accessories",
+    },
+  ],
+  [
+    "home-improvement",
+    {
+      id: "5",
+      title: "Home Improvement",
+      handle: "home-improvement",
+    },
+  ],
+  [
+    "home-decor",
+    {
+      id: "7",
+      title: "Home Decor",
+      handle: "home-decor",
+    },
+  ],
+  [
+    "health-and-beauty",
+    {
+      id: "15",
+      title: "Health & Beauty",
+      handle: "health-and-beauty",
+    },
+  ],
+  [
+    "automotive",
+    {
+      id: "28",
+      title: "Automotive",
+      handle: "automotive",
+    },
+  ],
+  [
+    "travel",
+    {
+      id: "29",
+      title: "Travel",
+      handle: "travel",
+    },
+  ],
+]);
 
 function safeLog(message) {
   try {
@@ -54,6 +110,7 @@ function parseArgs(argv) {
     cookie: process.env.WUKUSY_COOKIE || "",
     categoryQuery: "",
     inStockOnly: false,
+    categoryPreset: "",
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -99,6 +156,11 @@ function parseArgs(argv) {
       case "--category":
       case "--category-query":
         args.categoryQuery = normalizeText(nextValue);
+        index += 1;
+        break;
+      case "--preset":
+      case "--category-preset":
+        args.categoryPreset = normalizeText(nextValue).toLowerCase();
         index += 1;
         break;
       case "--in-stock-only":
@@ -177,6 +239,8 @@ function normalizeWukusyProduct(rawProduct) {
       getFirstDefined(rawProduct, ["id", "product_id", "wukusy_product_id"], sku)
     ),
     sku,
+    vendor: STOREFRONT_BRAND_NAME,
+    brand: STOREFRONT_BRAND_NAME,
     title: normalizeText(
       getFirstDefined(rawProduct, ["title", "name", "product_name", "item_name"], sku)
     ),
@@ -342,16 +406,51 @@ function extractCategoryIdFromUrl(url) {
 }
 
 function isBeautyParentCategoryUrl(url) {
-  return extractCategoryIdFromUrl(url) === BEAUTY_PARENT_CATEGORY_ID;
+  return extractCategoryIdFromUrl(url) === "15";
+}
+
+function getCategoryPresetById(categoryId) {
+  for (const preset of WUKUSY_CATEGORY_PRESETS.values()) {
+    if (preset.id === String(categoryId || "")) {
+      return preset;
+    }
+  }
+
+  return null;
+}
+
+function resolveCategoryPreset(categoryPreset) {
+  const normalizedPreset = normalizeText(categoryPreset).toLowerCase();
+
+  if (!normalizedPreset) {
+    return null;
+  }
+
+  return WUKUSY_CATEGORY_PRESETS.get(normalizedPreset) || null;
+}
+
+function buildPresetStartUrl(categoryPreset) {
+  const preset = resolveCategoryPreset(categoryPreset);
+  return preset ? `https://wukusy.app/dropshiper/category/${preset.id}` : "";
 }
 
 function resolveForcedCategory(category, context = {}) {
   const sourceUrl = context.startUrl || context.categoryUrl || "";
+  const categoryId = extractCategoryIdFromUrl(sourceUrl) || extractCategoryIdFromUrl(category?.url);
+  const knownPreset = getCategoryPresetById(categoryId);
+
+  if (knownPreset) {
+    return {
+      title: knownPreset.title,
+      handle: knownPreset.handle,
+      url: category?.url || sourceUrl,
+    };
+  }
 
   if (isBeautyParentCategoryUrl(sourceUrl)) {
     return {
-      title: BEAUTY_CATEGORY_TITLE,
-      handle: BEAUTY_CATEGORY_HANDLE,
+      title: "Health & Beauty",
+      handle: "health-and-beauty",
       url: sourceUrl,
     };
   }
@@ -589,6 +688,8 @@ function extractDetailData(html, url, options = {}) {
   return {
     wukusy_product_id: productId || sku,
     sku,
+    vendor: STOREFRONT_BRAND_NAME,
+    brand: STOREFRONT_BRAND_NAME,
     title: resolvedTitle || sku,
     cost_price: primaryPrice,
     gst_percent: gstPercent || 18,
@@ -648,14 +749,23 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
     }
 
     visitedCategoryLinks.add(nextCategoryUrl);
+    const resolvedCategory = resolveForcedCategory(
+      {
+        title: nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl),
+        handle:
+          nextCategory?.handle ||
+          slugify(normalizeCategoryTitle(nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl))),
+        url: nextCategoryUrl,
+      },
+      {
+        startUrl,
+        categoryUrl: nextCategoryUrl,
+      }
+    );
     discoveredCategories.set(nextCategoryUrl, {
-      title: normalizeCategoryTitle(
-        nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl)
-      ),
-      handle:
-        nextCategory?.handle ||
-        slugify(normalizeCategoryTitle(nextCategory?.title || extractCategoryTitleFromUrl(nextCategoryUrl))),
-      url: nextCategoryUrl,
+      title: resolvedCategory.title,
+      handle: resolvedCategory.handle,
+      url: resolvedCategory.url || nextCategoryUrl,
     });
     safeLog(`Crawling category page: ${nextCategoryUrl}`);
     const html = await fetchHtml(nextCategoryUrl, cookie, startUrl);
@@ -736,6 +846,11 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   let products = [];
   let metadata = {};
+  const presetStartUrl = buildPresetStartUrl(args.categoryPreset);
+
+  if (presetStartUrl) {
+    args.startUrl = presetStartUrl;
+  }
 
   const shouldCrawl = args.crawl || (!args.sourceUrl && !args.sourceFile);
 
@@ -751,6 +866,7 @@ async function main() {
     metadata = {
       source: "crawl",
       startUrl: crawlResult.startUrl,
+      categoryPreset: args.categoryPreset || undefined,
       discoveredCategoryCount: crawlResult.discoveredCategoryCount,
       categories: crawlResult.categories,
       discoveredProductCount: crawlResult.discoveredProductCount,
