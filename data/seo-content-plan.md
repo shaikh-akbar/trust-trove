@@ -103,6 +103,96 @@ Good current examples already in `BLOG_POSTS`:
 - `Portable Car Air Mattress Bed Set ... : A Practical Road Trip Sleep Guide`
 - `Premium Women Travel Hygiene Essentials Combo (1 Set): A Practical Travel Utility Guide`
 
+## Immediate Product-Led SEO Blog Queue
+
+Use these next. They fit the current product-led format well and map cleanly to existing category clusters.
+
+| Product | Price | Suggested Category | Recommended Blog Title | Primary Keyword | Product URL |
+|---|---|---|---|---|---|
+| Protective Bike Goggle Face Mask Detachable Riding Glasses Dust Proof - 1 Pc | Rs 262 | Automotive | Protective Bike Goggle Face Mask Detachable Riding Glasses Dust Proof - 1 Pc: A Practical Riding Protection Guide | bike goggle face mask review | `https://www.gomodexa.com/product/protective-bike-goggle-face-mask-detachable-riding-glasses-dust-proof-1-pc-20940` |
+| Liger Gym Shaker Bottle - Approx 800ml, 1 Pc | Rs 108 | Sports | Liger Gym Shaker Bottle - Approx 800ml, 1 Pc: A Practical Gym Hydration And Mixing Guide | gym shaker bottle review | `https://www.gomodexa.com/product/liger-gym-shaker-bottle-approx-800ml-1-pc-13953` |
+| Inflatable Air Lounger Sofa For Pool Beach Camping - 1 Pc | Rs 546 | Travel | Inflatable Air Lounger Sofa For Pool Beach Camping - 1 Pc: A Practical Outdoor Comfort Guide | inflatable air lounger sofa review | `https://www.gomodexa.com/product/inflatable-air-lounger-sofa-for-pool-beach-camping-1-pc-20728` |
+| 188 1000W-220V Water Heater Portable Electric Immersion Element Boiler | Rs 245 | Home Improvement | 188 1000W-220V Water Heater Portable Electric Immersion Element Boiler: A Practical Portable Water Heating Guide | portable immersion water heater review | `https://www.gomodexa.com/product/188-1000w-220v-water-heater-portable-electric-immersion-element-boiler-124` |
+
+### Recommended SEO Angles For These Products
+
+#### 1. Protective Bike Goggle Face Mask Detachable Riding Glasses Dust Proof - 1 Pc
+
+- Search intent:
+  buyers looking for bike riding face protection, dust protection, detachable riding goggles, and budget bike accessories.
+- Supporting keywords:
+  `bike riding mask with goggles`, `dust proof face mask for bike riders`, `riding glasses with face mask`, `budget bike accessories online India`.
+- Suggested meta description:
+  `Looking for a protective bike goggle face mask with detachable riding glasses? Explore how this dust-proof riding accessory supports everyday bike travel, comfort, and outdoor protection.`
+- Content angle:
+  focus on dust protection, road-use comfort, face coverage, visibility support, and why riders search for compact protective accessories instead of bulky gear.
+- Internal links:
+  `/categories/automotive`, `/shop`, and the direct product page.
+
+#### 2. Liger Gym Shaker Bottle - Approx 800ml, 1 Pc
+
+- Search intent:
+  buyers comparing gym shaker bottles for protein mixing, pre-workout use, hydration, portability, and low-cost fitness accessories.
+- Supporting keywords:
+  `best gym shaker bottle online India`, `protein shaker bottle 800ml`, `gym bottle for protein shakes`, `affordable gym accessories India`.
+- Suggested meta description:
+  `Thinking about the Liger Gym Shaker Bottle 800ml? Learn what to check in bottle size, mixing convenience, gym portability, and everyday workout hydration before you buy.`
+- Content angle:
+  emphasize capacity, easy carry, daily gym use, shake-mixing convenience, and why low-ticket fitness products can still attract high-intent search traffic.
+- Internal links:
+  `/categories/sports`, `/shop`, and the direct product page.
+
+#### 3. Inflatable Air Lounger Sofa For Pool Beach Camping - 1 Pc
+
+- Search intent:
+  buyers searching for portable outdoor comfort for beach trips, camping, poolside lounging, and lightweight travel relaxation products.
+- Supporting keywords:
+  `inflatable air lounger sofa review`, `portable lounger for beach camping`, `air sofa for outdoor travel`, `camping comfort products online India`.
+- Suggested meta description:
+  `Explore whether this inflatable air lounger sofa is a smart pick for poolside use, beach trips, camping comfort, and portable outdoor relaxation.`
+- Content angle:
+  cover portability, setup convenience, comfort during outdoor breaks, travel-friendliness, and why products like this work well inside the Travel content cluster.
+- Internal links:
+  `/categories/travel`, `/shop`, and the direct product page.
+
+#### 4. 188 1000W-220V Water Heater Portable Electric Immersion Element Boiler
+
+- Search intent:
+  buyers looking for portable water heating solutions for quick bucket heating, travel utility, hostel use, and budget home-use heating tools.
+- Supporting keywords:
+  `portable immersion rod review`, `1000W water heater element boiler`, `electric immersion heater for bucket water`, `budget home utility products India`.
+- Suggested meta description:
+  `Considering this 1000W portable electric immersion element boiler? Learn what to check in quick water heating utility, compact storage, and everyday household use before buying.`
+- Content angle:
+  focus on compact utility, quick water-heating use cases, small-home practicality, hostel or rental-home relevance, and how product-led content can support the Home Improvement category.
+- Internal links:
+  `/categories/home-improvement`, `/shop`, and the direct product page.
+
+## Ready-To-Write Titles From This Batch
+
+These titles are the strongest first pass if the goal is commercial SEO with clean product matching:
+
+1. `Protective Bike Goggle Face Mask Detachable Riding Glasses Dust Proof - 1 Pc: A Practical Riding Protection Guide`
+2. `Liger Gym Shaker Bottle - Approx 800ml, 1 Pc: A Practical Gym Hydration And Mixing Guide`
+3. `Inflatable Air Lounger Sofa For Pool Beach Camping - 1 Pc: A Practical Outdoor Comfort Guide`
+4. `188 1000W-220V Water Heater Portable Electric Immersion Element Boiler: A Practical Portable Water Heating Guide`
+
+## Supporting Cluster Ideas Around This Batch
+
+Use these as follow-up posts so the product articles are not isolated:
+
+- `Best Bike And Car Accessories Online In India For Daily Utility And Road Comfort`
+- `Best Sports Products For Home Fitness And Daily Workout Routines`
+- `Best Travel Comfort Products Online In India For Beach Trips, Camping, And Outdoor Breaks`
+- `Best Home Improvement Products Online In India For Small Utility Needs And Everyday Fixes`
+
+## Best Publishing Order For These 4 Products
+
+1. Publish the bike goggle face mask article first to strengthen the Automotive cluster.
+2. Publish the gym shaker bottle article next to add a lower-ticket Sports product with clear buying intent.
+3. Publish the inflatable air lounger sofa article third to support Travel with seasonal outdoor-use intent.
+4. Publish the portable immersion heater article fourth to support Home Improvement and utility-led search traffic.
+
 ## Internal Linking Rules
 
 Match the current app structure when publishing each article:
