@@ -125,25 +125,25 @@ export default function RouteLoadingProvider({ children }) {
   return (
     <RouteLoadingContext.Provider value={value}>
       {children}
-      <div
-        aria-hidden={!isVisible}
-        className={`pointer-events-none fixed inset-0 z-[120] transition duration-200 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div className="absolute inset-0 bg-[rgba(20,29,96,0.18)] backdrop-blur-[2px]" />
-        <div className="absolute inset-x-0 top-0 h-1 overflow-hidden bg-white/40">
-          <div className="tt-loader-bar h-full w-1/3 rounded-full bg-[var(--brand-gold)]" />
-        </div>
-        <div className="absolute inset-x-0 top-5 flex justify-center px-4">
-          <div className="flex items-center gap-3 rounded-full border border-white/50 bg-white/92 px-4 py-3 shadow-[0_18px_40px_-30px_rgba(20,29,96,0.45)]">
-            <span className="tt-loader-spinner h-4 w-4 rounded-full border-2 border-[var(--brand-navy)]/20 border-t-[var(--brand-navy)]" />
-            <span className="text-xs font-black uppercase tracking-[0.18em] text-[var(--brand-navy)]">
-              {message}
-            </span>
+      {isVisible ? (
+        <div
+          aria-hidden={!isVisible}
+          className="pointer-events-none fixed inset-0 z-[120] transition duration-200 opacity-100"
+        >
+          <div className="absolute inset-0 bg-[rgba(20,29,96,0.18)] backdrop-blur-[2px]" />
+          <div className="absolute inset-x-0 top-0 h-1 overflow-hidden bg-white/40">
+            <div className="tt-loader-bar h-full w-1/3 rounded-full bg-[var(--brand-gold)]" />
+          </div>
+          <div className="absolute inset-x-0 top-5 flex justify-center px-4">
+            <div className="flex items-center gap-3 rounded-full border border-white/50 bg-white/92 px-4 py-3 shadow-[0_18px_40px_-30px_rgba(20,29,96,0.45)]">
+              <span className="tt-loader-spinner h-4 w-4 rounded-full border-2 border-[var(--brand-navy)]/20 border-t-[var(--brand-navy)]" />
+              <span className="text-xs font-black uppercase tracking-[0.18em] text-[var(--brand-navy)]">
+                {message}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </RouteLoadingContext.Provider>
   );
 }

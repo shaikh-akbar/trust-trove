@@ -375,7 +375,7 @@ export default function ProductPageClient({
                   </summary>
                   <p className="mt-4 text-sm leading-7 text-slate-600">
                     Orders are usually dispatched within 24 to 48 hours and
-                    delivered in 3 to 7 business days depending on location.
+                    delivered in 5 to 7 working days depending on location.
                     Returns can be handled for unused items with original
                     packaging intact.
                   </p>
@@ -793,10 +793,10 @@ export default function ProductPageClient({
                   </span>
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                      Dispatch
+                      Delivery estimate
                     </p>
                     <p className="mt-1 text-sm font-semibold text-slate-950">
-                      Ships in 24-48 hours
+                      5-7 working days
                     </p>
                   </div>
                 </div>

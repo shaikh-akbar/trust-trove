@@ -4,8 +4,8 @@ export default function Loading() {
   return (
     <PageLoadingState
       eyebrow="GoModexa"
-      title="Loading your next stop"
-      description="We are getting the next part of the storefront ready."
+      title="Loading GoModexa"
+      description="Preparing the official GoModexa page for you."
     />
   );
 }

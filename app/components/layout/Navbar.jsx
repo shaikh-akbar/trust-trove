@@ -316,14 +316,14 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             {Array.from({ length: 2 }).map((_, index) => (
               <div key={index} aria-hidden={index === 1} className="flex shrink-0 items-center gap-10 px-5">
                 <span className="text-xs font-extrabold uppercase tracking-[0.18em] whitespace-nowrap text-[var(--brand-gold)]">
-                  GoModexa Edit
+                  GoModexa Official Store
                 </span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/70">/</span>
-                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Only a Few Left in Stock</span>
+                <span className="text-sm font-semibold whitespace-nowrap text-white/95">gomodexa.com</span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/70">/</span>
-                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Order Before It&apos;s Gone</span>
+                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Curated lifestyle shopping across India</span>
                 <span className="text-sm font-semibold whitespace-nowrap text-white/70">/</span>
-                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Picks Are Selling Fast</span>
+                <span className="text-sm font-semibold whitespace-nowrap text-white/95">Shop categories, new arrivals, and best deals</span>
               </div>
             ))}
           </div>
@@ -336,10 +336,10 @@ export default function Navbar({ user, navbarSearchItems = [] }) {
             {Array.from({ length: 2 }).map((_, index) => (
               <div key={index} aria-hidden={index === 1} className="flex shrink-0 items-center gap-4 px-5">
                 <span className="rounded-full bg-[var(--brand-navy)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] whitespace-nowrap text-white">
-                  Dropshipping Notice
+                  Order Fulfillment Notice
                 </span>
                 <p className="text-xs font-semibold whitespace-nowrap text-slate-600 sm:text-sm">
-                  We work as a dropshipping mediator, helping arrange your product with our supplier network and guiding your order through fulfillment.
+                  GoModexa.com is the official GoModexa store. Some orders are fulfilled through our supplier network while we manage the customer shopping experience and order support.
                 </p>
                 <span className="text-sm font-semibold whitespace-nowrap text-slate-300">/</span>
               </div>
