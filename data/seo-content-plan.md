@@ -193,6 +193,80 @@ Use these as follow-up posts so the product articles are not isolated:
 3. Publish the inflatable air lounger sofa article third to support Travel with seasonal outdoor-use intent.
 4. Publish the portable immersion heater article fourth to support Home Improvement and utility-led search traffic.
 
+## New Product-Led SEO Blog Queue
+
+Use this batch next for a mix of automotive utility, home decor gifting intent, and mobile-accessory convenience.
+
+| Product | Price | Suggested Category | Recommended Blog Title | Primary Keyword | Product URL |
+|---|---|---|---|---|---|
+| Portable Tire Repair Kit Tyre Repairing Tool Set With Box - 13 Pcs Set | Rs 448 | Automotive | Portable Tire Repair Kit Tyre Repairing Tool Set With Box - 13 Pcs Set: A Practical Emergency Puncture Repair Guide | portable tire repair kit review | `https://www.gomodexa.com/product/portable-tire-repair-kit-tyre-repairing-tool-set-with-box-13-pcs-set-11060` |
+| Multicolor Flameless Melted Design Candles For Decoration - Set Of 24pc | Rs 448 | Home Decor | Multicolor Flameless Melted Design Candles For Decoration - Set Of 24pc: A Practical Home Decoration And Gifting Guide | flameless decorative candles set review | `https://www.gomodexa.com/product/6552-multicolor-flameless-melted-design-candles-for-decoration-set-of-24pc-5532` |
+| Car Dashboard Mat Mobile Phone Holder Mount | Rs 311 | Automotive | Car Dashboard Mat Mobile Phone Holder Mount: A Practical In-Car Phone Placement Guide | car dashboard mobile holder mat review | `https://www.gomodexa.com/product/car-dashboard-mat-mobile-phone-holder-mount-11945` |
+
+### Recommended SEO Angles For This New Batch
+
+#### 1. Portable Tire Repair Kit Tyre Repairing Tool Set With Box - 13 Pcs Set
+
+- Search intent:
+  buyers looking for an emergency puncture repair kit, compact tyre repair tools, car and bike travel safety accessories, and budget roadside utility products.
+- Supporting keywords:
+  `portable tire repair kit online India`, `13 pcs tyre repairing tool set`, `emergency puncture repair kit`, `car tyre repair tools with box`.
+- Suggested meta description:
+  `Looking for a portable tire repair kit with box? Explore how this 13 pcs tyre repairing tool set supports emergency puncture handling, travel readiness, and everyday vehicle utility.`
+- Content angle:
+  focus on roadside preparedness, compact storage, long-drive usefulness, quick access to tyre repair tools, and why buyers keep practical utility kits in their car or bike travel setup.
+- Internal links:
+  `/categories/automotive`, `/shop`, and the direct product page.
+
+#### 2. Multicolor Flameless Melted Design Candles For Decoration - Set Of 24pc
+
+- Search intent:
+  buyers searching for decorative candles for festivals, room decor, event styling, gifting, and low-maintenance alternatives to traditional candles.
+- Supporting keywords:
+  `flameless decorative candles set`, `multicolor candles for home decor`, `decorative candles for festivals`, `battery candles for room decoration`.
+- Suggested meta description:
+  `Thinking about multicolor flameless melted design candles for decoration? See how this 24-piece set can suit festive decor, table styling, gifting, and cozy room setups.`
+- Content angle:
+  cover festive decoration, ambient room styling, reusable decor value, gifting appeal, and how flameless candle sets fit modern home decor search intent.
+- Internal links:
+  `/categories/home-decor`, `/shop`, and the direct product page.
+
+#### 3. Car Dashboard Mat Mobile Phone Holder Mount
+
+- Search intent:
+  buyers comparing car dashboard phone holders for navigation use, anti-slip placement, hands-free visibility, and simple in-car mobile convenience.
+- Supporting keywords:
+  `car dashboard mobile holder mat`, `mobile phone holder mount for car dashboard`, `anti slip dashboard phone holder`, `car phone stand online India`.
+- Suggested meta description:
+  `Considering a car dashboard mat mobile phone holder mount? Learn how this compact dashboard accessory helps with phone placement, visibility, and everyday navigation convenience.`
+- Content angle:
+  focus on cleaner phone placement, navigation visibility, anti-slip convenience, compact car organization, and why small automotive accessories can convert well through product-led SEO.
+- Internal links:
+  `/categories/automotive`, `/shop`, and the direct product page.
+
+## Ready-To-Write Titles From This New Batch
+
+These titles are the strongest first pass if the goal is quick publishing with clear product intent:
+
+1. `Portable Tire Repair Kit Tyre Repairing Tool Set With Box - 13 Pcs Set: A Practical Emergency Puncture Repair Guide`
+2. `Multicolor Flameless Melted Design Candles For Decoration - Set Of 24pc: A Practical Home Decoration And Gifting Guide`
+3. `Car Dashboard Mat Mobile Phone Holder Mount: A Practical In-Car Phone Placement Guide`
+
+## Other Trending Blog Ideas
+
+These can support the same product clusters while also targeting broader seasonal and commercial search intent:
+
+- `Best Car Emergency Accessories To Keep In Your Vehicle For Daily Travel`
+- `Best Car Mobile Holders And Dashboard Accessories For Navigation Convenience`
+- `Best Tyre Care And Puncture Repair Tools For Car And Bike Owners`
+- `Best Home Decor Products Online In India For Festive Room Styling`
+- `Best Flameless Candles For Decoration, Gifting, And Event Table Setup`
+- `Affordable Home Decoration Ideas Using Reusable Decorative Lights And Candles`
+- `Best Automotive Utility Products Online In India For Road Trips And Daily Commute`
+- `Top Budget Utility Products Under Rs 500 That Make Daily Life Easier`
+- `Trending Home And Car Accessories People Are Buying Online In India`
+- `Festival Decor Essentials For Small Homes, Gifts, And Cozy Corners`
+
 ## Internal Linking Rules
 
 Match the current app structure when publishing each article:
