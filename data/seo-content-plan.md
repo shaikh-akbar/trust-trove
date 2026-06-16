@@ -304,6 +304,65 @@ These can support the same product clusters while also targeting broader seasona
 - `Trending Home And Car Accessories People Are Buying Online In India`
 - `Festival Decor Essentials For Small Homes, Gifts, And Cozy Corners`
 
+## Latest Product-Led SEO Blog Queue
+
+Use this batch next for portable kitchen utility, affordable home decor styling, and compact electronics convenience.
+
+| Product | Price | Suggested Category | Recommended Blog Title | Primary Keyword | Product URL |
+|---|---|---|---|---|---|
+| 133 Portable Usb Electric Juicer - 6 Blades (Protein Shaker) | Rs 415 | Kitchen Tools | 133 Portable Usb Electric Juicer - 6 Blades (Protein Shaker): A Practical Portable Blending Guide | portable usb electric juicer review | `https://www.gomodexa.com/product/133-portable-usb-electric-juicer-6-blades-protein-shaker-76` |
+| Wind Chimes Outdoor Hanging Dragonfly Wind Chime (1 Pc) | Rs 224 | Home Decor | Wind Chimes Outdoor Hanging Dragonfly Wind Chime (1 Pc): A Practical Home Decor And Gifting Guide | dragonfly wind chime review | `https://www.gomodexa.com/product/wind-chimes-outdoor-hanging-dragonfly-wind-chime-1-pc-12129` |
+| Foldable Mini Desk Fan With Adjustable Height And Angle (1 Pc) | Rs 272 | Electronics | Foldable Mini Desk Fan With Adjustable Height And Angle (1 Pc): A Practical Personal Cooling Guide | foldable mini desk fan review | `https://www.gomodexa.com/product/foldable-mini-desk-fan-with-adjustable-height-and-angle-1-pc-17197` |
+
+### Recommended SEO Angles For This Batch
+
+#### 1. 133 Portable Usb Electric Juicer - 6 Blades (Protein Shaker)
+
+- Search intent:
+  buyers looking for a compact personal blender, portable protein-shake mixer, USB juicer bottle, and low-cost blending utility for small daily drink routines.
+- Supporting keywords:
+  `portable usb electric juicer review`, `6 blade protein shaker blender online India`, `portable juicer bottle for shakes`, `usb juicer blender under 500 India`.
+- Suggested meta description:
+  `Explore 133 Portable Usb Electric Juicer - 6 Blades (Protein Shaker), a practical portable blending product designed for quick juice prep, shake mixing, and everyday kitchen convenience.`
+- Content angle:
+  focus on quick drink prep, compact kitchen utility, protein-shake convenience, portability for office or student use, and why small blending tools appeal to budget-conscious shoppers.
+- Internal links:
+  `/categories/kitchen-tools`, `/shop`, and the direct product page.
+
+#### 2. Wind Chimes Outdoor Hanging Dragonfly Wind Chime (1 Pc)
+
+- Search intent:
+  buyers searching for affordable balcony decor, hanging home accents, decorative wind chimes, and gift-friendly home decor under Rs 300.
+- Supporting keywords:
+  `dragonfly wind chime review`, `outdoor hanging wind chime online India`, `decorative wind chimes for balcony`, `home decor gifts under 300 India`.
+- Suggested meta description:
+  `Explore Wind Chimes Outdoor Hanging Dragonfly Wind Chime (1 Pc), a practical home decor product designed for balcony styling, soft decorative ambience, and gift-friendly visual charm.`
+- Content angle:
+  focus on balcony styling, easy hanging placement, affordable decorative charm, giftability, and why small-space decor products can rank through long-tail home decor searches.
+- Internal links:
+  `/categories/home-decor`, `/shop`, and the direct product page.
+
+#### 3. Foldable Mini Desk Fan With Adjustable Height And Angle (1 Pc)
+
+- Search intent:
+  buyers comparing compact desk fans for work tables, study setups, bedside use, and portable personal cooling in smaller spaces.
+- Supporting keywords:
+  `foldable mini desk fan review`, `adjustable usb desk fan online India`, `portable personal cooling fan for desk`, `desk fan under 300 India`.
+- Suggested meta description:
+  `Explore Foldable Mini Desk Fan With Adjustable Height And Angle (1 Pc), a practical electronics product designed for compact desk cooling, adjustable airflow, and easier everyday portability.`
+- Content angle:
+  focus on compact comfort, adjustable airflow, foldable storage, portability between rooms or desks, and why low-cost electronics with a clear daily use case tend to perform well in SEO.
+- Internal links:
+  `/categories/electronics`, `/shop`, and the direct product page.
+
+## Ready-To-Write Titles From This Latest Batch
+
+These titles are the strongest first pass if the goal is conversion-friendly long-tail SEO:
+
+1. `133 Portable Usb Electric Juicer - 6 Blades (Protein Shaker): A Practical Portable Blending Guide`
+2. `Wind Chimes Outdoor Hanging Dragonfly Wind Chime (1 Pc): A Practical Home Decor And Gifting Guide`
+3. `Foldable Mini Desk Fan With Adjustable Height And Angle (1 Pc): A Practical Personal Cooling Guide`
+
 ## Internal Linking Rules
 
 Match the current app structure when publishing each article:
