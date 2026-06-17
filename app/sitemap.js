@@ -1,6 +1,6 @@
 import { BLOG_POSTS, BLOGS_PER_PAGE } from "../lib/content";
 import { getBestDealsChildPageDefinitions } from "../lib/product-deals";
-import { getBrandSummaries, getCategorySummaries } from "../lib/product";
+import { getBrandSummaries, getCategorySummaries, getProductsPage } from "../lib/product";
 import { getProductHref } from "../lib/product-route";
 import { getSupabaseAdmin } from "../lib/supabase-admin";
 import { getSiteUrl, hasIndexableProductPageSignals } from "../lib/seo";
