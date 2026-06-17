@@ -16,23 +16,30 @@ export async function generateMetadata({ searchParams }) {
   const page = getPageNumber(params?.page);
   const query = getQueryValue(params?.q);
   const categorySlug = getQueryValue(params?.category);
+  const pageSuffix = page > 1 ? ` | Page ${page}` : "";
 
   return buildCollectionMetadata({
-    title: "Shop",
+    title: `Shop Products Online In India${pageSuffix}`,
     path: "/shop",
     page,
     query,
     hasFilters: Boolean(categorySlug),
+    allowPaginatedIndex: true,
     description:
-      "Browse the full GoModexa catalog with product search, price filtering, category discovery, and best deals under 499, 999, and 1999.",
+      page > 1
+        ? `Browse page ${page} of the full GoModexa catalog with product discovery across fashion, beauty, home, gadgets, travel, and everyday essentials.`
+        : "Browse the full GoModexa catalog with product discovery across fashion, beauty, home, gadgets, travel, and everyday essentials.",
     keywords: [
       "shop GoModexa",
+      "shop products online India",
+      "buy lifestyle products online India",
       "product filters",
       "search products online",
       "best deals under 499",
       "best deals under 999",
       "best deals under 1999",
     ],
+    category: "ecommerce",
   });
 }
 
@@ -72,6 +79,8 @@ export default async function ShopPage({ searchParams }) {
               description:
                 "Browse the full GoModexa catalog with product search and collection discovery.",
               path: "/shop",
+              page,
+              totalPages,
               items: products.map((product) => ({
                 name: product.title || product.name,
                 url: getProductHref(product),

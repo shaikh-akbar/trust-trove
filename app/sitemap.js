@@ -6,6 +6,7 @@ import { getSupabaseAdmin } from "../lib/supabase-admin";
 import { getSiteUrl, hasIndexableProductPageSignals } from "../lib/seo";
 
 const STOREFRONT_SUPPLIER_NAMES = ["wukusy", "gomodexa"];
+const CATALOG_PAGE_SIZE = 24;
 
 function toDate(value) {
   const parsed = new Date(value || Date.now());
@@ -68,10 +69,12 @@ async function getAllIndexedProducts() {
 }
 
 export default async function sitemap() {
-  const [categories, brands, products] = await Promise.all([
+  const [categories, brands, products, shopPage, newArrivalsPage] = await Promise.all([
     getCategorySummaries({ forceFresh: true }),
     getBrandSummaries({ forceFresh: true }),
     getAllIndexedProducts(),
+    getProductsPage({ page: 1, pageSize: CATALOG_PAGE_SIZE }),
+    getProductsPage({ page: 1, pageSize: CATALOG_PAGE_SIZE, newArrivalsOnly: true }),
   ]);
   const now = new Date();
 
@@ -112,6 +115,23 @@ export default async function sitemap() {
     changeFrequency: "weekly",
     priority: 0.8,
   }));
+  const categoryPaginationRoutes = (categories || []).flatMap((category) => {
+    const totalPages = Math.max(
+      1,
+      Math.ceil(Number(category?.count || 0) / CATALOG_PAGE_SIZE)
+    );
+
+    return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+      const pageNumber = index + 2;
+
+      return {
+        url: getSiteUrl(`/categories/${category.slug}?page=${pageNumber}`),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.62,
+      };
+    });
+  });
 
   const brandRoutes = (brands || []).map((brand) => ({
     url: getSiteUrl(`/brands/${brand.slug}`),
@@ -119,6 +139,23 @@ export default async function sitemap() {
     changeFrequency: "weekly",
     priority: 0.75,
   }));
+  const brandPaginationRoutes = (brands || []).flatMap((brand) => {
+    const totalPages = Math.max(
+      1,
+      Math.ceil(Number(brand?.count || 0) / CATALOG_PAGE_SIZE)
+    );
+
+    return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+      const pageNumber = index + 2;
+
+      return {
+        url: getSiteUrl(`/brands/${brand.slug}?page=${pageNumber}`),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.58,
+      };
+    });
+  });
 
   const blogRoutes = BLOG_POSTS.map((post) => ({
     url: getSiteUrl(`/blogs/${post.slug}`),
@@ -147,6 +184,34 @@ export default async function sitemap() {
     changeFrequency: "daily",
     priority: 0.78,
   }));
+  const shopIndexPageCount = Math.max(1, Number(shopPage?.totalPages || 1));
+  const shopPaginationRoutes = Array.from(
+    { length: Math.max(0, shopIndexPageCount - 1) },
+    (_, index) => {
+      const pageNumber = index + 2;
+
+      return {
+        url: getSiteUrl(`/shop?page=${pageNumber}`),
+        lastModified: now,
+        changeFrequency: "daily",
+        priority: 0.7,
+      };
+    }
+  );
+  const newArrivalsPageCount = Math.max(1, Number(newArrivalsPage?.totalPages || 1));
+  const newArrivalsPaginationRoutes = Array.from(
+    { length: Math.max(0, newArrivalsPageCount - 1) },
+    (_, index) => {
+      const pageNumber = index + 2;
+
+      return {
+        url: getSiteUrl(`/new-arrivals?page=${pageNumber}`),
+        lastModified: now,
+        changeFrequency: "daily",
+        priority: 0.72,
+      };
+    }
+  );
 
   const productRoutes = (products || []).map((product) => ({
     url: getSiteUrl(getProductHref(product)),
@@ -159,10 +224,14 @@ export default async function sitemap() {
   return [
     ...staticRoutes,
     ...categoryRoutes,
+    ...categoryPaginationRoutes,
     ...brandRoutes,
+    ...brandPaginationRoutes,
+    ...shopPaginationRoutes,
     ...blogIndexRoutes,
     ...blogRoutes,
     ...bestDealsRoutes,
+    ...newArrivalsPaginationRoutes,
     ...productRoutes,
   ];
 }

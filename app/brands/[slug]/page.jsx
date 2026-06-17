@@ -42,8 +42,10 @@ export async function generateMetadata({ params, searchParams }) {
     path: `/brands/${slug}`,
     page,
     query,
+    allowPaginatedIndex: true,
     description: buildBrandMetaDescription(brand, { page }),
     keywords: buildBrandKeywords(brand),
+    category: "brand collection",
   });
 }
 
@@ -88,6 +90,8 @@ export default async function BrandDetailPage({ params, searchParams }) {
                 brand.description ||
                 `Browse ${brand.title} products on GoModexa.`,
               path: `/brands/${slug}`,
+              page,
+              totalPages,
               items: products.map((product) => ({
                 name: product.title || product.name,
                 url: getProductHref(product),

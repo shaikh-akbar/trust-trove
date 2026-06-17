@@ -51,9 +51,15 @@ export async function generateMetadata({ params, searchParams }) {
     path: `/categories/${slug}`,
     page,
     query,
+    allowPaginatedIndex: true,
     description: buildCategoryMetaDescription(category, { page }),
     keywords: buildCategoryKeywords(category),
+    category: normalizeCategoryNameForMetadata(category?.title),
   });
+}
+
+function normalizeCategoryNameForMetadata(value) {
+  return String(value || "category products").trim();
 }
 
 export default async function CategoryDetailPage({ params, searchParams }) {
@@ -100,6 +106,8 @@ export default async function CategoryDetailPage({ params, searchParams }) {
               name: category.title,
               description: categoryMetaDescription,
               path: `/categories/${slug}`,
+              page,
+              totalPages,
               items: products.map((product) => ({
                 name: product.title || product.name,
                 url: getProductHref(product),

@@ -15,15 +15,25 @@ export async function generateMetadata({ searchParams }) {
   const params = await searchParams;
   const page = getPageNumber(params?.page);
   const query = getQueryValue(params?.q);
+  const pageSuffix = page > 1 ? ` | Page ${page}` : "";
 
   return buildCollectionMetadata({
-    title: "New Arrivals",
+    title: `New Arrivals Online In India${pageSuffix}`,
     path: "/new-arrivals",
     page,
     query,
+    allowPaginatedIndex: true,
     description:
-      "Discover the newest products on GoModexa through a more premium launch-focused shopping experience.",
-    keywords: ["new arrivals", "latest products", "fresh drops GoModexa"],
+      page > 1
+        ? `Browse page ${page} of the latest new arrivals on GoModexa, featuring fresh products across fashion, home, beauty, gadgets, and daily-use categories.`
+        : "Discover the latest new arrivals on GoModexa across fashion, home, beauty, gadgets, and everyday lifestyle categories.",
+    keywords: [
+      "new arrivals online India",
+      "latest products online India",
+      "fresh drops GoModexa",
+      "new lifestyle products India",
+    ],
+    category: "new arrivals",
   });
 }
 
@@ -59,6 +69,8 @@ export default async function NewArrivalsPage({ searchParams }) {
               description:
                 "Discover the newest products on GoModexa through a launch-focused shopping experience.",
               path: "/new-arrivals",
+              page,
+              totalPages,
               items: products.map((product) => ({
                 name: product.title || product.name,
                 url: getProductHref(product),

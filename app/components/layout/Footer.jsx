@@ -15,6 +15,15 @@ const footerCollections = [
   { href: "/brand-resources", label: "Brand Resources" },
 ];
 
+const footerSeoLinks = [
+  { href: "/categories/health-and-beauty", label: "Health And Beauty" },
+  { href: "/categories/home-decor", label: "Home Decor" },
+  { href: "/categories/automotive", label: "Automotive" },
+  { href: "/categories/travel", label: "Travel" },
+  { href: "/blogs/best-health-and-beauty-products-online-india-self-care-guide", label: "Self-Care Buying Guide" },
+  { href: "/blogs/best-automotive-products-online-india-car-utility-guide", label: "Automotive Buying Guide" },
+];
+
 const footerSupport = [
   { href: "/shipping-policy", label: "Shipping Policy" },
   { href: "/cancellation-refund-policy", label: "Cancellation & Refund" },
@@ -66,7 +75,7 @@ const Footer = () => {
           </div>
 
           <div className="rounded-[2rem] border border-[var(--brand-navy)]/10 bg-white/55 p-6 shadow-[0_24px_70px_-56px_rgba(20,29,96,0.22)] backdrop-blur sm:p-7">
-            <div className="grid gap-8 sm:grid-cols-2">
+            <div className="grid gap-8 sm:grid-cols-3">
               <div>
                 <h4 className="text-[11px] font-extrabold uppercase tracking-[0.24em] text-[var(--brand-navy)]">Shop</h4>
                 <ul className="mt-4 space-y-3 text-sm text-slate-600">
@@ -84,6 +93,19 @@ const Footer = () => {
                 <h4 className="text-[11px] font-extrabold uppercase tracking-[0.24em] text-[var(--brand-navy)]">Policies</h4>
                 <ul className="mt-4 space-y-3 text-sm text-slate-600">
                   {footerSupport.map((item) => (
+                    <li key={item.href}>
+                      <Link href={item.href} className="transition hover:text-[var(--brand-navy)]">
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-[11px] font-extrabold uppercase tracking-[0.24em] text-[var(--brand-navy)]">SEO Paths</h4>
+                <ul className="mt-4 space-y-3 text-sm text-slate-600">
+                  {footerSeoLinks.map((item) => (
                     <li key={item.href}>
                       <Link href={item.href} className="transition hover:text-[var(--brand-navy)]">
                         {item.label}

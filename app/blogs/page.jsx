@@ -5,7 +5,11 @@ import {
   getCategoryPathFromTitle,
   getSortedBlogPosts,
 } from "../../lib/content";
-import { buildMetadata } from "../../lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildMetadata,
+} from "../../lib/seo";
 
 function parsePageValue(value) {
   const raw = Array.isArray(value) ? value[0] : value;
@@ -98,8 +102,18 @@ export async function generateMetadata({ searchParams }) {
   return buildMetadata({
     title: `Blogs${pageSuffix}`,
     path: buildPageHref(page),
-    description: "Read GoModexa blog articles covering style, gifting, store trust, and smarter shopping decisions.",
-    keywords: ["GoModexa blogs", "shopping blog", "style journal", "gift guide"],
+    description:
+      page > 1
+        ? `Browse page ${page} of the GoModexa blog for product guides, shopping advice, gifting ideas, and category-focused SEO content.`
+        : "Read GoModexa blog articles covering product guides, shopping advice, gifting ideas, and smarter category discovery.",
+    keywords: [
+      "GoModexa blogs",
+      "shopping blog",
+      "product buying guide India",
+      "gift guide",
+      "category shopping tips",
+    ],
+    category: "blog",
   });
 }
 
@@ -115,6 +129,36 @@ export default async function BlogsPage({ searchParams }) {
 
   return (
     <div className="bg-[var(--surface-soft)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Blogs", path: "/blogs" },
+            ])
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildCollectionPageSchema({
+              name: "GoModexa Blogs",
+              description:
+                "Browse practical GoModexa blog guides for products, categories, gifting, and smarter ecommerce discovery.",
+              path: buildPageHref(safePage),
+              page: safePage,
+              totalPages,
+              items: paginatedPosts.map((post) => ({
+                name: post.title,
+                url: `/blogs/${post.slug}`,
+              })),
+            })
+          ),
+        }}
+      />
       <section className="border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">GoModexa Journal</p>
