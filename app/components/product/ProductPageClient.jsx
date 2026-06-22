@@ -294,6 +294,7 @@ export default function ProductPageClient({
                   alt={product.title}
                   fill
                   preload
+                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 46vw"
                   className="object-cover"
                 />
@@ -321,6 +322,7 @@ export default function ProductPageClient({
                       alt={img.alt || `${product.title} view ${index + 1}`}
                       width={160}
                       height={160}
+                      unoptimized
                       sizes="(max-width: 640px) 20vw, 10vw"
                       className="aspect-square w-full object-cover"
                     />
