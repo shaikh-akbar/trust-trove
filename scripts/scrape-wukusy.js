@@ -10,6 +10,7 @@ const DEFAULT_OUTPUT_JSON = path.join(process.cwd(), "public", "wukusy-products.
 const DEFAULT_START_URL = "https://wukusy.app/dropshiper/index";
 const DEFAULT_DELAY_MS = 150;
 const STOREFRONT_BRAND_NAME = "GoModexa";
+const DEFAULT_LIMIT_PER_CATEGORY = 100;
 const WUKUSY_CATEGORY_PRESETS = new Map([
   [
     "electronics",
@@ -51,6 +52,8 @@ const WUKUSY_CATEGORY_PRESETS = new Map([
       handle: "health-and-beauty",
     },
   ],
+  ["health care", { id: "15", title: "Health & Beauty", handle: "health-and-beauty" }],
+  ["healthcare", { id: "15", title: "Health & Beauty", handle: "health-and-beauty" }],
   [
     "automotive",
     {
@@ -109,8 +112,12 @@ function parseArgs(argv) {
     offset: 0,
     cookie: process.env.WUKUSY_COOKIE || "",
     categoryQuery: "",
+    categoryQueries: [],
     inStockOnly: false,
     categoryPreset: "",
+    limitPerCategory: DEFAULT_LIMIT_PER_CATEGORY,
+    requireImages: true,
+    productUrls: [],
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -150,6 +157,13 @@ function parseArgs(argv) {
         args.cookie = nextValue || args.cookie;
         index += 1;
         break;
+      case "--product-urls":
+      case "--products":
+        args.productUrls = splitCategoryList(nextValue)
+          .map((item) => normalizeText(item))
+          .filter((item) => /\/merchant\/product-details\/\d+/i.test(item));
+        index += 1;
+        break;
       case "--crawl":
         args.crawl = true;
         break;
@@ -157,6 +171,21 @@ function parseArgs(argv) {
       case "--category-query":
         args.categoryQuery = normalizeText(nextValue);
         index += 1;
+        break;
+      case "--categories":
+      case "--category-list":
+        args.categoryQueries = splitCategoryList(nextValue);
+        index += 1;
+        break;
+      case "--limit-per-category":
+        args.limitPerCategory = normalizeInteger(nextValue, DEFAULT_LIMIT_PER_CATEGORY) || DEFAULT_LIMIT_PER_CATEGORY;
+        index += 1;
+        break;
+      case "--require-images":
+        args.requireImages = true;
+        break;
+      case "--allow-missing-images":
+        args.requireImages = false;
         break;
       case "--preset":
       case "--category-preset":
@@ -172,6 +201,15 @@ function parseArgs(argv) {
   }
 
   return args;
+}
+
+function splitCategoryList(value) {
+  return unique(
+    String(value || "")
+      .split(/[;,|]/g)
+      .map((item) => normalizeText(item))
+      .filter(Boolean)
+  );
 }
 
 function getFirstDefined(source, keys, fallback = null) {
@@ -362,6 +400,23 @@ async function fetchHtml(url, cookie = "", referer = "") {
   return response.text();
 }
 
+async function fetchHtmlWithRetries(url, cookie = "", referer = "", attempts = 3) {
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= Math.max(1, attempts); attempt += 1) {
+    try {
+      return await fetchHtml(url, cookie, referer);
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts) {
+        await sleep(Math.min(750 * attempt, 2000));
+      }
+    }
+  }
+
+  throw lastError;
+}
+
 function toAbsoluteUrl(target, baseUrl) {
   try {
     return new URL(target, baseUrl).toString();
@@ -372,6 +427,30 @@ function toAbsoluteUrl(target, baseUrl) {
 
 function unique(items) {
   return Array.from(new Set((items || []).filter(Boolean)));
+}
+
+function buildSeoTitle(title, categoryTitle) {
+  return `${title} | GoModexa ${categoryTitle} Buy Online India`;
+}
+
+function buildSeoDescription(title, categoryTitle, stockText, imageCount) {
+  const imagePhrase = imageCount > 1 ? `${imageCount} product images` : "product images";
+  return `Shop ${title} from GoModexa's ${categoryTitle} collection. ${stockText}. Browse the ${imagePhrase}, compare the details, and buy online with a cleaner SEO-friendly product page.`;
+}
+
+function buildSeoKeywords(title, categoryTitle) {
+  return unique([
+    title,
+    `${title} online`,
+    `${title} India`,
+    `buy ${title}`,
+    categoryTitle,
+    `${categoryTitle} products`,
+    `${categoryTitle} online`,
+    `${categoryTitle} India`,
+    "GoModexa",
+    "GoModexa products",
+  ]).join(", ");
 }
 
 function slugify(value) {
@@ -429,6 +508,12 @@ function resolveCategoryPreset(categoryPreset) {
   return WUKUSY_CATEGORY_PRESETS.get(normalizedPreset) || null;
 }
 
+function normalizeCategoryQueries(args) {
+  const explicitList = Array.isArray(args.categoryQueries) ? args.categoryQueries : [];
+  const fromSingle = normalizeText(args.categoryQuery) ? [normalizeText(args.categoryQuery)] : [];
+  return unique([...explicitList, ...fromSingle]);
+}
+
 function buildPresetStartUrl(categoryPreset) {
   const preset = resolveCategoryPreset(categoryPreset);
   return preset ? `https://wukusy.app/dropshiper/category/${preset.id}` : "";
@@ -467,6 +552,8 @@ function normalizeCategorySearchValue(value) {
     .toLowerCase()
     .replace(/&/g, "and")
     .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\bhealth care\b/g, "health and beauty")
+    .replace(/\bhealthcare\b/g, "health and beauty")
     .trim();
 }
 
@@ -624,6 +711,46 @@ function extractImageUrls(html, baseUrl) {
   );
 }
 
+function hasUsableImages(product) {
+  return Array.isArray(product?.image_urls) && product.image_urls.length > 0;
+}
+
+function enrichCuratedProduct(product, categoryTitle, categoryHandle, options = {}) {
+  const imageUrls = unique(product?.image_urls);
+  const stockQty = Math.max(
+    0,
+    normalizeInteger(
+      product?.stock_qty ?? product?.inventory_quantity ?? options.stockQty ?? 0,
+      0
+    )
+  );
+  const stockText = stockQty > 0 ? `${stockQty} pcs left` : "limited stock";
+  const title = normalizeText(product?.title || product?.name || "Untitled product");
+  const resolvedCategoryTitle = normalizeText(categoryTitle || product?.category_title || "Curated");
+  const resolvedCategoryHandle = normalizeText(categoryHandle || product?.category_handle || slugify(resolvedCategoryTitle));
+
+  return {
+    ...product,
+    vendor: STOREFRONT_BRAND_NAME,
+    brand: STOREFRONT_BRAND_NAME,
+    title,
+    main_image: product?.main_image || imageUrls[0] || "",
+    image_urls: imageUrls,
+    stock_qty: stockQty,
+    inventory_quantity: stockQty,
+    stock_text: stockText,
+    status: stockQty > 0 ? "active" : "out_of_stock",
+    seo_title: buildSeoTitle(title, resolvedCategoryTitle),
+    seo_description: buildSeoDescription(title, resolvedCategoryTitle, stockText, imageUrls.length),
+    seo_keywords: buildSeoKeywords(title, resolvedCategoryTitle),
+    short_description: `${stockText}. Browse the images and product details from GoModexa's ${resolvedCategoryTitle} edit.`,
+    category_title: resolvedCategoryTitle,
+    category_handle: resolvedCategoryHandle,
+    category_url: product?.category_url || "",
+    canonical_path: `/product/${slugify(`${title}-${product?.wukusy_product_id || product?.sku || "wukusy"}`)}`,
+  };
+}
+
 function extractTextMatches(text, pattern, limit = 10) {
   return unique(Array.from(text.matchAll(pattern)).map((match) => normalizeText(match[0]))).slice(0, limit);
 }
@@ -729,6 +856,7 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
   const productListingStockMap = new Map();
   const discoveredCategories = new Map();
   const products = [];
+  const failedProducts = [];
   const targetProductCount =
     typeof limit === "number" && limit > 0 ? offset + limit : null;
   const shouldStopCategoryDiscovery = () =>
@@ -768,7 +896,13 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
       url: resolvedCategory.url || nextCategoryUrl,
     });
     safeLog(`Crawling category page: ${nextCategoryUrl}`);
-    const html = await fetchHtml(nextCategoryUrl, cookie, startUrl);
+    let html = null;
+    try {
+      html = await fetchHtmlWithRetries(nextCategoryUrl, cookie, startUrl, 2);
+    } catch (error) {
+      safeLog(`Skipping category page after fetch failure: ${nextCategoryUrl} (${error.message})`);
+      continue;
+    }
 
     extractProductEntries(html, nextCategoryUrl).forEach((entry) => {
       if (!productCategoryMap.has(entry.url)) {
@@ -811,21 +945,29 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
 
   for (const productUrl of selectedProductLinks) {
     safeLog(`Scraping product detail: ${productUrl}`);
-    const html = await fetchHtml(productUrl, cookie, startUrl);
-    const category = productCategoryMap.get(productUrl) || null;
-    const listingStock = productListingStockMap.get(productUrl) || null;
-    const resolvedCategory = resolveForcedCategory(category, {
-      startUrl,
-      categoryUrl: category?.url || "",
-    });
+    try {
+      const html = await fetchHtmlWithRetries(productUrl, cookie, startUrl, 3);
+      const category = productCategoryMap.get(productUrl) || null;
+      const listingStock = productListingStockMap.get(productUrl) || null;
+      const resolvedCategory = resolveForcedCategory(category, {
+        startUrl,
+        categoryUrl: category?.url || "",
+      });
     products.push({
       ...extractDetailData(html, productUrl, {
         stockCandidates: listingStock?.stockText ? [listingStock.stockText] : [],
       }),
       category_title: resolvedCategory.title,
-      category_handle: resolvedCategory.handle,
-      category_url: resolvedCategory.url,
-    });
+        category_handle: resolvedCategory.handle,
+        category_url: resolvedCategory.url,
+      });
+    } catch (error) {
+      failedProducts.push({
+        url: productUrl,
+        error: error?.message || "fetch failed",
+      });
+      safeLog(`Skipping product after fetch failure: ${productUrl} (${error.message})`);
+    }
 
     if (delayMs > 0) {
       await sleep(delayMs);
@@ -838,6 +980,114 @@ async function crawlWukusySite({ startUrl, cookie, delayMs, limit, offset = 0 })
     categories: Array.from(discoveredCategories.values()),
     discoveredProductCount: productLinks.length,
     scrapedProductCount: products.length,
+    failedProductCount: failedProducts.length,
+    failedProducts,
+    products,
+  };
+}
+
+async function scrapeSpecificProductUrls({ productUrls, cookie, delayMs, startUrl }) {
+  const uniqueProductUrls = unique(productUrls).filter((item) =>
+    /\/merchant\/product-details\/\d+/i.test(item)
+  );
+  const products = [];
+  const failedProducts = [];
+
+  for (const productUrl of uniqueProductUrls) {
+    safeLog(`Scraping product detail: ${productUrl}`);
+
+    try {
+      const html = await fetchHtmlWithRetries(productUrl, cookie, startUrl || DEFAULT_START_URL, 3);
+      products.push({
+        ...extractDetailData(html, productUrl, {
+          stockCandidates: [],
+        }),
+        category_title: "Uncategorized",
+        category_handle: "uncategorized",
+        category_url: "",
+      });
+    } catch (error) {
+      failedProducts.push({
+        url: productUrl,
+        error: error?.message || "fetch failed",
+      });
+      safeLog(`Skipping product after fetch failure: ${productUrl} (${error.message})`);
+    }
+
+    if (delayMs > 0) {
+      await sleep(delayMs);
+    }
+  }
+
+  return {
+    startUrl: startUrl || DEFAULT_START_URL,
+    discoveredCategoryCount: 0,
+    categories: [],
+    discoveredProductCount: uniqueProductUrls.length,
+    scrapedProductCount: products.length,
+    failedProductCount: failedProducts.length,
+    failedProducts,
+    products,
+  };
+}
+
+async function scrapeCuratedCategorySet(args) {
+  const categoryQueries = normalizeCategoryQueries(args);
+  const crawlResult = await crawlWukusySite({
+    startUrl: args.startUrl,
+    cookie: args.cookie,
+    delayMs: args.delayMs,
+    limit: null,
+    offset: 0,
+  });
+  const seenProductKeys = new Set();
+  const categoryGroups = [];
+  const products = [];
+
+  for (const query of categoryQueries) {
+    const matchedProducts = crawlResult.products
+      .filter((product) => matchesCategoryQuery(product, query))
+      .filter((product) => !args.requireImages || hasUsableImages(product))
+      .map((product) =>
+        enrichCuratedProduct(
+          product,
+          product?.category_title || query,
+          product?.category_handle || slugify(query),
+          {
+            stockQty: product?.stock_qty ?? product?.inventory_quantity ?? 0,
+          }
+        )
+      )
+      .filter((product) => product?.title);
+
+    const limitedProducts = matchedProducts.slice(0, Math.max(1, args.limitPerCategory));
+    categoryGroups.push({
+      query,
+      matchedCount: matchedProducts.length,
+      selectedCount: limitedProducts.length,
+      products: limitedProducts,
+    });
+
+    for (const product of limitedProducts) {
+      const dedupeKey = String(product?.sku || product?.wukusy_product_id || product?.canonical_path || product?.title);
+      if (seenProductKeys.has(dedupeKey)) {
+        continue;
+      }
+
+      seenProductKeys.add(dedupeKey);
+      products.push(product);
+    }
+  }
+
+  return {
+    startUrl: crawlResult.startUrl,
+    discoveredCategoryCount: crawlResult.discoveredCategoryCount,
+    categories: crawlResult.categories,
+    discoveredProductCount: crawlResult.discoveredProductCount,
+    scrapedProductCount: products.length,
+    failedProductCount: crawlResult.failedProductCount,
+    failedProducts: crawlResult.failedProducts,
+    categoryGroups,
     products,
   };
 }
@@ -847,14 +1097,54 @@ async function main() {
   let products = [];
   let metadata = {};
   const presetStartUrl = buildPresetStartUrl(args.categoryPreset);
+  const categoryQueries = normalizeCategoryQueries(args);
+  const shouldRunCuratedMultiCategory = categoryQueries.length > 1;
 
   if (presetStartUrl) {
     args.startUrl = presetStartUrl;
   }
 
-  const shouldCrawl = args.crawl || (!args.sourceUrl && !args.sourceFile);
+  const hasSpecificProductUrls = Array.isArray(args.productUrls) && args.productUrls.length > 0;
+  const shouldCrawl =
+    args.crawl || shouldRunCuratedMultiCategory || hasSpecificProductUrls || (!args.sourceUrl && !args.sourceFile);
 
-  if (shouldCrawl) {
+  if (shouldRunCuratedMultiCategory) {
+    const crawlResult = await scrapeCuratedCategorySet({
+      ...args,
+      categoryQueries,
+    });
+    products = crawlResult.products;
+    metadata = {
+      source: "multi-crawl",
+      startUrl: crawlResult.startUrl,
+      categoryQueries,
+      categoryGroups: crawlResult.categoryGroups,
+      discoveredCategoryCount: crawlResult.discoveredCategoryCount,
+      categories: crawlResult.categories,
+      discoveredProductCount: crawlResult.discoveredProductCount,
+      scrapedProductCount: crawlResult.scrapedProductCount,
+      failedProductCount: crawlResult.failedProductCount,
+      failedProducts: crawlResult.failedProducts,
+      limitPerCategory: args.limitPerCategory,
+    };
+  } else if (hasSpecificProductUrls) {
+    const crawlResult = await scrapeSpecificProductUrls({
+      productUrls: args.productUrls,
+      cookie: args.cookie,
+      delayMs: args.delayMs,
+      startUrl: args.startUrl,
+    });
+    products = crawlResult.products;
+    metadata = {
+      source: "product-urls",
+      startUrl: crawlResult.startUrl,
+      productUrls: args.productUrls,
+      discoveredProductCount: crawlResult.discoveredProductCount,
+      scrapedProductCount: crawlResult.scrapedProductCount,
+      failedProductCount: crawlResult.failedProductCount,
+      failedProducts: crawlResult.failedProducts,
+    };
+  } else if (shouldCrawl) {
     const crawlResult = await crawlWukusySite({
       startUrl: args.startUrl,
       cookie: args.cookie,
@@ -871,6 +1161,8 @@ async function main() {
       categories: crawlResult.categories,
       discoveredProductCount: crawlResult.discoveredProductCount,
       scrapedProductCount: crawlResult.scrapedProductCount,
+      failedProductCount: crawlResult.failedProductCount,
+      failedProducts: crawlResult.failedProducts,
       offset: args.offset,
     };
   } else {
@@ -883,7 +1175,7 @@ async function main() {
     };
   }
 
-  if (args.categoryQuery) {
+  if (!shouldRunCuratedMultiCategory && args.categoryQuery) {
     products = products.filter((product) => matchesCategoryQuery(product, args.categoryQuery));
     metadata.categoryQuery = args.categoryQuery;
   }
@@ -913,7 +1205,19 @@ async function main() {
   safeLog(`Saved ${products.length} Wukusy products to ${args.jsonOut}`);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  scrapeCuratedCategorySet,
+  crawlWukusySite,
+  parseArgs,
+  normalizeCategoryQueries,
+  matchesCategoryQuery,
+  hasUsableImages,
+  buildPresetStartUrl,
+};

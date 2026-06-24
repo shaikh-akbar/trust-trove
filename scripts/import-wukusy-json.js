@@ -220,6 +220,26 @@ function buildSeoTitle(title, categoryTitle) {
   return safeTruncate(`${title} | ${categoryTitle} by ${STOREFRONT_BRAND_NAME}`, 255);
 }
 
+function buildSeoKeywords(title, categoryTitle) {
+  return safeTruncate(
+    [
+      title,
+      `${title} online`,
+      `${title} India`,
+      `buy ${title}`,
+      categoryTitle,
+      `${categoryTitle} products`,
+      `${categoryTitle} online`,
+      `${categoryTitle} India`,
+      STOREFRONT_BRAND_NAME,
+      `${STOREFRONT_BRAND_NAME} ${categoryTitle}`,
+    ]
+      .filter(Boolean)
+      .join(", "),
+    1000
+  );
+}
+
 function buildSeoDescription(title, categoryTitle, stockQty) {
   const stockText =
     typeof stockQty === "number" && stockQty > 0
@@ -227,7 +247,7 @@ function buildSeoDescription(title, categoryTitle, stockQty) {
       : "limited stock";
 
   return safeTruncate(
-    `Buy ${title} from the ${STOREFRONT_BRAND_NAME} ${categoryTitle} collection. Current supplier availability: ${stockText}. View pricing, images, and product details online.`,
+    `Buy ${title} from the ${STOREFRONT_BRAND_NAME} ${categoryTitle} collection. ${stockText}. View pricing, images, and product details online.`,
     320
   );
 }
@@ -237,6 +257,8 @@ function normalizeCategorySearchValue(value) {
     .toLowerCase()
     .replace(/&/g, "and")
     .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\bhealth care\b/g, "health and beauty")
+    .replace(/\bhealthcare\b/g, "health and beauty")
     .trim();
 }
 
@@ -296,7 +318,7 @@ function estimateShippingShare(weightGrams) {
 
 function calculateSupplierDisplayPrice({ costPrice, gstPercent, weightGrams, marginAmount }) {
   const supplierCost = Math.max(0, toNumber(costPrice, 0));
-  const resolvedGstPercent = 18;
+  const resolvedGstPercent = Math.max(0, toNumber(gstPercent, 18)) || 18;
   const shippingShare = estimateShippingShare(weightGrams);
   const gstAmount = roundCurrency(supplierCost * (resolvedGstPercent / 100));
   const shippingTaxAmount = roundCurrency(shippingShare * (18 / 100));
@@ -319,22 +341,39 @@ function calculateSupplierDisplayPrice({ costPrice, gstPercent, weightGrams, mar
 
 function resolveImportedStockQty(product) {
   const stockCandidates = [
+    product?.stock_qty,
+    product?.inventory_quantity,
+    product?.stockQty,
+    product?.stock_text,
+    product?.stockText,
     ...(Array.isArray(product?.stockCandidates) ? product.stockCandidates : []),
     ...(Array.isArray(product?.debug_extract?.stockCandidates) ? product.debug_extract.stockCandidates : []),
     ...(Array.isArray(product?.raw_payload?.stockCandidates) ? product.raw_payload.stockCandidates : []),
     ...(Array.isArray(product?.raw_payload?.debug_extract?.stockCandidates)
       ? product.raw_payload.debug_extract.stockCandidates
       : []),
-  ]
-    .map((value) => String(value || "").trim())
-    .filter(Boolean);
+  ];
 
   for (const candidate of stockCandidates) {
-    if (/out of stock|unavailable|0\s*pcs?\s*left/i.test(candidate)) {
+    if (typeof candidate === "number" && Number.isFinite(candidate)) {
+      return Math.max(0, Math.round(candidate));
+    }
+
+    const normalizedCandidate = String(candidate || "").trim();
+    if (!normalizedCandidate) {
+      continue;
+    }
+
+    if (/out of stock|unavailable|0\s*pcs?\s*left/i.test(normalizedCandidate)) {
       return 0;
     }
 
-    const numericMatch = candidate.match(/([0-9]+)\s*pcs?\s*left/i);
+    const bareNumber = normalizedCandidate.match(/^[0-9]+$/);
+    if (bareNumber) {
+      return Math.max(0, toInteger(bareNumber[0]) || 0);
+    }
+
+    const numericMatch = normalizedCandidate.match(/([0-9]+)\s*pcs?\s*left/i);
     if (numericMatch) {
       return Math.max(0, toInteger(numericMatch[1]) || 0);
     }
@@ -401,6 +440,7 @@ function buildSupabaseProducts(products) {
       supplier_product_code: resolveCanonicalSku(product),
       seo_title: buildSeoTitle(title, categoryTitle),
       seo_description: shortDescription,
+      seo_keywords: buildSeoKeywords(title, categoryTitle),
       is_featured: false,
       is_cod_available: true,
       shipping_charge: 0,
@@ -728,9 +768,17 @@ async function importToSupabase(products, options) {
     throw new Error(`Failed to clear catalog cache: ${cacheError.message}`);
   }
 
+  const summary = {
+    productsImported: productRows.length,
+    variantsImported: variantRows.length,
+    imagesImported: imageRows.length,
+  };
+
   console.log(
-    `Imported ${productRows.length} products, ${variantRows.length} variants, and ${imageRows.length} images into Supabase.`
+    `Imported ${summary.productsImported} products, ${summary.variantsImported} variants, and ${summary.imagesImported} images into Supabase.`
   );
+
+  return summary;
 }
 
 async function main() {
@@ -769,7 +817,19 @@ async function main() {
   await importToSupabase(products, options);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  importToSupabase,
+  buildSupabaseProducts,
+  buildSupabaseVariants,
+  buildSupabaseImages,
+  buildWukusyProducts,
+  resolveImportedStockQty,
+  parseArgs,
+};

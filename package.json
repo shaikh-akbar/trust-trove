@@ -11,7 +11,9 @@
     "scrape:deodap": "node scripts/scrape-deodap.js",
     "scrape:deodap:import": "node scripts/scrape-deodap.js --import",
     "scrape:wukusy": "node scripts/scrape-wukusy.js",
-    "scrape:wukusy:crawl": "node scripts/scrape-wukusy.js --crawl"
+    "scrape:wukusy:crawl": "node scripts/scrape-wukusy.js --crawl",
+    "scrape:wukusy:curated": "node scripts/scrape-wukusy.js --categories \"travel,electronics,office,health care,home decor\" --limit-per-category 100 --curated-stock-qty 1 --curated-stock-text \"Only 1 pcs left\"",
+    "sync:wukusy:curated": "node scripts/sync-wukusy-curated.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.0",

@@ -33,6 +33,10 @@ function isLadiesBagCategory(product) {
   );
 }
 
+function formatInventoryLabel(inventory) {
+  return `${inventory} pcs left`;
+}
+
 export default function CategoryInlineProductCard({ product, showNewBadge = false }) {
   const { addItem, isItemPending } = useCart();
   const [added, setAdded] = useState(false);
@@ -91,7 +95,7 @@ export default function CategoryInlineProductCard({ product, showNewBadge = fals
       </div>
       {Number.isFinite(inventory) && !hideInventoryForCategory ? (
         <p className={`mt-1.5 text-xs font-medium ${isOutOfStock ? "text-rose-600" : "text-emerald-700"}`}>
-          {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
+          {isOutOfStock ? "Out of stock" : formatInventoryLabel(inventory)}
         </p>
       ) : null}
       <div className="mt-4">

@@ -24,6 +24,8 @@ import {
   buildProductMetaTitle,
   buildProductKeywords,
   buildProductSchema,
+  getSiteUrl,
+  buildWebPageSchema,
   hasIndexableProductPageSignals,
 } from "../../../lib/seo";
 
@@ -177,6 +179,22 @@ export default async function ProductPage({ params }) {
   const productFaqs = getProductFaqs(product);
   const faqSchema = buildFaqSchema(productFaqs);
   const productDisplayVendor = getProductDisplayVendorName(product);
+  const productPageSchema = buildWebPageSchema({
+    type: "WebPage",
+    name: product.title,
+    description: buildProductMetaDescription({
+      ...product,
+      description:
+        product.short_description || stripHtml(product.description).slice(0, 220),
+    }),
+    path: canonicalPath,
+    primaryImage: product.main_image || "/assets/gomodexa.png",
+    mainEntity: {
+      "@type": "Product",
+      name: product.title,
+      url: getSiteUrl(canonicalPath),
+    },
+  });
 
   return (
     <>
@@ -194,6 +212,12 @@ export default async function ProductPage({ params }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      ) : null}
+      {productPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productPageSchema) }}
         />
       ) : null}
       <ProductPageClient

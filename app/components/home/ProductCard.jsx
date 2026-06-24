@@ -27,6 +27,10 @@ function isLadiesBagCategory(product) {
   );
 }
 
+function formatInventoryLabel(inventory) {
+  return `${inventory} pcs left`;
+}
+
 export default function ProductCard({ product, compact = false }) {
   const { addItem, isItemPending } = useCart();
   const [added, setAdded] = useState(false);
@@ -157,7 +161,7 @@ export default function ProductCard({ product, compact = false }) {
             {!hideInventoryForCategory ? (
               <div>
                 <span className={`text-xs font-semibold ${isOutOfStock ? "text-rose-600" : "text-slate-500"}`}>
-                  {isOutOfStock ? "Out of stock" : `${inventory} pcs left`}
+                  {isOutOfStock ? "Out of stock" : formatInventoryLabel(inventory)}
                 </span>
               </div>
             ) : null}

@@ -14,6 +14,8 @@ import {
   buildBreadcrumbSchema,
   buildFaqSchema,
   buildMetadata,
+  getSiteUrl,
+  buildWebPageSchema,
 } from "../../../lib/seo";
 
 export const dynamicParams = false;
@@ -203,6 +205,20 @@ export default async function BlogDetailPage({ params }) {
     wordCount: articleTextSegments.reduce((total, segment) => total + countWords(segment), 0),
   });
   const faqSchema = buildFaqSchema(faqItems);
+  const articlePageSchema = buildWebPageSchema({
+    type: "ArticlePage",
+    name: post.seoTitle || post.title,
+    description: post.metaDescription || post.excerpt,
+    path: canonicalPath,
+    primaryImage: post.image || "/assets/gomodexa.png",
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
+    mainEntity: {
+      "@type": "Article",
+      headline: post.seoTitle || post.title,
+      url: getSiteUrl(canonicalPath),
+    },
+  });
 
   return (
     <>
@@ -220,6 +236,12 @@ export default async function BlogDetailPage({ params }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      ) : null}
+      {articlePageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articlePageSchema) }}
         />
       ) : null}
       <div className="bg-[var(--surface-soft)]">
@@ -437,7 +459,9 @@ export default async function BlogDetailPage({ params }) {
                           ) : null}
                         </div>
                         <p className="mt-2 text-xs font-semibold text-slate-500">
-                          {inventory > 0 ? `${inventory} pcs left` : "Check latest availability"}
+                          {inventory > 0
+                            ? `${inventory} pcs left`
+                            : "Check latest availability"}
                         </p>
                       </div>
                     </Link>

@@ -6,6 +6,7 @@ import {
   buildCollectionMetadata,
   getPageNumber,
   getQueryValue,
+  buildWebPageSchema,
 } from "../../lib/seo";
 import { getProductHref } from "../../lib/product-route";
 
@@ -56,6 +57,20 @@ export default async function ShopPage({ searchParams }) {
     categoryTitle: activeCategory?.title || null,
   });
   const initialQuery = getQueryValue(params?.q);
+  const shopPageSchema = buildWebPageSchema({
+    type: "CollectionPage",
+    name: page > 1 ? `Shop Page ${page}` : "Shop",
+    description:
+      page > 1
+        ? `Browse page ${page} of the GoModexa catalog with product discovery across fashion, beauty, home, gadgets, travel, and everyday essentials.`
+        : "Browse the full GoModexa catalog with product discovery across fashion, beauty, home, gadgets, travel, and everyday essentials.",
+    path: page > 1 ? `/shop?page=${page}` : "/shop",
+    primaryImage: "/assets/gomodexa.png",
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: products.length,
+    },
+  });
 
   return (
     <>
@@ -89,6 +104,12 @@ export default async function ShopPage({ searchParams }) {
           ),
         }}
       />
+      {shopPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(shopPageSchema) }}
+        />
+      ) : null}
       <ShopExperience
         products={products}
         categories={categories}

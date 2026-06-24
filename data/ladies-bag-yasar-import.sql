@@ -401,7 +401,7 @@ SELECT
   true,
   'active',
   NULL,
-  'wukusy',
+  'yasar',
   s.sku
 FROM tmp_ladies_bag_seed s
 INNER JOIN public.products p ON p.handle = s.handle;

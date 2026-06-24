@@ -6,9 +6,12 @@ import {
   getSortedBlogPosts,
 } from "../../lib/content";
 import {
+  buildBlogSchema,
   buildBreadcrumbSchema,
   buildCollectionPageSchema,
   buildMetadata,
+  getSiteUrl,
+  buildWebPageSchema,
 } from "../../lib/seo";
 
 function parsePageValue(value) {
@@ -126,6 +129,36 @@ export default async function BlogsPage({ searchParams }) {
   const paginatedPosts = posts.slice(startIndex, startIndex + BLOGS_PER_PAGE);
   const paginationItems = buildPaginationItems(safePage, totalPages);
   const mobilePaginationItems = buildMobilePaginationItems(safePage, totalPages);
+  const pagePath = buildPageHref(safePage);
+  const pageDescription =
+    safePage > 1
+      ? `Browse page ${safePage} of the GoModexa blog for product guides, shopping advice, gifting ideas, and category-focused SEO content.`
+      : "Read GoModexa blog articles covering product guides, shopping advice, gifting ideas, and smarter category discovery.";
+  const blogSchema = buildBlogSchema({
+    name: "GoModexa Blog",
+    description: pageDescription,
+    path: pagePath,
+    posts: paginatedPosts.map((post) => ({
+      title: post.title,
+      path: `/blogs/${post.slug}`,
+      publishedAt: post.publishedAt,
+      updatedAt: post.updatedAt,
+      image: post.image || "/assets/gomodexa.png",
+      category: post.category,
+    })),
+  });
+  const blogPageSchema = buildWebPageSchema({
+    type: "CollectionPage",
+    name: safePage > 1 ? `GoModexa Blogs Page ${safePage}` : "GoModexa Blogs",
+    description: pageDescription,
+    path: pagePath,
+    primaryImage: "/assets/gomodexa.png",
+    mainEntity: {
+      "@type": "Blog",
+      name: "GoModexa Blog",
+      url: getSiteUrl("/blogs"),
+    },
+  });
 
   return (
     <div className="bg-[var(--surface-soft)]">
@@ -159,6 +192,18 @@ export default async function BlogsPage({ searchParams }) {
           ),
         }}
       />
+      {blogSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+        />
+      ) : null}
+      {blogPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPageSchema) }}
+        />
+      ) : null}
       <section className="border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">GoModexa Journal</p>

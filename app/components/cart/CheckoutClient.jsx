@@ -732,14 +732,13 @@ const PAYMENT_METHODS = [
   {
     id: "online",
     label: "Pay Online",
-    description: "Complete payment securely with Razorpay.",
+    description: "Complete payment securely with Razorpay and see prepaid savings at checkout.",
   },
-  // Keep COD config here for future use.
-  // {
-  //   id: "cod",
-  //   label: "Cash on Delivery",
-  //   description: "Place the order now and pay when it arrives.",
-  // },
+  {
+    id: "cod",
+    label: "Cash on Delivery",
+    description: "Place the order now and pay on delivery. COD charges show in the total before order placement.",
+  },
 ];
 
 function OrderSummaryPanel({
@@ -859,8 +858,26 @@ function OrderSummaryPanel({
             </span>
           </div>
 
+          {summary?.couponDiscountAmount ? (
+            <div className="flex items-center justify-between text-slate-600">
+              <span>Coupon discount</span>
+              <span className="font-bold text-green-600">
+                - {formatPrice(summary?.couponDiscountAmount || 0)}
+              </span>
+            </div>
+          ) : null}
+
+          {summary?.prepaidDiscountAmount ? (
+            <div className="flex items-center justify-between text-slate-600">
+              <span>Raysket prepaid offer</span>
+              <span className="font-bold text-green-600">
+                - {formatPrice(summary?.prepaidDiscountAmount || 0)}
+              </span>
+            </div>
+          ) : null}
+
           <div className="flex items-center justify-between text-slate-600">
-            <span>Discount</span>
+            <span>Total discount</span>
             <span className="font-bold text-green-600">
               - {formatPrice(summary?.discountAmount || 0)}
             </span>
@@ -898,6 +915,18 @@ function OrderSummaryPanel({
             </span>
           </div>
         </div>
+
+        {summary?.prepaidDiscountAmount ? (
+          <div className="mt-4 rounded-[1.25rem] border border-green-200 bg-green-50 px-3 py-2.5 text-[12px] font-semibold text-green-700 sm:rounded-[1.5rem] sm:px-4 sm:py-3 sm:text-sm">
+            10% prepaid offer on Raysket items is applied in this total.
+          </div>
+        ) : null}
+
+        {paymentType === "cod" && (summary?.codChargeAmount || 0) > 0 ? (
+          <div className="mt-4 rounded-[1.25rem] border border-amber-200 bg-amber-50 px-3 py-2.5 text-[12px] font-semibold text-amber-700 sm:rounded-[1.5rem] sm:px-4 sm:py-3 sm:text-sm">
+            COD charge of {formatPrice(summary?.codChargeAmount || 0)} is included in this total.
+          </div>
+        ) : null}
 
         <div className="mt-4 rounded-[1.25rem] border border-[#161f66]/10 bg-[#161f66]/5 p-3 text-[12px] text-slate-700 sm:rounded-[1.5rem] sm:p-4 sm:text-sm">
           <div className="flex items-start gap-3">
@@ -1694,7 +1723,13 @@ export default function CheckoutClient({ user, initialAddresses = [] }) {
                               "Delivery is unavailable for the selected pincode."
                             : isUnavailable
                               ? "Unavailable because the selected pincode or one or more cart items do not support COD."
-                              : method.description}
+                              : method.id === "online" &&
+                                  summary?.prepaidDiscountAmount
+                                ? "Complete payment securely with Razorpay. Includes 10% off on eligible Raysket items."
+                                : method.id === "cod" &&
+                                    (summary?.codChargeAmount || 0) > 0
+                                  ? `Place the order now and pay on delivery. COD charges of ${formatPrice(summary?.codChargeAmount || 0)} are included in the total.`
+                                : method.description}
                         </p>
                       </div>
                     </div>

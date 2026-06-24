@@ -41,6 +41,10 @@ function decodeHtmlEntities(value) {
     .replace(/&gt;/gi, ">");
 }
 
+function formatInventoryLabel(inventory) {
+  return `${inventory} pcs left`;
+}
+
 function extractSectionList(html, labels = []) {
   const source = String(html || "");
   const lowerSource = source.toLowerCase();
@@ -254,7 +258,7 @@ export default function ProductPageClient({
   const cartAction = getItemAction(cartItemKey);
   const cartBusy = isItemPending(cartItemKey);
   const currentInventory = Number(currentVariant?.inventory_quantity || 0);
-  const isOutOfStock = currentInventory <= 1;
+  const isOutOfStock = currentInventory <= 0;
   const addToCartLabel =
     cartAction === "add"
       ? "Adding..."
@@ -580,7 +584,7 @@ export default function ProductPageClient({
                   <p className="text-sm font-semibold">
                     {!isOutOfStock ? (
                       <span className="text-emerald-700">
-                        In stock - {Number(currentVariant.inventory_quantity || 0)} pcs left
+                        In stock - {formatInventoryLabel(Number(currentVariant.inventory_quantity || 0))}
                       </span>
                     ) : (
                       <span className="text-rose-600">Out of stock</span>
