@@ -597,6 +597,23 @@ function resolveExplicitStockQty(stockCandidates = []) {
   return null;
 }
 
+function extractInventoryQtyFromHtml(html) {
+  const inventoryBlockMatch = html.match(
+    /<p[^>]*class=["'][^"']*spec-label[^"']*["'][^>]*>\s*Inventory\s*<\/p>[\s\S]{0,400}?<p[^>]*class=["'][^"']*spec-value[^"']*["'][^>]*>\s*([0-9]+)\s*units?\s*<\/p>/i
+  );
+
+  if (inventoryBlockMatch) {
+    return normalizeInteger(inventoryBlockMatch[1], 0);
+  }
+
+  const inlineInventoryMatch = html.match(/Inventory[\s\S]{0,120}?([0-9]+)\s*units?\b/i);
+  if (inlineInventoryMatch) {
+    return normalizeInteger(inlineInventoryMatch[1], 0);
+  }
+
+  return null;
+}
+
 function extractLinks(html, baseUrl) {
   const matches = Array.from(
     html.matchAll(/href=["']([^"'#?][^"']*|\/[^"']*|https?:\/\/[^"']*)["']/gi)
@@ -810,7 +827,8 @@ function extractDetailData(html, url, options = {}) {
         .map((entry) => entry.split(/[:\s-]+/).slice(-1)[0])
         .find(Boolean)
     ).toUpperCase() || `WUKUSY-${productId}`;
-  const stockQty = resolveExplicitStockQty(stockCandidates);
+  const inventoryQty = extractInventoryQtyFromHtml(html);
+  const stockQty = inventoryQty ?? resolveExplicitStockQty(stockCandidates);
 
   return {
     wukusy_product_id: productId || sku,
@@ -830,6 +848,7 @@ function extractDetailData(html, url, options = {}) {
       gstCandidates,
       weightCandidates,
       skuCandidates,
+      inventoryQty,
       stockCandidates,
       detailStockCandidates,
     },

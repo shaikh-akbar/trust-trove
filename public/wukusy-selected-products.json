@@ -1,43 +1,163 @@
 {
   "metadata": {
-    "source": "crawl",
+    "source": "product-urls",
     "startUrl": "https://wukusy.app/dropshiper/index",
-    "discoveredCategoryCount": 1,
-    "categories": [
-      {
-        "title": "Wukusy Catalog",
-        "handle": "wukusy-catalog",
-        "url": "https://wukusy.app/dropshiper/index"
-      }
+    "productUrls": [
+      "https://wukusy.app/merchant/product-details/10395",
+      "https://wukusy.app/merchant/product-details/20952",
+      "https://wukusy.app/merchant/product-details/16397",
+      "https://wukusy.app/merchant/product-details/20731"
     ],
-    "discoveredProductCount": 40,
-    "scrapedProductCount": 5,
-    "offset": 0,
-    "inStockOnly": true,
-    "generatedAt": "2026-06-12T18:52:41.764Z"
+    "discoveredProductCount": 4,
+    "scrapedProductCount": 4,
+    "failedProductCount": 0,
+    "failedProducts": [],
+    "generatedAt": "2026-06-27T08:41:28.693Z"
   },
   "products": [
     {
-      "wukusy_product_id": "12836",
-      "sku": "WUKUSY-12836",
-      "title": "Apex Happy Mug Approx 400ml (1 Pc)",
-      "cost_price": 152,
+      "wukusy_product_id": "10395",
+      "sku": "WUKUSY-10395",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "Large Capacity Luggage Bag Foldable Waterproof Travel Bag (1 Pc Mix Color)",
+      "cost_price": 140,
+      "gst_percent": 5,
+      "weight_grams": 279,
+      "stock_qty": 283,
+      "status": "active",
+      "product_url": "https://wukusy.app/merchant/product-details/10395",
+      "image_urls": [
+        "https://wukusy.app/img/wukusy.webp",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/6MrrzbWApluufdaxL34JXBJdHW9TEyYhkTRw9SWK_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/tYcGJ9p80GWh3ghCqGolBC3qO1fFSlNXrKyXGrEJ_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/S8Dau2B4BVkGeJfWXPMwze08qgW12z9RPK0tzUuB_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/S2ymCj74gUpxVkM58mApho2WjpMWhB413l5B1xN3_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/6MrrzbWApluufdaxL34JXBJdHW9TEyYhkTRw9SWK.jpeg"
+      ],
+      "debug_extract": {
+        "priceCandidates": [
+          "₹140.00",
+          "rs 90",
+          "rs 81",
+          "₹125",
+          "₹10,125"
+        ],
+        "gstCandidates": [
+          "5 GST"
+        ],
+        "weightCandidates": [
+          "279 gm"
+        ],
+        "skuCandidates": [],
+        "inventoryQty": 283,
+        "stockCandidates": [
+          "available"
+        ],
+        "detailStockCandidates": [
+          "available"
+        ]
+      },
+      "raw_payload": {
+        "source": "html-scrape",
+        "product_url": "https://wukusy.app/merchant/product-details/10395",
+        "image_urls": [
+          "https://wukusy.app/img/wukusy.webp",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/6MrrzbWApluufdaxL34JXBJdHW9TEyYhkTRw9SWK_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/tYcGJ9p80GWh3ghCqGolBC3qO1fFSlNXrKyXGrEJ_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/S8Dau2B4BVkGeJfWXPMwze08qgW12z9RPK0tzUuB_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/S2ymCj74gUpxVkM58mApho2WjpMWhB413l5B1xN3_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/18582_fold_large_waterproof_travel_bag/6MrrzbWApluufdaxL34JXBJdHW9TEyYhkTRw9SWK.jpeg"
+        ],
+        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
+      },
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
+    },
+    {
+      "wukusy_product_id": "20952",
+      "sku": "WUKUSY-20952",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "Travel Multi Pocket Toiletry Bag Hanging Cosmetic Makeup Organizer Pouch (1 Pc)",
+      "cost_price": 165,
+      "gst_percent": 5,
+      "weight_grams": 590,
+      "stock_qty": 136,
+      "status": "active",
+      "product_url": "https://wukusy.app/merchant/product-details/20952",
+      "image_urls": [
+        "https://wukusy.app/img/wukusy.webp",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/HRuNAe8KHlu1KwHiCw7T0O4zlQo8cNzGciN2OSvP_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/jVNegmLbUhG06nD1RCtraFA3LzQVVP8sRlhgAKbR_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/9QXZgWeK8CZ8nUzvK2kieqqHGqHYfGeiBRidWp8d_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/D7xFheCioFZQOW2i6jlg7a9fblEG0O6MQGfLm4Ua_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/HRuNAe8KHlu1KwHiCw7T0O4zlQo8cNzGciN2OSvP.jpeg"
+      ],
+      "debug_extract": {
+        "priceCandidates": [
+          "₹165.00",
+          "rs 90",
+          "rs 81",
+          "₹125",
+          "₹10,125"
+        ],
+        "gstCandidates": [
+          "5 GST"
+        ],
+        "weightCandidates": [
+          "590 gm"
+        ],
+        "skuCandidates": [],
+        "inventoryQty": 136,
+        "stockCandidates": [
+          "available"
+        ],
+        "detailStockCandidates": [
+          "available"
+        ]
+      },
+      "raw_payload": {
+        "source": "html-scrape",
+        "product_url": "https://wukusy.app/merchant/product-details/20952",
+        "image_urls": [
+          "https://wukusy.app/img/wukusy.webp",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/HRuNAe8KHlu1KwHiCw7T0O4zlQo8cNzGciN2OSvP_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/jVNegmLbUhG06nD1RCtraFA3LzQVVP8sRlhgAKbR_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/9QXZgWeK8CZ8nUzvK2kieqqHGqHYfGeiBRidWp8d_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/D7xFheCioFZQOW2i6jlg7a9fblEG0O6MQGfLm4Ua_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23190_travel_multi_pocket_bag_1pc/HRuNAe8KHlu1KwHiCw7T0O4zlQo8cNzGciN2OSvP.jpeg"
+        ],
+        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
+      },
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
+    },
+    {
+      "wukusy_product_id": "16397",
+      "sku": "WUKUSY-16397",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "Og Beauty Science Cocoa Butter Body Lotion (350ml 1 Pc)",
+      "cost_price": 109,
       "gst_percent": 5,
       "weight_grams": 0,
-      "stock_qty": 186,
+      "stock_qty": 45,
       "status": "active",
-      "product_url": "https://wukusy.app/merchant/product-details/12836",
+      "product_url": "https://wukusy.app/merchant/product-details/16397",
       "image_urls": [
         "https://wukusy.app/img/wukusy.webp",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/LLOlxtXkBJjWvse7heJBh35TlfaIpuup7HlV0d62_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/7xTZXJgeMoYjCGDupvlCIaQ83xQV41PouubnhoQ9_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/EEmpduhqDxrZBVG8WdwoP0q3nmTbCFaN409Bc459_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/xz8h1RREEnwfInILZWG8VeI8pxkfSB546z69xOK2_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/LLOlxtXkBJjWvse7heJBh35TlfaIpuup7HlV0d62.jpeg"
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/L7zkEVNLiddStXRxLpP05IrLkSLp3gYwhXIPeLBz_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/kmeq0ruQjR2Q7R2qiIDusE4bQkE0o13UsKdPZ2Pf_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/yo5taXYfRgOnrP6x2ROKs1u5TW40abTZG07zTrbj_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/K0uCBe9A29wShQ7ONjRS74WAy2dr28t0CnsZptGp_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/L7zkEVNLiddStXRxLpP05IrLkSLp3gYwhXIPeLBz.jpeg"
       ],
       "debug_extract": {
         "priceCandidates": [
-          "₹152.00",
+          "₹109.00",
           "rs 90",
           "rs 81",
           "₹125",
@@ -47,13 +167,13 @@
           "5 GST"
         ],
         "weightCandidates": [
-          "400ml",
-          "250 gm",
-          "400 ml"
+          "350ml",
+          "399 gm",
+          "350 ML"
         ],
         "skuCandidates": [],
+        "inventoryQty": 45,
         "stockCandidates": [
-          "186 Pcs left",
           "available"
         ],
         "detailStockCandidates": [
@@ -62,42 +182,44 @@
       },
       "raw_payload": {
         "source": "html-scrape",
-        "product_url": "https://wukusy.app/merchant/product-details/12836",
+        "product_url": "https://wukusy.app/merchant/product-details/16397",
         "image_urls": [
           "https://wukusy.app/img/wukusy.webp",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/LLOlxtXkBJjWvse7heJBh35TlfaIpuup7HlV0d62_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/7xTZXJgeMoYjCGDupvlCIaQ83xQV41PouubnhoQ9_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/EEmpduhqDxrZBVG8WdwoP0q3nmTbCFaN409Bc459_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/xz8h1RREEnwfInILZWG8VeI8pxkfSB546z69xOK2_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/11508_apex_ss_happy_mug_ham/LLOlxtXkBJjWvse7heJBh35TlfaIpuup7HlV0d62.jpeg"
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/L7zkEVNLiddStXRxLpP05IrLkSLp3gYwhXIPeLBz_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/kmeq0ruQjR2Q7R2qiIDusE4bQkE0o13UsKdPZ2Pf_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/yo5taXYfRgOnrP6x2ROKs1u5TW40abTZG07zTrbj_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/K0uCBe9A29wShQ7ONjRS74WAy2dr28t0CnsZptGp_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14952_og_cocoa_butter_body_lotion_350ml/L7zkEVNLiddStXRxLpP05IrLkSLp3gYwhXIPeLBz.jpeg"
         ],
         "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
       },
-      "category_title": "Wukusy Catalog",
-      "category_handle": "wukusy-catalog",
-      "category_url": "https://wukusy.app/dropshiper/index"
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
     },
     {
-      "wukusy_product_id": "6431",
-      "sku": "WUKUSY-6431",
-      "title": "8218 2in1 Multi-purpose Stainless Steel Peeler With Hanging Ring For Vegetables Potato Peeler Carrot Grated Suitable For Peeling And Shredding Fruit And Vegetables Kitchen Accessories Piller (1 Pc)",
-      "cost_price": 25,
+      "wukusy_product_id": "20731",
+      "sku": "WUKUSY-20731",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "Signature Aman Free Body Spray (1 Pc 50 Ml)",
+      "cost_price": 66,
       "gst_percent": 5,
-      "weight_grams": 36,
-      "stock_qty": 301,
+      "weight_grams": 0,
+      "stock_qty": 98,
       "status": "active",
-      "product_url": "https://wukusy.app/merchant/product-details/6431",
+      "product_url": "https://wukusy.app/merchant/product-details/20731",
       "image_urls": [
         "https://wukusy.app/img/wukusy.webp",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/jHocNobOBqAW67vlKP0YhWgKDqpp0UFb9ycN7TpN_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/ubuYzySCUddYaQSFaqVci3cIxZa0JhFERsB9O5I7_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/MoClGePCMvMxe6lPYikd04xa5hNcxxmM7NkXZdcj_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/Rqg5qmpdoa91mch4Ge6pxe2v05ie7RzafYtLAa02_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/jHocNobOBqAW67vlKP0YhWgKDqpp0UFb9ycN7TpN.jpeg"
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/jwdswhcu3PqLB5uQ1s7CYpVbOwIHCDnyOrcUg6Zh_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/kWDEqyxzDhVaSQBTiypi9N3wY2Jk819YseQlh9JX_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/4CqmYnP1eYSVEUqWuyvNOwy2pfV5MLKgJxni26HX_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/Og1vy2OrIsxwP8C25D1guQxPXdhvedeqnsKHo0hU_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/jwdswhcu3PqLB5uQ1s7CYpVbOwIHCDnyOrcUg6Zh.jpeg"
       ],
       "debug_extract": {
         "priceCandidates": [
-          "₹25.00",
+          "₹66.00",
           "rs 90",
           "rs 81",
           "₹125",
@@ -107,11 +229,13 @@
           "5 GST"
         ],
         "weightCandidates": [
-          "36 gm"
+          "50 Ml",
+          "55 gm",
+          "50 ML"
         ],
         "skuCandidates": [],
+        "inventoryQty": 98,
         "stockCandidates": [
-          "301 Pcs left",
           "available"
         ],
         "detailStockCandidates": [
@@ -120,136 +244,20 @@
       },
       "raw_payload": {
         "source": "html-scrape",
-        "product_url": "https://wukusy.app/merchant/product-details/6431",
+        "product_url": "https://wukusy.app/merchant/product-details/20731",
         "image_urls": [
           "https://wukusy.app/img/wukusy.webp",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/jHocNobOBqAW67vlKP0YhWgKDqpp0UFb9ycN7TpN_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/ubuYzySCUddYaQSFaqVci3cIxZa0JhFERsB9O5I7_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/MoClGePCMvMxe6lPYikd04xa5hNcxxmM7NkXZdcj_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/Rqg5qmpdoa91mch4Ge6pxe2v05ie7RzafYtLAa02_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8218_2in1_ss_multi_peeler_1pc/jHocNobOBqAW67vlKP0YhWgKDqpp0UFb9ycN7TpN.jpeg"
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/jwdswhcu3PqLB5uQ1s7CYpVbOwIHCDnyOrcUg6Zh_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/kWDEqyxzDhVaSQBTiypi9N3wY2Jk819YseQlh9JX_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/4CqmYnP1eYSVEUqWuyvNOwy2pfV5MLKgJxni26HX_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/Og1vy2OrIsxwP8C25D1guQxPXdhvedeqnsKHo0hU_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/23730_signature_aman_body_spray_50ml/jwdswhcu3PqLB5uQ1s7CYpVbOwIHCDnyOrcUg6Zh.jpeg"
         ],
         "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
       },
-      "category_title": "Wukusy Catalog",
-      "category_handle": "wukusy-catalog",
-      "category_url": "https://wukusy.app/dropshiper/index"
-    },
-    {
-      "wukusy_product_id": "42",
-      "sku": "WUKUSY-42",
-      "title": "0098b (Brown Box) Foldable Chopping Board Dish Rack Washing Bowl Draining Basket 3in1 Multi-function",
-      "cost_price": 168,
-      "gst_percent": 5,
-      "weight_grams": 1034,
-      "stock_qty": 36,
-      "status": "active",
-      "product_url": "https://wukusy.app/merchant/product-details/42",
-      "image_urls": [
-        "https://wukusy.app/img/wukusy.webp",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/3znQUbVQWWQasfcTVqJa3EiqhnW4OwrOIjVFMy7l_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/0NbsXqfjR522Cz4NmBp3GyvUmlv8Twa51OJiyT2S_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/orFSZvUZfVdxuVr1ZX6xLbJAGxuqW3jxHBHUEAY2_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/oPDOKDGwsTMVFb6txPpUNWwZ4m3QeKDT5PsTOdjW_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/3znQUbVQWWQasfcTVqJa3EiqhnW4OwrOIjVFMy7l.jpeg"
-      ],
-      "debug_extract": {
-        "priceCandidates": [
-          "₹168.00",
-          "rs 90",
-          "rs 81",
-          "₹125",
-          "₹10,125"
-        ],
-        "gstCandidates": [
-          "5 GST"
-        ],
-        "weightCandidates": [
-          "1034 gm"
-        ],
-        "skuCandidates": [],
-        "stockCandidates": [
-          "36 Pcs left",
-          "available"
-        ],
-        "detailStockCandidates": [
-          "available"
-        ]
-      },
-      "raw_payload": {
-        "source": "html-scrape",
-        "product_url": "https://wukusy.app/merchant/product-details/42",
-        "image_urls": [
-          "https://wukusy.app/img/wukusy.webp",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/3znQUbVQWWQasfcTVqJa3EiqhnW4OwrOIjVFMy7l_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/0NbsXqfjR522Cz4NmBp3GyvUmlv8Twa51OJiyT2S_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/orFSZvUZfVdxuVr1ZX6xLbJAGxuqW3jxHBHUEAY2_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/oPDOKDGwsTMVFb6txPpUNWwZ4m3QeKDT5PsTOdjW_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/0098b_brown_box_3in1_basket/3znQUbVQWWQasfcTVqJa3EiqhnW4OwrOIjVFMy7l.jpeg"
-        ],
-        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
-      },
-      "category_title": "Wukusy Catalog",
-      "category_handle": "wukusy-catalog",
-      "category_url": "https://wukusy.app/dropshiper/index"
-    },
-    {
-      "wukusy_product_id": "6361",
-      "sku": "WUKUSY-6361",
-      "title": "8118 Ganesh 12-jar Revolving Spice Rack Masala Box",
-      "cost_price": 538,
-      "gst_percent": 5,
-      "weight_grams": 1540,
-      "stock_qty": 14,
-      "status": "active",
-      "product_url": "https://wukusy.app/merchant/product-details/6361",
-      "image_urls": [
-        "https://wukusy.app/img/wukusy.webp",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/z5WzZ7sipikViRXqORxrSUvIATM8QDN3p5Ooc6O0_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/NngR3Gptd9nmbgGrjdC8ViAEf3VE5PAii4RyZmQX_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/XchCUcyuPqyEumYE396Pf6LEBBNrNHS8fv1xqCkz_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/xaUTW8HUrE7dZCVeZnqhHCnkyqgqw22HFGQ0eFxn_thumb.jpeg",
-        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/z5WzZ7sipikViRXqORxrSUvIATM8QDN3p5Ooc6O0.jpeg"
-      ],
-      "debug_extract": {
-        "priceCandidates": [
-          "₹538.00",
-          "rs 90",
-          "rs 81",
-          "₹125",
-          "₹10,125"
-        ],
-        "gstCandidates": [
-          "5 GST"
-        ],
-        "weightCandidates": [
-          "1540 gm"
-        ],
-        "skuCandidates": [],
-        "stockCandidates": [
-          "14 Pcs left",
-          "available"
-        ],
-        "detailStockCandidates": [
-          "available"
-        ]
-      },
-      "raw_payload": {
-        "source": "html-scrape",
-        "product_url": "https://wukusy.app/merchant/product-details/6361",
-        "image_urls": [
-          "https://wukusy.app/img/wukusy.webp",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/z5WzZ7sipikViRXqORxrSUvIATM8QDN3p5Ooc6O0_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/NngR3Gptd9nmbgGrjdC8ViAEf3VE5PAii4RyZmQX_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/XchCUcyuPqyEumYE396Pf6LEBBNrNHS8fv1xqCkz_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/xaUTW8HUrE7dZCVeZnqhHCnkyqgqw22HFGQ0eFxn_thumb.jpeg",
-          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8118_ganesh_spicerack_12pc/z5WzZ7sipikViRXqORxrSUvIATM8QDN3p5Ooc6O0.jpeg"
-        ],
-        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
-      },
-      "category_title": "Wukusy Catalog",
-      "category_handle": "wukusy-catalog",
-      "category_url": "https://wukusy.app/dropshiper/index"
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
     }
   ]
 }
