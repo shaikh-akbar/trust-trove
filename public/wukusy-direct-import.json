@@ -1,0 +1,266 @@
+{
+  "metadata": {
+    "source": "product-urls",
+    "startUrl": "https://wukusy.app/dropshiper/index",
+    "productUrls": [
+      "https://wukusy.app/merchant/product-details/2031",
+      "https://wukusy.app/merchant/product-details/3489",
+      "https://wukusy.app/merchant/product-details/6375",
+      "https://wukusy.app/merchant/product-details/13743"
+    ],
+    "discoveredProductCount": 4,
+    "scrapedProductCount": 4,
+    "failedProductCount": 0,
+    "failedProducts": [],
+    "generatedAt": "2026-07-01T11:38:51.136Z"
+  },
+  "products": [
+    {
+      "wukusy_product_id": "2031",
+      "sku": "WUKUSY-2031",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "1447 Vr Pro Virtual Reality 3d Glasses Headset",
+      "cost_price": 535,
+      "gst_percent": 5,
+      "weight_grams": 895,
+      "stock_qty": 712,
+      "status": "active",
+      "product_url": "https://wukusy.app/merchant/product-details/2031",
+      "image_urls": [
+        "https://wukusy.app/img/wukusy.webp",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/gaFoLUheDhBOFKJE7U2FsEgOqhC0BN99wHMo3MHO_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/DUQYA6uF1VjDAjEiANyiacU5Omrvuvf4ypQyZztQ_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/BgaJ9l4OGw1ODwVnUOH1pXDRnylClPsLTHvl6TEX_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/nMNKFvoi3ChQjp848v5MiIEfzhDIytlbpa4EYhxA_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/gaFoLUheDhBOFKJE7U2FsEgOqhC0BN99wHMo3MHO.jpeg"
+      ],
+      "debug_extract": {
+        "priceCandidates": [
+          "₹535.00",
+          "rs 90",
+          "rs 81",
+          "₹125",
+          "₹10,125"
+        ],
+        "gstCandidates": [
+          "5 GST"
+        ],
+        "weightCandidates": [
+          "895 gm"
+        ],
+        "skuCandidates": [],
+        "inventoryQty": 712,
+        "stockCandidates": [
+          "available"
+        ],
+        "detailStockCandidates": [
+          "available"
+        ]
+      },
+      "raw_payload": {
+        "source": "html-scrape",
+        "product_url": "https://wukusy.app/merchant/product-details/2031",
+        "image_urls": [
+          "https://wukusy.app/img/wukusy.webp",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/gaFoLUheDhBOFKJE7U2FsEgOqhC0BN99wHMo3MHO_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/DUQYA6uF1VjDAjEiANyiacU5Omrvuvf4ypQyZztQ_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/BgaJ9l4OGw1ODwVnUOH1pXDRnylClPsLTHvl6TEX_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/nMNKFvoi3ChQjp848v5MiIEfzhDIytlbpa4EYhxA_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/1447_premium_vr_box/gaFoLUheDhBOFKJE7U2FsEgOqhC0BN99wHMo3MHO.jpeg"
+        ],
+        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
+      },
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
+    },
+    {
+      "wukusy_product_id": "3489",
+      "sku": "WUKUSY-3489",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "2548 Corporate Lunch Stainless Steel Containers (Set Of 3)",
+      "cost_price": 141,
+      "gst_percent": 5,
+      "weight_grams": 0,
+      "stock_qty": 175,
+      "status": "active",
+      "product_url": "https://wukusy.app/merchant/product-details/3489",
+      "image_urls": [
+        "https://wukusy.app/img/wukusy.webp",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/eeB5BPrHzlHxBN2G9lS9b1cXgjNe4GRi3PRhQ7eH_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/CrxCZZMMVzHejPLR2t0HMQfuEqUK8bAei7KMpLJt_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/S7Sbqr3WNNkWqpu4FNkLVLNrUqDdOpy9oq4qz5Ly_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/Yu7OdYwME9E59veDX7lQAIlpvsn3FSzsSYwE6EGs_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/eeB5BPrHzlHxBN2G9lS9b1cXgjNe4GRi3PRhQ7eH.jpeg"
+      ],
+      "debug_extract": {
+        "priceCandidates": [
+          "₹141.00",
+          "rs 90",
+          "rs 81",
+          "₹125",
+          "₹10,125"
+        ],
+        "gstCandidates": [
+          "5 GST"
+        ],
+        "weightCandidates": [
+          "61l",
+          "538 gm",
+          "280 ml",
+          "500 ml"
+        ],
+        "skuCandidates": [],
+        "inventoryQty": 175,
+        "stockCandidates": [
+          "available"
+        ],
+        "detailStockCandidates": [
+          "available"
+        ]
+      },
+      "raw_payload": {
+        "source": "html-scrape",
+        "product_url": "https://wukusy.app/merchant/product-details/3489",
+        "image_urls": [
+          "https://wukusy.app/img/wukusy.webp",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/eeB5BPrHzlHxBN2G9lS9b1cXgjNe4GRi3PRhQ7eH_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/CrxCZZMMVzHejPLR2t0HMQfuEqUK8bAei7KMpLJt_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/S7Sbqr3WNNkWqpu4FNkLVLNrUqDdOpy9oq4qz5Ly_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/Yu7OdYwME9E59veDX7lQAIlpvsn3FSzsSYwE6EGs_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/2548_3_container_lunch_box/eeB5BPrHzlHxBN2G9lS9b1cXgjNe4GRi3PRhQ7eH.jpeg"
+        ],
+        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
+      },
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
+    },
+    {
+      "wukusy_product_id": "6375",
+      "sku": "WUKUSY-6375",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "8133 Ganesh Junior Stainless Steel Lunch Pack For Office School Use",
+      "cost_price": 355,
+      "gst_percent": 5,
+      "weight_grams": 430,
+      "stock_qty": 278,
+      "status": "active",
+      "product_url": "https://wukusy.app/merchant/product-details/6375",
+      "image_urls": [
+        "https://wukusy.app/img/wukusy.webp",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/3RKYMmXuyUOyGFnIKSDCj7ZJf3xpXDnVcT6zMY9U_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/Rd0DRLVOw2TY1XcgH7WzBhNFGYq6TC6iT6XCSIXm_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/uuxg3bqcnW4NZRbpoTF5NFV4W0UFpTT6V7724qph_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/TZiUAezCEoFmiNMwDskAJScW48qaWKE86950cV3a_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/3RKYMmXuyUOyGFnIKSDCj7ZJf3xpXDnVcT6zMY9U.jpeg"
+      ],
+      "debug_extract": {
+        "priceCandidates": [
+          "₹355.00",
+          "rs 90",
+          "rs 81",
+          "₹125",
+          "₹10,125"
+        ],
+        "gstCandidates": [
+          "5 GST"
+        ],
+        "weightCandidates": [
+          "430 gm"
+        ],
+        "skuCandidates": [],
+        "inventoryQty": 278,
+        "stockCandidates": [
+          "available"
+        ],
+        "detailStockCandidates": [
+          "available"
+        ]
+      },
+      "raw_payload": {
+        "source": "html-scrape",
+        "product_url": "https://wukusy.app/merchant/product-details/6375",
+        "image_urls": [
+          "https://wukusy.app/img/wukusy.webp",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/3RKYMmXuyUOyGFnIKSDCj7ZJf3xpXDnVcT6zMY9U_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/Rd0DRLVOw2TY1XcgH7WzBhNFGYq6TC6iT6XCSIXm_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/uuxg3bqcnW4NZRbpoTF5NFV4W0UFpTT6V7724qph_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/TZiUAezCEoFmiNMwDskAJScW48qaWKE86950cV3a_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/8133_ganesh_ss_junior_lunchbox/3RKYMmXuyUOyGFnIKSDCj7ZJf3xpXDnVcT6zMY9U.jpeg"
+        ],
+        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
+      },
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
+    },
+    {
+      "wukusy_product_id": "13743",
+      "sku": "WUKUSY-13743",
+      "vendor": "GoModexa",
+      "brand": "GoModexa",
+      "title": "Badz Long-lasting Premium Deodorant Body Spray For Men (1 Pc Mixed Fragrance 45 Ml)",
+      "cost_price": 48,
+      "gst_percent": 5,
+      "weight_grams": 0,
+      "stock_qty": 250,
+      "status": "active",
+      "product_url": "https://wukusy.app/merchant/product-details/13743",
+      "image_urls": [
+        "https://wukusy.app/img/wukusy.webp",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/C0MSXgyBQ6KfQeS4IJbObiprn56PGcDjqynT5Jgm_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/nOuvVHDUAFb3GV17s01d9LRghQ9EBAIJRvChMyu1_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/9XmtUiC1JJtfVbinkKyD9cPLL5gtQH0ph2mpaUbB_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/yLJNwboMLEICIUgY9e6jtF6LKIVxExyzbBSau2FQ_thumb.jpeg",
+        "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/C0MSXgyBQ6KfQeS4IJbObiprn56PGcDjqynT5Jgm.jpeg"
+      ],
+      "debug_extract": {
+        "priceCandidates": [
+          "₹48.00",
+          "rs 90",
+          "rs 81",
+          "₹125",
+          "₹10,125"
+        ],
+        "gstCandidates": [
+          "5 GST"
+        ],
+        "weightCandidates": [
+          "5l",
+          "45 Ml",
+          "52 gm",
+          "45ml",
+          "45 ml"
+        ],
+        "skuCandidates": [],
+        "inventoryQty": 250,
+        "stockCandidates": [
+          "available"
+        ],
+        "detailStockCandidates": [
+          "available"
+        ]
+      },
+      "raw_payload": {
+        "source": "html-scrape",
+        "product_url": "https://wukusy.app/merchant/product-details/13743",
+        "image_urls": [
+          "https://wukusy.app/img/wukusy.webp",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/C0MSXgyBQ6KfQeS4IJbObiprn56PGcDjqynT5Jgm_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/nOuvVHDUAFb3GV17s01d9LRghQ9EBAIJRvChMyu1_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/9XmtUiC1JJtfVbinkKyD9cPLL5gtQH0ph2mpaUbB_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/yLJNwboMLEICIUgY9e6jtF6LKIVxExyzbBSau2FQ_thumb.jpeg",
+          "https://d3np62i3isvr1h.cloudfront.net/catalog/products/14337_deodorant_spray_pour_homme_45ml_1pc/C0MSXgyBQ6KfQeS4IJbObiprn56PGcDjqynT5Jgm.jpeg"
+        ],
+        "text_excerpt": "Wukusy - Dropshiper :root{ --primary-color: #0d1627; --secondary-color: #d62024; --swiper-theme-color: #d62024; --bs-accordion-active-color:#f8f9fa !important; } .bg-main{ background-color: var(--primary-color); } .bg-secondary{ background-color: var(--secondary-color) !important; } .btn-main{ background-color: var(--secondary-color); color: white; padding: 8px 16px; display: block; text-decoration:none } .w-60{ width: 4.5rem; } .h-80{ padding-top: 67px; } .w-main{ width: calc(100% - 4.5rem); } .h-full{ height: 100vh; } .active{ background-color: var(--secondary-color) !important; color: white; } .nav li a svg{ fill: var(--primary-color); height:24px; width:24px; } .active svg{ fill: white !important; } .tooltip .tooltip-inner { background-color:var(--primary-color); } .w-full { width: -webkit-fill-available; } .search-top{ min-width: 450px; height: 50px; outline: none; border: 1px solid #eee; border-radius: 3px; } a.nav-link.py-3 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } input:focus { outline: none; } .tp-2 { padding:.38rem !important; } .form-control:focus { border: 1px solid #eee; outline: 0; box-shadow: unset; } .fs-13{ font-size: 13px; } .header-title{ font-size: 20px; font-weight: 600; } .custom-table thead tr th{ font-size: 14px; font-weight: 500; color: #000000; --bs-bg-opacity: 1; background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important; } .custom-table tbody tr td{ font-size: 14px; padding: .8rem .5rem; font-weight: 400; color: #333333; } .btn-normal{ background-color:transparent; color: var(--primary-color); display:flex; align-items: center; gap:4px; border:0px solid var(--primary-color); text-decoration:none } .fs-14{ font-size: 14px; } .fw-400{ font-weight: 400; } .pointer{ cursor: pointer; } .outline-none{ outline: none !important; } .outline-none:focus{ box-shadow: none; } div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus { box-shadow: none; } .pricing-table-subtitle { margin-top: 20px; margin-bottom: 30px; font-weight: normal; } .pricing-table-title { font-weight: bold; margin-bottom: 68px; } .pricing-card { border: none; border-radius: 10px; margin-bottom: 40px; text-align: center; -webkit-transition: all 0.6s; transition: all 0.6s; } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card.pricing-card-highlighted { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); } .pricing-card:hover { box-shadow: 0 2px 40px 0 rgba(205, 205, 205, 0.55); -webkit-transform: translateY(-10px); transform: translateY(-10px); } .pricing-card .card-body { padding-top: 55px; padding-bottom: 62px; } .pricing-plan-title { font-size: 20px; color: #000; margin-bottom: 11px; font-weight: normal; } .pricing-plan-cost { font-size: 50px; color: #000; font-weight: bold; margin-bottom: 29px; } .pricing-plan-icon { display: inline-block; width: 40px; height: 40px; font-size: 40px; line-height: 1; margin-bottom: 24px; } .pricing-plan-basic .pricing-plan-icon { color: var(--secondary-color) !important; } .pricing-plan-pro .pricing-plan-icon { color: #10bb87; } .pricing-plan-enterprise .pricing-plan-icon { color: #5d78ff; } .pricing-plan-features { list-style: none; padding-left: 0; font-size: 14px; line-height: 2.14; margin-bottom: 35px; color: #303132; } .pricing-plan-purchase-btn { color: #000; font-size: 16px; font-weight: bold; width: 145px; height: 45px; border-radius: 22.5px; -webkit-transition: all 0.4s; transition: all 0.4s; position: relative; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; margin-left: auto; margin-right: auto; -webkit-box-pack: center; justify-content: center; } .pricing-plan-basic .pricing-plan-purchase-btn { background-color: var(--secondary-color); color: #fff; } .pricing-plan-basic .pricing-plan-purchase-btn:hover { box-shadow: 0 3px 0 0 #b7013d; } .pricing-plan-basic .pricing-plan-purchase-btn:active { -webkit-transform: translateY(3px); transform: tra"
+      },
+      "category_title": "Uncategorized",
+      "category_handle": "uncategorized",
+      "category_url": ""
+    }
+  ]
+}
