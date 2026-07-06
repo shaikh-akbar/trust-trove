@@ -45,6 +45,22 @@ function formatInventoryLabel(inventory) {
   return `${inventory} pcs left`;
 }
 
+function buildProductImageAlt(product) {
+  const parts = [product?.title || product?.name || "Product"];
+  const brand = product?.brand || product?.vendor;
+  const category = product?.category || product?.product_type;
+
+  if (brand) {
+    parts.push(`by ${brand}`);
+  }
+
+  if (category) {
+    parts.push(`– ${category}`);
+  }
+
+  return parts.join(" ");
+}
+
 function extractSectionList(html, labels = []) {
   const source = String(html || "");
   const lowerSource = source.toLowerCase();
@@ -290,274 +306,10 @@ export default function ProductPageClient({
 
       <div className="mx-auto max-w-7xl px-4 pb-32 sm:px-6 sm:pb-16 lg:px-8">
         <section className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr] lg:items-start lg:gap-6">
-          <div className="space-y-3 sm:space-y-4">
-            <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white">
-              <div className="relative aspect-[4/3.2] sm:aspect-[4/3.1] lg:aspect-[4/3.15]">
-                <Image
-                  src={mainImage || product.main_image}
-                  alt={product.title}
-                  fill
-                  preload
-                  unoptimized
-                  sizes="(max-width: 1024px) 100vw, 46vw"
-                  className="object-cover"
-                />
-                <div className="absolute left-3 top-3 max-w-[78%] truncate rounded-full bg-white px-3 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm sm:left-4 sm:top-4 sm:max-w-none sm:text-[11px]">
-                  {product.category || "Featured"}
-                </div>
-              </div>
-            </div>
-
-            {galleryImages.length > 1 ? (
-              <div className="mx-auto grid max-w-2xl grid-cols-4 gap-2 rounded-3xl border border-slate-200 bg-white p-3 sm:grid-cols-5 sm:gap-3 sm:p-4">
-                {galleryImages.map((img, index) => (
-                  <button
-                    key={img.id || index}
-                    type="button"
-                    onClick={() => setMainImage(img.src)}
-                    className={`overflow-hidden rounded-2xl border transition ${
-                      mainImage === img.src
-                        ? "border-rose-500 ring-2 ring-rose-100"
-                        : "border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt || `${product.title} view ${index + 1}`}
-                      width={160}
-                      height={160}
-                      unoptimized
-                      sizes="(max-width: 640px) 20vw, 10vw"
-                      className="aspect-square w-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            ) : null}
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
-              <div className="mb-4 flex items-center gap-3">
-                <span className="rounded-2xl bg-rose-100 p-3 text-rose-600">
-                  <Sparkles size={18} />
-                </span>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                    Additional Information
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Full description and product details from your catalog.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-4 border-t border-slate-200 pt-4">
-                <details
-                  className="group rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4"
-                  open
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900">
-                    Product Description
-                    <ChevronDown
-                      size={16}
-                      className="transition-transform group-open:rotate-180"
-                    />
-                  </summary>
-                  <div
-                    className="prose prose-sm mt-4 max-w-none text-slate-600 prose-headings:text-slate-900 prose-strong:text-slate-900"
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        product.description || `<p>${shortSummary}</p>`,
-                    }}
-                  />
-                </details>
-
-                <details className="group rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900">
-                    Shipping & Returns
-                    <ChevronDown
-                      size={16}
-                      className="transition-transform group-open:rotate-180"
-                    />
-                  </summary>
-                  <p className="mt-4 text-sm leading-7 text-slate-600">
-                    Orders are usually dispatched within 24 to 48 hours and
-                    delivered in 5 to 7 working days depending on location.
-                    Returns can be handled for unused items with original
-                    packaging intact.
-                  </p>
-                </details>
-
-                <details className="group rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900">
-                    Product Details
-                    <ChevronDown
-                      size={16}
-                      className="transition-transform group-open:rotate-180"
-                    />
-                  </summary>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Vendor
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {productDisplayVendor}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Category
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {product.category || "Uncategorized"}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Product Type
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {product.product_type || "General"}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Selected Option
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {currentVariant?.option1_value || "Default"}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:col-span-2">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        SKU
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {currentVariant?.sku || "N/A"}
-                      </p>
-                    </div>
-                  </div>
-
-                  {featureList.length > 0 ? (
-                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Key Features
-                      </p>
-                      <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
-                        {featureList.slice(0, 6).map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {specificationList.length > 0 ? (
-                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Specifications
-                      </p>
-                      <ul className="mt-3 grid gap-2 text-sm leading-7 text-slate-700 sm:grid-cols-2">
-                        {specificationList.slice(0, 8).map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {idealForList.length > 0 ? (
-                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Ideal For
-                      </p>
-                      <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
-                        {idealForList.slice(0, 6).map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {dimensionPairs.length > 0 ? (
-                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                        Shipping Dimensions
-                      </p>
-                      <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                        {dimensionPairs.slice(0, 8).map((item) => (
-                          <div
-                            key={`${item.label}-${item.value}`}
-                            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-                          >
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                              {item.label}
-                            </p>
-                            <p className="mt-2 text-sm font-semibold text-slate-900">
-                              {item.value}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
-                </details>
-              </div>
-            </div>
-
-            {seoCopy ? (
-              <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  Buying Guide
-                </p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
-                  {seoCopy.title}
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-slate-600">
-                  {seoCopy.intro}
-                </p>
-                <p className="mt-4 text-sm leading-7 text-slate-600">
-                  {seoCopy.body}
-                </p>
-                {Array.isArray(seoCopy.checklist) && seoCopy.checklist.length > 0 ? (
-                  <ul className="mt-5 space-y-3">
-                    {seoCopy.checklist.map((item) => (
-                      <li key={item} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            ) : null}
-
-            {faqs.length > 0 ? (
-              <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  Product FAQs
-                </p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
-                  Common questions before ordering
-                </h2>
-                <div className="mt-5 space-y-3">
-                  {faqs.map((faq) => (
-                    <details key={faq.question} className="group rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-slate-900">
-                        {faq.question}
-                        <ChevronDown
-                          size={16}
-                          className="shrink-0 transition-transform group-open:rotate-180"
-                        />
-                      </summary>
-                      <p className="mt-4 text-sm leading-7 text-slate-600">
-                        {faq.answer}
-                      </p>
-                    </details>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
-
-          <div className="space-y-4 lg:sticky lg:top-6 lg:self-start">
+          {/* Answer-Engine-First: this buy box (name, price, availability, rating) is placed
+              first in source order so crawlers read the core facts before gallery/description
+              markup. `order-2` keeps the visual position unchanged on every breakpoint. */}
+          <div className="order-2 space-y-4 lg:sticky lg:top-6 lg:self-start">
             <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
               <div className="flex items-center gap-2 text-amber-500">
                 {[...Array(5)].map((_, index) => (
@@ -864,6 +616,273 @@ export default function ProductPageClient({
                 </div>
               ) : null}
             </div>
+          </div>
+
+          <div className="order-1 space-y-3 sm:space-y-4">
+            <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white">
+              <div className="relative aspect-[4/3.2] sm:aspect-[4/3.1] lg:aspect-[4/3.15]">
+                <Image
+                  src={mainImage || product.main_image}
+                  alt={buildProductImageAlt(product)}
+                  fill
+                  preload
+                  unoptimized
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  className="object-cover"
+                />
+                <div className="absolute left-3 top-3 max-w-[78%] truncate rounded-full bg-white px-3 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm sm:left-4 sm:top-4 sm:max-w-none sm:text-[11px]">
+                  {product.category || "Featured"}
+                </div>
+              </div>
+            </div>
+
+            {galleryImages.length > 1 ? (
+              <div className="mx-auto grid max-w-2xl grid-cols-4 gap-2 rounded-3xl border border-slate-200 bg-white p-3 sm:grid-cols-5 sm:gap-3 sm:p-4">
+                {galleryImages.map((img, index) => (
+                  <button
+                    key={img.id || index}
+                    type="button"
+                    onClick={() => setMainImage(img.src)}
+                    className={`overflow-hidden rounded-2xl border transition ${
+                      mainImage === img.src
+                        ? "border-rose-500 ring-2 ring-rose-100"
+                        : "border-slate-200 hover:border-slate-300"
+                    }`}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt || `${product.title} view ${index + 1}`}
+                      width={160}
+                      height={160}
+                      unoptimized
+                      sizes="(max-width: 640px) 20vw, 10vw"
+                      className="aspect-square w-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="rounded-2xl bg-rose-100 p-3 text-rose-600">
+                  <Sparkles size={18} />
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                    Additional Information
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Full description and product details from your catalog.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4 border-t border-slate-200 pt-4">
+                <details
+                  className="group rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4"
+                  open
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900">
+                    Product Description
+                    <ChevronDown
+                      size={16}
+                      className="transition-transform group-open:rotate-180"
+                    />
+                  </summary>
+                  <div
+                    className="prose prose-sm mt-4 max-w-none text-slate-600 prose-headings:text-slate-900 prose-strong:text-slate-900"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        product.description || `<p>${shortSummary}</p>`,
+                    }}
+                  />
+                </details>
+
+                <details className="group rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900">
+                    Shipping & Returns
+                    <ChevronDown
+                      size={16}
+                      className="transition-transform group-open:rotate-180"
+                    />
+                  </summary>
+                  <p className="mt-4 text-sm leading-7 text-slate-600">
+                    Orders are usually dispatched within 24 to 48 hours and
+                    delivered in 5 to 7 working days depending on location.
+                    Returns can be handled for unused items with original
+                    packaging intact.
+                  </p>
+                </details>
+
+                <details className="group rounded-2xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900">
+                    Product Details
+                    <ChevronDown
+                      size={16}
+                      className="transition-transform group-open:rotate-180"
+                    />
+                  </summary>
+                  <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                      <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Vendor
+                      </dt>
+                      <dd className="mt-2 text-sm font-semibold text-slate-900">
+                        {productDisplayVendor}
+                      </dd>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                      <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Category
+                      </dt>
+                      <dd className="mt-2 text-sm font-semibold text-slate-900">
+                        {product.category || "Uncategorized"}
+                      </dd>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                      <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Product Type
+                      </dt>
+                      <dd className="mt-2 text-sm font-semibold text-slate-900">
+                        {product.product_type || "General"}
+                      </dd>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                      <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Selected Option
+                      </dt>
+                      <dd className="mt-2 text-sm font-semibold text-slate-900">
+                        {currentVariant?.option1_value || "Default"}
+                      </dd>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:col-span-2">
+                      <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        SKU
+                      </dt>
+                      <dd className="mt-2 text-sm font-semibold text-slate-900">
+                        {currentVariant?.sku || "N/A"}
+                      </dd>
+                    </div>
+                  </dl>
+
+                  {featureList.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Key Features
+                      </p>
+                      <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                        {featureList.slice(0, 6).map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {specificationList.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Specifications
+                      </p>
+                      <ul className="mt-3 grid gap-2 text-sm leading-7 text-slate-700 sm:grid-cols-2">
+                        {specificationList.slice(0, 8).map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {idealForList.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Ideal For
+                      </p>
+                      <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                        {idealForList.slice(0, 6).map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {dimensionPairs.length > 0 ? (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                        Shipping Dimensions
+                      </p>
+                      <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+                        {dimensionPairs.slice(0, 8).map((item) => (
+                          <div
+                            key={`${item.label}-${item.value}`}
+                            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+                          >
+                            <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                              {item.label}
+                            </dt>
+                            <dd className="mt-2 text-sm font-semibold text-slate-900">
+                              {item.value}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                  ) : null}
+                </details>
+              </div>
+            </div>
+
+            {seoCopy ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                  Buying Guide
+                </p>
+                <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
+                  {seoCopy.title}
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {seoCopy.intro}
+                </p>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {seoCopy.body}
+                </p>
+                {Array.isArray(seoCopy.checklist) && seoCopy.checklist.length > 0 ? (
+                  <ul className="mt-5 space-y-3">
+                    {seoCopy.checklist.map((item) => (
+                      <li key={item} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : null}
+
+            {faqs.length > 0 ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                  Product FAQs
+                </p>
+                <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
+                  Common questions before ordering
+                </h2>
+                <div className="mt-5 space-y-3">
+                  {faqs.map((faq) => (
+                    <details key={faq.question} className="group rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-slate-900">
+                        {faq.question}
+                        <ChevronDown
+                          size={16}
+                          className="shrink-0 transition-transform group-open:rotate-180"
+                        />
+                      </summary>
+                      <p className="mt-4 text-sm leading-7 text-slate-600">
+                        {faq.answer}
+                      </p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
 

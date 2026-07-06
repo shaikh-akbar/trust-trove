@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(find app *)",
+      "Bash(cat vercel.json)",
+      "Bash(cat next.config.mjs)",
+      "WebSearch"
+    ]
+  }
+}
