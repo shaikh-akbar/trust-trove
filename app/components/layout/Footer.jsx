@@ -33,6 +33,15 @@ const footerSupport = [
   { href: "/brand-resources", label: "Brand Resources" },
 ];
 
+const socialProfileLinks = [
+  { href: process.env.NEXT_PUBLIC_INSTAGRAM_URL, label: "Instagram" },
+  { href: process.env.NEXT_PUBLIC_FACEBOOK_URL, label: "Facebook" },
+  { href: process.env.NEXT_PUBLIC_LINKEDIN_URL, label: "LinkedIn" },
+  { href: process.env.NEXT_PUBLIC_YOUTUBE_URL, label: "YouTube" },
+  { href: process.env.NEXT_PUBLIC_PINTEREST_URL, label: "Pinterest" },
+  { href: process.env.NEXT_PUBLIC_X_URL, label: "X" },
+].filter((item) => item.href);
+
 const Footer = () => {
   return (
     <footer className="border-t border-[var(--line)] bg-[linear-gradient(180deg,#fbf6ee_0%,#f3ebde_100%)] text-slate-900">
@@ -136,6 +145,25 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
+        {socialProfileLinks.length > 0 ? (
+          <div className="flex flex-col items-center gap-3 border-t border-[var(--brand-navy)]/10 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-navy)]/55">Follow GoModexa</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-slate-500">
+              {socialProfileLinks.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="hover:text-[var(--brand-navy)]"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="flex flex-col gap-4 border-t border-[var(--brand-navy)]/10 pb-8 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
           <p className="text-xs text-slate-500">&copy; 2026 GoModexa. All rights reserved.</p>

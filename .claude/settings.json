@@ -5,7 +5,9 @@
       "Bash(find app *)",
       "Bash(cat vercel.json)",
       "Bash(cat next.config.mjs)",
-      "WebSearch"
+      "WebSearch",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)"
     ]
   }
 }
