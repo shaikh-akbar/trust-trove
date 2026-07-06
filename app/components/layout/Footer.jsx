@@ -42,6 +42,85 @@ const socialProfileLinks = [
   { href: process.env.NEXT_PUBLIC_X_URL, label: "X" },
 ].filter((item) => item.href);
 
+function SocialIcon({ label }) {
+  const common = {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    "aria-hidden": true,
+  };
+
+  switch (label) {
+    case "Instagram":
+      return (
+        <svg {...common}>
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="17" cy="7" r="1" fill="currentColor" />
+        </svg>
+      );
+    case "Facebook":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+          <path
+            d="M13.5 21v-7h2.2l.3-2.6h-2.5V9.7c0-.75.2-1.26 1.28-1.26H16V6.1c-.22-.03-.98-.1-1.87-.1-1.85 0-3.13 1.13-3.13 3.2v1.98H9v2.6h2v7"
+            stroke="currentColor"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "LinkedIn":
+      return (
+        <svg {...common}>
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="8" cy="8.5" r="1.1" fill="currentColor" />
+          <path d="M8 11v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M12 11v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          <path
+            d="M12 13.8c0-1.55 1-2.3 2-2.3s2 .75 2 2.3V17"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "Pinterest":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+          <path
+            d="M10 18c.6-2.4 1.2-5 1.7-7.3M11.3 13.2c.4.9 1.3 1.4 2.3 1.2 1.6-.3 2.6-1.9 2.3-3.6-.3-1.8-2-3-3.9-2.6-2 .4-3.2 2.3-2.8 4.2"
+            stroke="currentColor"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "YouTube":
+      return (
+        <svg {...common}>
+          <rect x="2.5" y="6" width="19" height="12" rx="4" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" />
+        </svg>
+      );
+    case "X":
+      return (
+        <svg {...common}>
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M7.5 7.5l9 9M16.5 7.5l-9 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 const Footer = () => {
   return (
     <footer className="border-t border-[var(--line)] bg-[linear-gradient(180deg,#fbf6ee_0%,#f3ebde_100%)] text-slate-900">
@@ -149,16 +228,18 @@ const Footer = () => {
         {socialProfileLinks.length > 0 ? (
           <div className="flex flex-col items-center gap-3 border-t border-[var(--brand-navy)]/10 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
             <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-navy)]/55">Follow GoModexa</p>
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-slate-500">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500 sm:gap-5">
               {socialProfileLinks.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="hover:text-[var(--brand-navy)]"
+                  aria-label={item.label}
+                  className="flex items-center gap-2 hover:text-[var(--brand-navy)]"
                 >
-                  {item.label}
+                  <SocialIcon label={item.label} />
+                  <span className="hidden sm:inline">{item.label}</span>
                 </a>
               ))}
             </div>
