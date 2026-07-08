@@ -1,17 +1,39 @@
-import { buildMetadata } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema } from "../../lib/seo";
 import { PolicyBulletList, PolicyFooterNote, PolicyHero, PolicySection } from "../components/store/PolicyPage";
+
+const TERMS_OF_SERVICE_DESCRIPTION =
+  "Read the GoModexa terms of service governing browsing, purchasing, account use, pricing, and customer responsibilities.";
 
 export const metadata = buildMetadata({
   title: "Terms of Service",
   path: "/terms-of-service",
-  description:
-    "Read the GoModexa terms of service governing browsing, purchasing, account use, pricing, and customer responsibilities.",
+  description: TERMS_OF_SERVICE_DESCRIPTION,
   keywords: ["GoModexa terms", "terms of service", "website terms India"],
 });
 
 export default function TermsOfServicePage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Terms of Service", path: "/terms-of-service" },
+  ]);
+  const webPageSchema = buildWebPageSchema({
+    name: "Terms of Service",
+    description: TERMS_OF_SERVICE_DESCRIPTION,
+    path: "/terms-of-service",
+  });
+
   return (
     <div className="bg-[var(--surface-soft)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {webPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      ) : null}
       <PolicyHero
         eyebrow="GoModexa Terms"
         title="Terms of service for using the GoModexa website."

@@ -23,6 +23,16 @@ function getSitemapImageUrls(product) {
   return [imageUrl];
 }
 
+function getAbsoluteSitemapImage(imageUrl) {
+  const trimmed = String(imageUrl || "").trim();
+
+  if (!trimmed) {
+    return [];
+  }
+
+  return [/^https?:\/\//i.test(trimmed) ? trimmed : getSiteUrl(trimmed)];
+}
+
 async function getAllIndexedProducts() {
   const supabase = getSupabaseAdmin();
   const { data: products, error } = await supabase
@@ -114,6 +124,7 @@ export default async function sitemap() {
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.8,
+    images: getAbsoluteSitemapImage(category.image),
   }));
   const categoryPaginationRoutes = (categories || []).flatMap((category) => {
     const totalPages = Math.max(
@@ -138,6 +149,7 @@ export default async function sitemap() {
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.75,
+    images: getAbsoluteSitemapImage(brand.image),
   }));
   const brandPaginationRoutes = (brands || []).flatMap((brand) => {
     const totalPages = Math.max(
@@ -162,6 +174,7 @@ export default async function sitemap() {
     lastModified: toDate(post.updatedAt || post.publishedAt),
     changeFrequency: "monthly",
     priority: 0.65,
+    images: getAbsoluteSitemapImage(post.image),
   }));
   const blogIndexPageCount = Math.max(1, Math.ceil(BLOG_POSTS.length / BLOGS_PER_PAGE));
   const latestBlogDate = BLOG_POSTS.reduce((latest, post) => {

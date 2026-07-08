@@ -1,17 +1,39 @@
-import { buildMetadata } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema } from "../../lib/seo";
 import { PolicyBulletList, PolicyFooterNote, PolicyHero, PolicySection } from "../components/store/PolicyPage";
+
+const STORE_POLICIES_DESCRIPTION =
+  "Read the GoModexa store policies covering accounts, orders, delivery support, and payment guidance.";
 
 export const metadata = buildMetadata({
   title: "Store Policies",
   path: "/store-policies",
-  description:
-    "Read the GoModexa store policies covering accounts, orders, delivery support, and payment guidance.",
+  description: STORE_POLICIES_DESCRIPTION,
   keywords: ["GoModexa store policies", "store FAQ", "account and order policy"],
 });
 
 export default function StorePoliciesPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Store Policies", path: "/store-policies" },
+  ]);
+  const webPageSchema = buildWebPageSchema({
+    name: "Store Policies",
+    description: STORE_POLICIES_DESCRIPTION,
+    path: "/store-policies",
+  });
+
   return (
     <div className="bg-[var(--surface-soft)] ">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {webPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      ) : null}
       <PolicyHero
         eyebrow="GoModexa FAQ"
         title="Store policies and customer guidance."

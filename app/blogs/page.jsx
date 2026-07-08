@@ -8,8 +8,8 @@ import {
 import {
   buildBlogSchema,
   buildBreadcrumbSchema,
+  buildCollectionMetadata,
   buildCollectionPageSchema,
-  buildMetadata,
   getSiteUrl,
   buildWebPageSchema,
 } from "../../lib/seo";
@@ -102,9 +102,11 @@ export async function generateMetadata({ searchParams }) {
   const page = parsePageValue((await searchParams).page);
   const pageSuffix = page > 1 ? ` - Page ${page}` : "";
 
-  return buildMetadata({
+  return buildCollectionMetadata({
     title: `Blogs${pageSuffix}`,
-    path: buildPageHref(page),
+    path: "/blogs",
+    page,
+    allowPaginatedIndex: true,
     description:
       page > 1
         ? `Browse page ${page} of the GoModexa blog for product guides, shopping advice, gifting ideas, and category-focused SEO content.`

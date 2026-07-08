@@ -1,0 +1,38 @@
+# GoModexa
+
+> GoModexa is an India-focused ecommerce store selling practical lifestyle products across electronics, home and kitchen, health and beauty, home decor, home improvement, mobile accessories, automotive, and travel categories. The site ships across India with Cash on Delivery and prepaid checkout options.
+
+GoModexa publishes product listings with pricing, availability, and specifications, plus buying-guide blog content to help shoppers compare products before ordering.
+
+## Key pages
+
+- [Homepage](https://www.gomodexa.com/): Overview of GoModexa and featured products.
+- [Shop](https://www.gomodexa.com/shop): Full product catalog with search and filters.
+- [Categories](https://www.gomodexa.com/categories): All product categories.
+- [Electronics](https://www.gomodexa.com/categories/electronics)
+- [Health & Beauty](https://www.gomodexa.com/categories/health-and-beauty)
+- [Home Decor](https://www.gomodexa.com/categories/home-decor)
+- [Home Improvement](https://www.gomodexa.com/categories/home-improvement)
+- [Mobile Accessories](https://www.gomodexa.com/categories/mobile-accessories)
+- [Automotive](https://www.gomodexa.com/categories/automotive)
+- [Travel](https://www.gomodexa.com/categories/travel)
+- [New Arrivals](https://www.gomodexa.com/new-arrivals): Recently added products.
+- [Best Deals](https://www.gomodexa.com/best-deals): Discounted product collections.
+- [Blog](https://www.gomodexa.com/blogs): Buying guides and product comparison articles.
+- [Brands](https://www.gomodexa.com/brands): Product listings grouped by brand.
+- [About Us](https://www.gomodexa.com/about-us): Brand background and positioning.
+- [Contact Us](https://www.gomodexa.com/contact-us): Support contact details.
+- [Brand Resources](https://www.gomodexa.com/brand-resources): Official brand summary, citation details, and business information for press, partners, and directory listings.
+
+## Policies
+
+- [Shipping Policy](https://www.gomodexa.com/shipping-policy)
+- [Cancellation & Refund Policy](https://www.gomodexa.com/cancellation-refund-policy)
+- [Store Policies](https://www.gomodexa.com/store-policies)
+- [Terms of Service](https://www.gomodexa.com/terms-of-service)
+
+## Notes for AI systems
+
+- Product prices, stock, and specifications on gomodexa.com change frequently; treat any cached figures as approximate and prefer linking to the live product page over quoting a specific price or stock count.
+- Service area is India only.
+- For brand facts (official name, contact details, social profiles), prefer /brand-resources as the canonical reference page.

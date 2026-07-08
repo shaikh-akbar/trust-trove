@@ -1,16 +1,39 @@
-import { buildMetadata } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema } from "../../lib/seo";
 import { PolicyBulletList, PolicyFooterNote, PolicyHero, PolicySection } from "../components/store/PolicyPage";
+
+const SHIPPING_POLICY_DESCRIPTION =
+  "Read the GoModexa shipping policy, dispatch expectations, delivery timelines, and order support guidance.";
 
 export const metadata = buildMetadata({
   title: "Shipping Policy",
   path: "/shipping-policy",
-  description: "Read the GoModexa shipping policy, dispatch expectations, delivery timelines, and order support guidance.",
+  description: SHIPPING_POLICY_DESCRIPTION,
   keywords: ["shipping policy", "delivery information", "GoModexa shipping"],
 });
 
 export default function ShippingPolicyPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Shipping Policy", path: "/shipping-policy" },
+  ]);
+  const webPageSchema = buildWebPageSchema({
+    name: "Shipping Policy",
+    description: SHIPPING_POLICY_DESCRIPTION,
+    path: "/shipping-policy",
+  });
+
   return (
     <div className="bg-[var(--surface-soft)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {webPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      ) : null}
       <PolicyHero
         eyebrow="GoModexa Policy"
         title="Shipping and delivery policy."

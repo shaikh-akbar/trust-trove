@@ -12,6 +12,7 @@ const CAROUSEL_SLIDES = [
     eyebrow: "Electronics",
     title: "Electronics",
     description: "Smart gadgets for every day",
+    alt: "Electronics promo banner featuring smart gadgets and everyday tech on GoModexa",
     href: "/shop",
     image: "/banner/electronics.png",
     mobileImage: "/banner/electronics-mobile.png",
@@ -22,6 +23,7 @@ const CAROUSEL_SLIDES = [
     eyebrow: "Tech Trends",
     title: "Health & Beauty",
     description: "Skincare, wellness, and fitness essentials",
+    alt: "Health and beauty promo banner featuring skincare, wellness, and fitness essentials on GoModexa",
     href: "/shop",
     image: "/banner/health.png",
     mobileImage: "/banner/health-beauty-mobile.png",
@@ -32,6 +34,7 @@ const CAROUSEL_SLIDES = [
     eyebrow: "Home Decor",
     title: "Home Decor",
     description: "Easy upgrades for every room",
+    alt: "Home decor promo banner featuring easy room upgrade products on GoModexa",
     href: "/shop",
     image: "/banner/home-decor.png",
     mobileImage: "/banner/home-decor-mobile.webp",
@@ -45,6 +48,7 @@ const SIDE_TILES = [
     badge: "25% Off",
     title: "Health & Beauty",
     description: "Polished carry picks",
+    alt: "Brightening vitamin C gel face wash promo tile, 25% off on GoModexa",
     href: "/product/brightening-vitamin-c-gel-face-wash-1-pc-100ml-20325",
     image: "/banner/ban-4.jpeg",
     imagePosition: "center center",
@@ -54,6 +58,7 @@ const SIDE_TILES = [
     badge: "45% Off",
     title: "Pillow",
     description: "Classic statement styles",
+    alt: "Leather and cotton pillow covers promo tile, 45% off on GoModexa",
     href: "/product/pillow-covers-cushion-cases-soft-leather-and-cotton-23-22-inch-1-pair-2-pc-2969",
     image:
       "/banner/ban-5.jpeg",
@@ -64,6 +69,7 @@ const SIDE_TILES = [
     eyebrow: "Mobile Stand",
     title: "Mobile Stand",
     description: "Min. 40-80% Off",
+    alt: "Foldable universal mobile phone stand for desk promo tile, up to 80% off on GoModexa",
     href: "/product/1286-phone-holder-for-table-foldable-universal-mobile-stand-for-desk-1292",
     image:
       "/banner/mobile-stand.png",
@@ -80,7 +86,7 @@ function SideTile({ tile }) {
     >
       <img
         src={tile.image}
-        alt={tile.title}
+        alt={tile.alt || tile.title}
         loading="lazy"
         decoding="async"
         className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
@@ -141,7 +147,7 @@ export default function StaticPromoBanner() {
             <source media="(max-width: 639px)" srcSet={activeSlide.mobileImage || activeSlide.image} />
             <img
               src={activeSlide.image}
-              alt={activeSlide.title}
+              alt={activeSlide.alt || activeSlide.title}
               fetchPriority="high"
               loading="eager"
               decoding="async"

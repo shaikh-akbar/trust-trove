@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BadgeCheck, Link2, Megaphone, Send, Store } from "lucide-react";
-import { buildMetadata, getSiteUrl } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema, getSiteUrl } from "../../lib/seo";
 
 export const metadata = buildMetadata({
   title: "Official Brand Resources",
@@ -45,24 +45,33 @@ const listingTargets = [
 ];
 
 export default function BrandResourcesPage() {
-  const brandResourcesSchema = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Brand Resources", path: "/brand-resources" },
+  ]);
+  const brandResourcesSchema = buildWebPageSchema({
+    type: "AboutPage",
     name: "GoModexa Official Brand Resources",
-    url: getSiteUrl("/brand-resources"),
-    about: {
-      "@id": getSiteUrl("/#organization"),
-    },
     description:
       "Official GoModexa brand resources page for citations, listings, collaborations, and business references.",
-  };
+    path: "/brand-resources",
+    mainEntity: {
+      "@id": getSiteUrl("/#organization"),
+    },
+  });
 
   return (
     <div className="bg-[var(--surface-soft)]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(brandResourcesSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {brandResourcesSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(brandResourcesSchema) }}
+        />
+      ) : null}
       <section className="border-b border-[var(--line)] bg-[var(--brand-navy)] text-white">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">

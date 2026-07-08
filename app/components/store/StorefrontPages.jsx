@@ -389,6 +389,9 @@ export function ShopExperience({
         basePath="/shop"
         activeCategorySlug={activeCategorySlug}
         activeCategoryTitle={activeCategoryTitle}
+        eyebrow="GoModexa Shop"
+        title="Shop all products in one focused catalog page."
+        description="Browse the full GoModexa catalog with category, price, and search filters designed to help you find the right product faster."
         heroBackgroundImage={SHOP_BANNER_IMAGE}
         heroMobileBackgroundImage={SHOP_BANNER_MOBILE_IMAGE}
         currentPage={currentPage}
@@ -658,8 +661,16 @@ export function CategoriesExperience({ categories = [] }) {
           alt=""
           className="absolute inset-0 hidden h-full w-full object-cover object-center sm:block"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.16)_0%,rgba(20,29,96,0.1)_42%,rgba(20,29,96,0.08)_100%)]" />
-        <div className="relative h-[180px] sm:h-[250px] lg:h-[320px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,29,96,0.45)_0%,rgba(20,29,96,0.3)_42%,rgba(20,29,96,0.18)_100%)]" />
+        <div className="relative mx-auto flex h-[180px] max-w-7xl flex-col justify-center px-4 sm:h-[250px] sm:px-6 lg:h-[320px] lg:px-8">
+          <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-slate-200">GoModexa Categories</p>
+          <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold leading-[0.98] tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
+            Browse every GoModexa category in one place.
+          </h1>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-slate-200 sm:text-base">
+            Jump into electronics, home and kitchen, health and beauty, travel, and more curated collections.
+          </p>
+        </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
@@ -928,7 +939,7 @@ function NewArrivalsReferenceLayout({
                 <source media="(max-width: 639px)" srcSet={NEW_ARRIVALS_BANNER_MOBILE_IMAGE} />
                 <img
                   src={NEW_ARRIVALS_BANNER_IMAGE}
-                  alt="New arrivals banner"
+                  alt="New arrivals collection banner - shop the latest GoModexa products"
                   className="h-[280px] w-full object-cover sm:h-[400px] lg:h-[500px]"
                 />
               </picture>
@@ -1268,7 +1279,11 @@ export function NewArrivalsExperience({
                   <div className="relative min-h-[19rem] overflow-hidden bg-[linear-gradient(135deg,rgba(20,29,96,0.08),rgba(20,29,96,0.18))]">
                     <img
                       src={FRESH_DROP_PANEL_IMAGE}
-                      alt="Fresh new arrivals banner"
+                      alt={
+                        spotlightProduct?.title
+                          ? `Featured fresh drop: ${spotlightProduct.title} on GoModexa`
+                          : "Fresh drop featured new arrivals banner on GoModexa"
+                      }
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,29,96,0.12)_0%,rgba(20,29,96,0.58)_100%)]" />

@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { buildMetadata } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildFaqSchema, buildMetadata, buildWebPageSchema } from "../../lib/seo";
 import { PolicyHero, PolicySection } from "../components/store/PolicyPage";
 
 export const metadata = buildMetadata({
@@ -56,8 +56,35 @@ export default function ContactUsPage() {
     },
   ];
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Contact Us", path: "/contact-us" },
+  ]);
+  const faqSchema = buildFaqSchema(faqs);
+  const webPageSchema = buildWebPageSchema({
+    name: "Contact Us",
+    description: "Contact GoModexa for support, order help, shipping questions, or brand-related inquiries.",
+    path: "/contact-us",
+  });
+
   return (
     <div className="bg-[var(--surface-soft)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {webPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      ) : null}
+      {faqSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      ) : null}
       <PolicyHero
         eyebrow="Contact GoModexa"
         title="Reach the team behind your GoModexa experience."

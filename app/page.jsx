@@ -2,7 +2,10 @@ import { Suspense } from "react";
 import HomeExperience from "./components/home/HomeExperience";
 import HomeDeferredSections from "./components/home/HomeDeferredSections";
 import { getFeaturedCategoryTabs, getFeaturedProductsPage } from "../lib/product";
-import { buildMetadata, getSiteUrl } from "../lib/seo";
+import { buildMetadata, buildWebPageSchema } from "../lib/seo";
+
+const HOME_DESCRIPTION =
+  "The official homepage of GoModexa at gomodexa.com featuring curated products, category discovery, blog highlights, and new arrivals.";
 
 export const metadata = buildMetadata({
   title: "Official Website for GoModexa",
@@ -28,24 +31,21 @@ export default async function Home() {
       preloadedTabCount: 0,
     }),
   ]);
-  const homeSchema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const homeSchema = buildWebPageSchema({
+    type: "CollectionPage",
     name: "GoModexa Official Homepage",
-    url: getSiteUrl("/"),
-    description:
-      "The official homepage of GoModexa at gomodexa.com featuring curated products, category discovery, blog highlights, and new arrivals.",
-    isPartOf: {
-      "@id": getSiteUrl("/#website"),
-    },
-  };
+    description: HOME_DESCRIPTION,
+    path: "/",
+  });
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
-      />
+      {homeSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
+        />
+      ) : null}
       <h1 className="sr-only">
         GoModexa official website and online shopping store in India
       </h1>

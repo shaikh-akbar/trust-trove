@@ -84,9 +84,9 @@ export default function BestDealsExperience({ definition, tabs = [], products = 
             <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-slate-400">
               {definition.eyebrow}
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-[-0.04em] text-slate-950">
+            <h1 className="mt-2 text-3xl font-black tracking-[-0.04em] text-slate-950">
               {definition.title}
-            </h2>
+            </h1>
             <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-500">{definition.subtitle}</p>
           </div>
           <Link
@@ -108,9 +108,9 @@ export default function BestDealsExperience({ definition, tabs = [], products = 
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ef7d00] text-white">
               <BadgePercent size={20} />
             </div>
-            <h3 className="mt-6 text-3xl font-black tracking-[-0.04em] text-slate-950">
+            <h2 className="mt-6 text-3xl font-black tracking-[-0.04em] text-slate-950">
               No deal products assigned yet
-            </h3>
+            </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500">
               This tab shows products only when the admin assigns them to this Best Deals bucket and the item is in stock with an image.
             </p>

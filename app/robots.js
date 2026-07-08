@@ -21,6 +21,7 @@ export default function robots() {
           "/signin",
           "/signup",
           "/wishlist",
+          "/track-order",
         ],
       },
     ],

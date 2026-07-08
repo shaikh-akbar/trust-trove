@@ -1,17 +1,41 @@
 import Link from "next/link";
 import { Compass, Gem, ShieldCheck } from "lucide-react";
-import { buildMetadata } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema } from "../../lib/seo";
+
+const ABOUT_DESCRIPTION =
+  "Learn about GoModexa, our premium retail direction, and the trust-first philosophy behind the storefront.";
 
 export const metadata = buildMetadata({
   title: "About Us",
   path: "/about-us",
-  description: "Learn about GoModexa, our premium retail direction, and the trust-first philosophy behind the storefront.",
+  description: ABOUT_DESCRIPTION,
   keywords: ["about GoModexa", "GoModexa brand", "premium ecommerce India"],
 });
 
 export default function AboutUsPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "About Us", path: "/about-us" },
+  ]);
+  const webPageSchema = buildWebPageSchema({
+    type: "AboutPage",
+    name: "About GoModexa",
+    description: ABOUT_DESCRIPTION,
+    path: "/about-us",
+  });
+
   return (
     <div className="bg-[var(--brand-navy)] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {webPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      ) : null}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <p className="text-xs font-extrabold uppercase tracking-[0.34em] text-[var(--brand-gold)]">About GoModexa</p>
         <h1 className="mt-6 max-w-4xl font-display text-4xl font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--surface-cream)] sm:text-5xl">

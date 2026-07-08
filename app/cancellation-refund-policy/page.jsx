@@ -1,17 +1,39 @@
-import { buildMetadata } from "../../lib/seo";
+import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema } from "../../lib/seo";
 import { PolicyBulletList, PolicyFooterNote, PolicyHero, PolicySection } from "../components/store/PolicyPage";
+
+const CANCELLATION_REFUND_DESCRIPTION =
+  "Read the GoModexa cancellation, return, replacement, and refund rules for confirmed orders and post-delivery issues.";
 
 export const metadata = buildMetadata({
   title: "Cancellation, Return & Refund Policy",
   path: "/cancellation-refund-policy",
-  description:
-    "Read the GoModexa cancellation, return, replacement, and refund rules for confirmed orders and post-delivery issues.",
+  description: CANCELLATION_REFUND_DESCRIPTION,
   keywords: ["GoModexa cancellation policy", "return policy", "refund policy", "replacement policy"],
 });
 
 export default function CancellationRefundPolicyPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Cancellation & Refund Policy", path: "/cancellation-refund-policy" },
+  ]);
+  const webPageSchema = buildWebPageSchema({
+    name: "Cancellation, Return & Refund Policy",
+    description: CANCELLATION_REFUND_DESCRIPTION,
+    path: "/cancellation-refund-policy",
+  });
+
   return (
     <div className="bg-[var(--surface-soft)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {webPageSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      ) : null}
       <PolicyHero
         eyebrow="GoModexa Policy"
         title="Order cancellation, return, and refund policy."

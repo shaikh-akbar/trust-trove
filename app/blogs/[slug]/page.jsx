@@ -431,7 +431,6 @@ export default async function BlogDetailPage({ params }) {
                             src={imageUrl}
                             alt={productTitle}
                             fill
-                            unoptimized
                             sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
                             className="object-cover transition-transform duration-500 group-hover:scale-105"
                           />
