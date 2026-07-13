@@ -8,10 +8,10 @@ const HOME_DESCRIPTION =
   "The official homepage of GoModexa at gomodexa.com featuring curated products, category discovery, blog highlights, and new arrivals.";
 
 export const metadata = buildMetadata({
-  title: "Official Website for GoModexa",
+  title: "Official Website for GoModexa | Get 10% Off with Code GOMODEXA10",
   path: "/",
   description:
-    "Official GoModexa website for shopping curated lifestyle products online in India across fashion, travel, beauty, home, gadgets, and everyday essentials at gomodexa.com.",
+    "Shop GoModexa's official online store for curated fashion, footwear, gadgets, and lifestyle essentials in India. Use coupon code GOMODEXA10 to get 10% off — buy now at gomodexa.com.",
   keywords: [
     "GoModexa official website",
     "gomodexa.com",
@@ -19,6 +19,10 @@ export const metadata = buildMetadata({
     "GoModexa India",
     "shop GoModexa online",
     "curated products India",
+    "GoModexa coupon code",
+    "GoModexa discount code",
+    "10% off GoModexa",
+    "buy from GoModexa",
   ],
 });
 

@@ -3,6 +3,7 @@
 import { CartProvider } from "./cart/CartProvider";
 import RouteLoadingProvider from "./feedback/RouteLoadingProvider";
 import { LocationProvider } from "./location/LocationProvider";
+import WelcomeOfferModal from "./promo/WelcomeOfferModal";
 import { WishlistProvider } from "./wishlist/WishlistProvider";
 
 export default function AppProviders({ children, initialUser, initialCart, initialWishlistProductIds }) {
@@ -10,6 +11,7 @@ export default function AppProviders({ children, initialUser, initialCart, initi
 
   return (
     <RouteLoadingProvider>
+      <WelcomeOfferModal />
       <LocationProvider>
         <CartProvider key={`cart-${providerKey}`} initialUser={initialUser} initialCart={initialCart}>
           <WishlistProvider
